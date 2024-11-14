@@ -1,11 +1,8 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  output: 'export',
+// next.config.js
+module.exports = {
+  output: 'export',  // Ensures Next.js exports static HTML files
   images: {
-    unoptimized: true,
+    unoptimized: true,  // Disable Next.js image optimization for static export
   },
-  basePath: '/dev-booking-site', // adjust this to match your repo name
-  assetPrefix: '/dev-booking-site/',
+  trailingSlash: true, // Ensures each page generates its own folder with index.html
 };
-
-export default nextConfig;
