@@ -16,19 +16,19 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '18'  # Updated to a compatible Node.js version
+          node-version: '18'  # Use a compatible version for Next.js
 
       - name: Install dependencies
-        working-directory: dev-booking-site  # Update to where package.json is located
+        working-directory: dev-booking-site  # Path to package.json
         run: npm install
 
       - name: Build the project
-        working-directory: dev-booking-site  # Update to where package.json is located
-        run: npm run build
+        working-directory: dev-booking-site  # Path to package.json
+        run: npm run build && npm run export  # Runs Next.js build and export
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dev-booking-site/out  # Update path to the output directory if needed
-          cname: 'codewithwill.tech'  # Custom domain, if applicable
+          publish_dir: ./dev-booking-site/out  # Path to exported files
+          cname: 'codewithwill.tech'  # Add if using a custom domain
