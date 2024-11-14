@@ -13,6 +13,7 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
+    "types": ["node", "next"],  // Added types for Node.js and Next.js
     "plugins": [
       {
         "name": "next"
