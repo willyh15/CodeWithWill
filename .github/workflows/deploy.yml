@@ -3,7 +3,7 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - main  # Adjust to your default branch
+      - main  # Adjust to your default branch if different
 
 jobs:
   build-and-deploy:
@@ -13,20 +13,26 @@ jobs:
       - name: Check out the code
         uses: actions/checkout@v2
 
+      # Navigate into the subdirectory where package.json is located (adjust if your directory name is different)
+      - name: Set working directory
+        run: cd dev-booking-site
+
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
           node-version: '16'
 
       - name: Install dependencies
+        working-directory: dev-booking-site  # Update path to where package.json is located
         run: npm install
 
       - name: Build the project
+        working-directory: dev-booking-site  # Update path to where package.json is located
         run: npm run build
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./out
-          cname: 'codewithwill.tech'  # Add this if you have a custom domain
+          publish_dir: ./dev-booking-site/out  # Update path to the output directory if needed
+          cname: 'codewithwill.tech'  # Add if you are using a custom domain
