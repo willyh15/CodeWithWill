@@ -13,21 +13,17 @@ jobs:
       - name: Check out the code
         uses: actions/checkout@v2
 
-      # Navigate into the subdirectory where package.json is located (adjust if your directory name is different)
-      - name: Set working directory
-        run: cd dev-booking-site
-
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '16'
+          node-version: '18'  # Updated to a compatible Node.js version
 
       - name: Install dependencies
-        working-directory: dev-booking-site  # Update path to where package.json is located
+        working-directory: dev-booking-site  # Update to where package.json is located
         run: npm install
 
       - name: Build the project
-        working-directory: dev-booking-site  # Update path to where package.json is located
+        working-directory: dev-booking-site  # Update to where package.json is located
         run: npm run build
 
       - name: Deploy to GitHub Pages
@@ -35,4 +31,4 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dev-booking-site/out  # Update path to the output directory if needed
-          cname: 'codewithwill.tech'  # Add if you are using a custom domain
+          cname: 'codewithwill.tech'  # Custom domain, if applicable
