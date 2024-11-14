@@ -8,7 +8,6 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-
     steps:
       - name: Check out the code
         uses: actions/checkout@v2
@@ -16,17 +15,18 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '18'  # Ensure compatible Node.js version (18 or higher)
+          node-version: '18'  # Adjust the Node.js version as needed
 
       - name: Install dependencies
         run: npm install
 
       - name: Build the project
-        run: npm run build
+        run: npm run build  # Only `next build`, without `next export`
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./out  # Output directory created by `output: 'export'`
-          cname: 'codewithwill.tech'  # Custom domain if needed
+          publish_dir: ./out  # Ensure the output directory is correct
+          cname: 'codewithwill.tech'  # Specify your custom domain if needed
+
