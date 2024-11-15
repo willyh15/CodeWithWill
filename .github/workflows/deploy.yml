@@ -19,13 +19,20 @@ jobs:
           node-version: '18'
 
       - name: Install dependencies
-        run: npm install
+        run: |
+          npm ci
+          # Ensure react-circular-progressbar is installed
+          npm list react-circular-progressbar || npm install react-circular-progressbar@latest
 
-      - name: Disable TypeScript checks temporarily
-        run: npm install --save-dev skip-typescript # Add a dummy script to skip checks
+      - name: Verify react-circular-progressbar installation
+        run: |
+          if ! npm list react-circular-progressbar; then
+            echo "react-circular-progressbar not installed. Exiting.";
+            exit 1;
+          fi
 
-      - name: Build the project without TypeScript checks
-        run: SKIP_TYPE_CHECK=1 npm run build
+      - name: Build the project
+        run: npm run build
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
