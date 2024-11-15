@@ -1,4 +1,4 @@
-import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
+import CircularProgressbar, { buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 
 const skills = [
@@ -19,9 +19,9 @@ export default function Skills() {
               value={skill.value}
               text={`${skill.value}%`}
               styles={buildStyles({
-                textColor: '#FFD700', // Text color for percentage display
-                pathColor: '#FFD700', // Path color
-                trailColor: '#333',   // Trail color
+                textColor: '#FFD700',
+                pathColor: '#FFD700',
+                trailColor: '#333',
               })}
             />
             <p className="text-gray-200 font-semibold mt-4">{skill.name}</p>
