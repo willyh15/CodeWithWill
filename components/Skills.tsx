@@ -22,7 +22,7 @@ export default function Skills() {
                 textColor: '#FFD700',
                 pathColor: '#FFD700',
                 trailColor: '#333',
-              })}
+              } as any)} // <-- Explicitly casting as `any`
             />
             <p className="text-gray-200 font-semibold mt-4">{skill.name}</p>
           </div>
