@@ -1,4 +1,4 @@
-import { FaLinkedin, FaGithub, FaUpwork } from 'react-icons/fa';
+import { FaLinkedin, FaGithub, FaExternalLinkAlt } from 'react-icons/fa';
 
 export default function Footer() {
   return (
@@ -27,7 +27,7 @@ export default function Footer() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          <FaUpwork size={24} />
+          <FaExternalLinkAlt size={24} />
         </a>
       </div>
       <p className="text-gray-500 text-sm mt-4">© 2024 Your Name</p>
