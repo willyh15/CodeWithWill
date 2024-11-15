@@ -1,29 +1,30 @@
-import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
+import CircularProgressbar, { buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 
 const skills = [
-  { name: 'JavaScript', level: 90 },
-  { name: 'React', level: 85 },
-  { name: 'Next.js', level: 80 },
+  { name: 'JavaScript', value: 85 },
+  { name: 'React', value: 90 },
+  { name: 'Node.js', value: 75 },
+  { name: 'TypeScript', value: 80 },
 ];
 
-export function Skills() {
+export default function Skills() {
   return (
-    <div id="skills" className="skills-section py-16 bg-gray-900 text-center">
-      <h2 className="text-3xl font-bold text-neon mb-8">My Skills</h2>
-      <div className="flex justify-center space-x-6">
+    <div className="skills-section py-16 bg-gray-900">
+      <h2 className="text-3xl font-bold text-neon text-center mb-8">Skills</h2>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
         {skills.map((skill, idx) => (
-          <div key={idx} className="w-24 h-24">
+          <div key={idx} className="text-center">
             <CircularProgressbar
-              value={skill.level}
-              text={`${skill.level}%`}
+              value={skill.value}
+              text={`${skill.value}%`}
               styles={buildStyles({
-                textColor: '#FFD700',
-                pathColor: '#FFD700',
-                trailColor: '#333333',
+                textColor: '#FFD700' as string,
+                pathColor: '#FFD700' as string,
+                trailColor: '#333' as string,
               })}
             />
-            <p className="text-gray-300 mt-2">{skill.name}</p>
+            <p className="text-gray-200 font-semibold mt-4">{skill.name}</p>
           </div>
         ))}
       </div>
