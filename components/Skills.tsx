@@ -19,10 +19,10 @@ export default function Skills() {
               value={skill.value}
               text={`${skill.value}%`}
               styles={buildStyles({
-                textColor: '#FFD700' as string,
-                pathColor: '#FFD700' as string,
-                trailColor: '#333' as string,
-              })}
+                textColor: '#FFD700',
+                pathColor: '#FFD700',
+                trailColor: '#333',
+              } as any)} // Type override
             />
             <p className="text-gray-200 font-semibold mt-4">{skill.name}</p>
           </div>
