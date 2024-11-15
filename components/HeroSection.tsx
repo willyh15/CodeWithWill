@@ -3,7 +3,9 @@ import { motion } from "framer-motion";
 export function HeroSection() {
   return (
     <section className="hero-section bg-gray-900 text-center py-16">
-      <h1 className="text-5xl font-bold text-neon mb-4">Welcome to My Portfolio</h1>
+      <h1 className="text-5xl font-bold text-neon mb-4">
+        Welcome to My Portfolio
+      </h1>
       <p className="text-xl text-gray-400 mb-8">
         Showcasing my skills and projects. Let's work together!
       </p>
