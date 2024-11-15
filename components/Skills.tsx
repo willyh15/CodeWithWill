@@ -19,11 +19,13 @@ export default function Skills() {
             <CircularProgressbar
               value={skill.value}
               text={`${skill.value}%`}
-              styles={buildStyles({
-                textColor: '#FFD700',
-                pathColor: '#FFD700',
-                trailColor: '#333',
-              })}
+              styles={
+                buildStyles({
+                  textColor: '#FFD700',
+                  pathColor: '#FFD700',
+                  trailColor: '#333',
+                }) as any // Explicitly cast to `any` to bypass type checking
+              }
             />
             <p className="text-gray-200 font-semibold mt-4">{skill.name}</p>
           </div>
