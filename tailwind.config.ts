@@ -9,6 +9,8 @@ const config: Config = {
         accent: "#ffdd57", // Accent color, similar to the yellow in the images
         neonBlue: "#00f0ff",
         neonPink: "#ff00cc",
+        neon: '#ff00ff',
+        'neon-light': '#ff99ff',
       },
       backgroundImage: {
         glass: "linear-gradient(to right bottom, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.05))",
