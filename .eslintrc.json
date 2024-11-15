@@ -1,22 +1,21 @@
 module.exports = {
   root: true,
-  parser: '@typescript-eslint/parser', // Use the TypeScript parser
+  parser: '@typescript-eslint/parser',
   parserOptions: {
-    ecmaVersion: 2020, // Modern ECMAScript features
-    sourceType: 'module', // Enable ECMAScript modules
+    ecmaVersion: 2020,
+    sourceType: 'module',
     ecmaFeatures: {
-      jsx: true, // Enable parsing of JSX
-    },
+      jsx: true
+    }
   },
-  plugins: ['@typescript-eslint'], // Use the TypeScript plugin
+  plugins: ['@typescript-eslint'],
   extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
-    'next/core-web-vitals', // Recommended for Next.js
+    'next/core-web-vitals'
   ],
   rules: {
     '@typescript-eslint/no-unused-vars': ['error'],
-    'react/no-unescaped-entities': ['error', { forbid: ['>', '}'] }],
-    // Add or customize other rules as needed
-  },
+    'react/no-unescaped-entities': ['error', { forbid: ['>', '}'] }]
+  }
 };
