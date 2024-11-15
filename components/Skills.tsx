@@ -1,4 +1,5 @@
-import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
+import CircularProgressbar from 'react-circular-progressbar';
+import { buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 
 const skills = [
