@@ -1,11 +1,9 @@
-import { NextConfig } from 'next';
-
-const nextConfig: NextConfig = {
-  output: 'export',  // Ensures Next.js exports static HTML files
+const nextConfig = {
+  output: 'export',
   images: {
-    unoptimized: true,  // Disable Next.js image optimization for static export
+    unoptimized: true,
   },
-  trailingSlash: true, // Ensures each page generates its own folder with index.html
+  trailingSlash: true,
 };
 
 export default nextConfig;
