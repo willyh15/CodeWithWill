@@ -18,7 +18,7 @@ export function HeroSection() {
       >
         {/* Logo */}
         <img
-          src="/public/icons/logo.svg" // Replace this with the actual path to your logo
+          src="/logo.png" // Path to your logo in the public directory
           alt="Logo"
           className="w-32 md:w-40 mx-auto mb-6"
         />
@@ -30,7 +30,7 @@ export function HeroSection() {
         <motion.button
           whileHover={{
             scale: 1.05,
-            boxShadow: "0px 0px 15px rgba(255, 215, 0, 0.8)",
+            boxShadow: "0px 0px 15px rgba(128, 90, 213, 0.8)", // Purple glow
           }}
           whileTap={{ scale: 0.95 }}
           className="cta-button bg-purple-500 text-gray-900 font-bold py-3 px-8 rounded-full shadow-md hover:bg-purple-400 transition duration-300 flex items-center justify-center space-x-2"
