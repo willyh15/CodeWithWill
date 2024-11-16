@@ -125,4 +125,21 @@ div:hover {
   transform: scale(1.02);
 }
 
+/* Button animations */
+.cta-button {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease-in-out;
+}
+
+.cta-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.cta-button span {
+  transition: all 0.3s ease-in-out;
+}
+
+
   
