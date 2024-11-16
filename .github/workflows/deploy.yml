@@ -26,18 +26,22 @@ jobs:
           npm ci
           npm install @tailwindcss/forms @tailwindcss/typography react-circular-progressbar
 
-      # Step 4: Build the CSS with Tailwind
+      # Step 4: Generate CSS with Tailwind
       - name: Generate CSS with Tailwind
         run: |
+          mkdir -p ./styles
+          echo '@tailwind base;\n@tailwind components;\n@tailwind utilities;' > ./styles/input.css
           npx tailwindcss -i ./styles/input.css -o ./styles/output.css --minify
 
-      # Step 5: Optimize assets (images, SVGs, etc.)
-      - name: Optimize images and assets
+      # Step 5: Copy Fonts and Assets
+      - name: Copy Fonts and Assets
         run: |
+          mkdir -p ./public/fonts
+          cp -r ./assets/fonts/* ./public/fonts/ || echo "No fonts to copy"
           mkdir -p ./public/backgrounds
-          cp -r ./assets/backgrounds/* ./public/backgrounds/
+          cp -r ./assets/backgrounds/* ./public/backgrounds/ || echo "No backgrounds to copy"
           mkdir -p ./public/icons
-          cp -r ./assets/icons/* ./public/icons/
+          cp -r ./assets/icons/* ./public/icons/ || echo "No icons to copy"
 
       # Step 6: Build the project
       - name: Build the project
@@ -50,9 +54,3 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./out
           cname: "codewithwill.tech" # Replace with your custom domain if needed
-
-      # Step 8: Upload fonts to the public directory
-      - name: Upload fonts
-        run: |
-          mkdir -p ./public/fonts
-          cp -r ./assets/fonts/* ./public/fonts/
