@@ -13,6 +13,7 @@ const config: Config = {
         'gray-900': '#121212', // Dark gray for the background
         'gray-800': '#1F1F1F', // Slightly lighter dark gray
         'gray-700': '#2D2D2D', // Medium-dark gray
+        'gray-400': '#B3B3B3', // Light gray for text
       },
       fontFamily: {
         sans: ['Inter', 'sans-serif'], // Modern sans-serif font
@@ -32,6 +33,13 @@ const config: Config = {
       },
       backdropBlur: {
         lg: '10px', // Glassmorphism effect
+      },
+      screens: {
+        sm: '640px', // Small devices (mobile)
+        md: '768px', // Medium devices (tablet)
+        lg: '1024px', // Large devices (desktop)
+        xl: '1280px', // Extra large devices
+        '2xl': '1536px', // 4K displays
       },
     },
   },
