@@ -17,9 +17,17 @@ html {
   color: var(--tw-color-neon);
 }
 
-/* Responsive Typography */
+/* Typography */
 h1 {
-  @apply text-3xl sm:text-4xl md:text-5xl lg:text-6xl;
+  @apply text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold;
+}
+
+p {
+  @apply text-base sm:text-lg md:text-xl text-gray-300;
+}
+
+.hero-glow {
+  @apply absolute top-1/2 left-1/2 w-[700px] h-[700px] bg-[radial-gradient(circle,rgba(110,68,255,0.3),transparent)] transform -translate-x-1/2 -translate-y-1/2 blur-[100px] z-0 opacity-70;
 }
 
 p {
@@ -31,9 +39,6 @@ p {
   @apply relative flex flex-col justify-center items-center min-h-screen;
 }
 
-.hero-glow {
-  @apply absolute top-1/2 left-1/2 w-[700px] h-[700px] bg-[radial-gradient(circle,rgba(255,215,0,0.3),transparent)] transform -translate-x-1/2 -translate-y-1/2 blur-[100px] z-0 opacity-70;
-}
 
 @media (min-width: 768px) {
   .hero-glow {
