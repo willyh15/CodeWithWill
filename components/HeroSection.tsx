@@ -33,7 +33,7 @@ export function HeroSection() {
             boxShadow: "0px 0px 15px rgba(128, 90, 213, 0.8)", // Purple glow
           }}
           whileTap={{ scale: 0.95 }}
-          className="cta-button bg-purple-500 text-gray-900 font-bold py-3 px-8 rounded-full shadow-md hover:bg-purple-400 transition duration-300 flex items-center justify-center space-x-2"
+          className="cta-button bg-primary text-gray-900 font-bold py-3 px-8 rounded-full shadow-md hover:bg-secondary transition duration-300 flex items-center justify-center space-x-2"
         >
           <span>Hire Me</span>
           <FaArrowRight />
@@ -42,7 +42,7 @@ export function HeroSection() {
 
       {/* Floating decorative elements */}
       <motion.div
-        className="absolute top-16 left-10 w-64 h-64 bg-purple-500 rounded-full blur-xl opacity-10"
+        className="absolute top-16 left-10 w-64 h-64 bg-primary rounded-full blur-xl opacity-10"
         animate={{
           x: [0, 50, 0],
           y: [0, -50, 0],
@@ -54,7 +54,7 @@ export function HeroSection() {
         }}
       />
       <motion.div
-        className="absolute bottom-16 right-16 w-72 h-72 bg-pink-500 rounded-full blur-xl opacity-10"
+        className="absolute bottom-16 right-16 w-72 h-72 bg-highlight rounded-full blur-xl opacity-10"
         animate={{
           x: [0, -50, 0],
           y: [0, 50, 0],
