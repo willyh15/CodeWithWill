@@ -27,7 +27,7 @@ jobs:
           npm install @tailwindcss/forms @tailwindcss/typography react-circular-progressbar axios dotenv
 
       # Step 4: Set Pexels API Key Environment Variable
-      - name: Set environment variables
+      - name: Set Pexels API Key
         run: echo "PEXELS_API_KEY=${{ secrets.PEXELS_API_KEY }}" >> $GITHUB_ENV
 
       # Step 5: Fetch Background Images from Pexels
@@ -42,8 +42,8 @@ jobs:
           echo -e "@tailwind base;\n@tailwind components;\n@tailwind utilities;" > ./styles/input.css
           npx tailwindcss -i ./styles/input.css -o ./styles/output.css --minify
 
-      # Step 7: Copy Fonts and Assets
-      - name: Copy Fonts and Assets
+      # Step 7: Copy Fonts and Icons
+      - name: Copy Fonts and Icons
         run: |
           mkdir -p ./public/fonts
           cp -r ./assets/fonts/* ./public/fonts/ || echo "No fonts to copy"
