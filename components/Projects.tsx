@@ -3,14 +3,34 @@ import { motion } from "framer-motion";
 export function Projects() {
   const projects = [
     {
-      title: "Project A",
-      category: "Web",
-      description: "A responsive web development project showcasing modern UI/UX.",
+      title: "E-Commerce Platform",
+      category: "Django & React",
+      description:
+        "A robust e-commerce platform with real-time inventory tracking and secure payment integration.",
     },
     {
-      title: "Project B",
-      category: "Mobile",
-      description: "A sleek mobile app with intuitive design and smooth performance.",
+      title: "Portfolio Website",
+      category: "Next.js & Tailwind",
+      description:
+        "A modern portfolio website with glassmorphism design, responsive layout, and advanced animations.",
+    },
+    {
+      title: "Desktop Path Manager",
+      category: "C++/Qt",
+      description:
+        "A desktop application to manage system environment variables and aliases effortlessly.",
+    },
+    {
+      title: "Backend API Service",
+      category: "Go",
+      description:
+        "A high-performance backend API service for processing large-scale data with low latency.",
+    },
+    {
+      title: "Inventory Management System",
+      category: "C#",
+      description:
+        "A full-featured inventory management system with analytics and reporting tools for enterprises.",
     },
   ];
 
@@ -36,7 +56,7 @@ export function Projects() {
         My Projects
       </motion.h2>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 relative z-10">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 relative z-10">
         {projects.map((project, idx) => (
           <motion.div
             key={idx}
