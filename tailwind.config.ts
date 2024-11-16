@@ -13,23 +13,19 @@ const config: Config = {
         neon: '#FFD700',
         'neon-light': '#ff99ff',
       },
-      backgroundImage: {
-        glass: "linear-gradient(to right bottom, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.05))",
-      },
       backdropBlur: {
         sm: "4px",
         md: "8px",
         lg: "12px",
       },
-      dropShadow: {
-        md: "0 4px 6px rgba(0, 0, 0, 0.1)",
-      },
       boxShadow: {
-        neon: "0 4px 15px rgba(0, 240, 255, 0.5), 0 4px 15px rgba(255, 0, 204, 0.5)",
-        subtle: "0 4px 15px rgba(0, 0, 0, 0.2)",
+        lg: "0 10px 15px rgba(0, 0, 0, 0.3)",
       },
       borderRadius: {
         xl: "1rem",
+      },
+      gradientColorStops: {
+        "pink-to-purple": ["rgba(255, 105, 180, 0.3)", "rgba(138, 43, 226, 0.3)"],
       },
     },
   },
