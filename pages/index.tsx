@@ -9,7 +9,15 @@ import ContactForm from "@/components/ContactForm";
 import Footer from "@/components/Footer";
 
 export default function HomePage() {
-  console.log(NavBar, HeroSection, AboutMe, Skills, TechStack, Projects, Testimonials, ContactForm, Footer);
+  console.log(NavBar);
+  console.log(HeroSection);
+  console.log(AboutMe);
+  console.log(Skills);
+  console.log(TechStack);
+  console.log(Projects);
+  console.log(Testimonials);
+  console.log(ContactForm);
+  console.log(Footer);
 
   return (
     <main className="space-y-16">
