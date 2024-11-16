@@ -3,13 +3,17 @@ import { FaLinkedin, FaGithub, FaExternalLinkAlt } from "react-icons/fa";
 export default function Footer() {
   return (
     <footer className="footer bg-gradient-to-br from-gray-800 to-gray-900 backdrop-blur-lg py-10 px-4 border-t border-gray-700 text-center relative">
+      {/* Glow Effect */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="footer-glow"></div>
       </div>
+
       <div className="relative">
         <p className="text-gray-400 text-lg mb-6 font-semibold tracking-wide">
           Let's Connect
         </p>
+
+        {/* Social Media Links */}
         <div className="flex justify-center space-x-6 mb-6">
           <a
             href="https://www.linkedin.com/in/yourprofile"
@@ -39,6 +43,8 @@ export default function Footer() {
             <FaExternalLinkAlt size={30} />
           </a>
         </div>
+
+        {/* Copyright Information */}
         <p className="text-gray-500 text-sm">
           © {new Date().getFullYear()} Your Name. All rights reserved.
         </p>
