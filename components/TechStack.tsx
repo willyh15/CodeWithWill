@@ -2,7 +2,20 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 
 export default function TechStack() {
-  const techs = ["React", "Next.js", "Node.js", "TailwindCSS", "TypeScript"];
+  const techs = [
+    "React",
+    "Next.js",
+    "Node.js",
+    "TailwindCSS",
+    "TypeScript",
+    "Django",
+    "C++",
+    "Go",
+    "Docker",
+    "Kubernetes",
+    "AWS",
+    "GraphQL",
+  ];
 
   return (
     <motion.section
@@ -21,12 +34,12 @@ export default function TechStack() {
         Tech Stack
       </h2>
 
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 relative z-10">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-8 relative z-10">
         {techs.map((tech, idx) => (
           <motion.div
             key={idx}
             className="tech-card bg-gray-800 bg-opacity-60 backdrop-blur-lg rounded-lg p-6 shadow-lg flex flex-col items-center group"
-            whileHover={{ scale: 1.05 }}
+            whileHover={{ scale: 1.1 }}
             transition={{ duration: 0.3 }}
           >
             <Image
@@ -34,7 +47,7 @@ export default function TechStack() {
               alt={`${tech} logo`}
               width={64}
               height={64}
-              className="mb-4"
+              className="mb-4 group-hover:scale-110 transition-transform"
             />
             <p className="text-gray-300 font-semibold text-lg group-hover:text-neon transition">
               {tech}
