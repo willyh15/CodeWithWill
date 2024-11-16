@@ -24,7 +24,7 @@ jobs:
       - name: Install dependencies
         run: |
           npm ci
-          npm install @tailwindcss/forms @tailwindcss/typography react-circular-progressbar axios dotenv
+          npm install @tailwindcss/forms @tailwindcss/typography react-circular-progressbar axios dotenv fs path
 
       # Step 4: Set Pexels API Key Environment Variable
       - name: Set Pexels API Key
