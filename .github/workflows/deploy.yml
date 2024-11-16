@@ -26,14 +26,33 @@ jobs:
           npm ci
           npm install @tailwindcss/forms @tailwindcss/typography react-circular-progressbar
 
-      # Step 4: Build the project
+      # Step 4: Build the CSS with Tailwind
+      - name: Generate CSS with Tailwind
+        run: |
+          npx tailwindcss -i ./styles/input.css -o ./styles/output.css --minify
+
+      # Step 5: Optimize assets (images, SVGs, etc.)
+      - name: Optimize images and assets
+        run: |
+          mkdir -p ./public/backgrounds
+          cp -r ./assets/backgrounds/* ./public/backgrounds/
+          mkdir -p ./public/icons
+          cp -r ./assets/icons/* ./public/icons/
+
+      # Step 6: Build the project
       - name: Build the project
         run: npm run build
 
-      # Step 5: Deploy to GitHub Pages
+      # Step 7: Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./out
           cname: "codewithwill.tech" # Replace with your custom domain if needed
+
+      # Step 8: Upload fonts to the public directory
+      - name: Upload fonts
+        run: |
+          mkdir -p ./public/fonts
+          cp -r ./assets/fonts/* ./public/fonts/
