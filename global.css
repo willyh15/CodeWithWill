@@ -113,4 +113,16 @@ a:hover {
   transform: scale(1.05);
 }
 
+/* iframe styles */
+iframe {
+  border: none;
+}
+
+/* Additional hover/transition effects if needed */
+div:hover {
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  box-shadow: 0 15px 25px rgba(0, 0, 0, 0.4);
+  transform: scale(1.02);
+}
+
   
