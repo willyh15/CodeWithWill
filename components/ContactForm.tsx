@@ -1,61 +1,87 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 export default function ContactForm() {
-  const [form, setForm] = useState({ name: '', email: '', message: '' });
+  const [form, setForm] = useState({ name: "", email: "", message: "" });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
     setForm({ ...form, [name]: value });
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Handle form submission logic here
-    console.log('Form submitted:', form);
+    // Simulate form submission or integrate with a backend service
+    console.log("Form submitted:", form);
+    alert("Thank you for your message!");
   };
 
   return (
-    <form onSubmit={handleSubmit} className="bg-gray-800 p-6 rounded-lg shadow-lg max-w-lg mx-auto">
-      <h2 className="text-3xl font-bold text-neon mb-4">Contact Me</h2>
-      <div className="mb-4">
-        <label htmlFor="name" className="block text-gray-400">Name</label>
+    <form
+      onSubmit={handleSubmit}
+      className="contact-form bg-gradient-to-br from-gray-800 to-gray-900 bg-opacity-50 p-8 rounded-2xl shadow-xl max-w-2xl mx-auto backdrop-blur-lg border border-gray-700 hover:shadow-2xl transition-shadow duration-300"
+    >
+      <h2 className="text-4xl font-extrabold text-neon mb-6 text-center">
+        Contact Me
+      </h2>
+      <div className="mb-6">
+        <label
+          htmlFor="name"
+          className="block text-lg font-semibold text-gray-300 mb-2"
+        >
+          Name
+        </label>
         <input
           type="text"
           id="name"
           name="name"
           value={form.name}
           onChange={handleChange}
-          className="w-full px-4 py-2 rounded-lg bg-gray-700 text-gray-200"
+          className="w-full px-6 py-3 rounded-lg bg-gray-700 text-gray-200 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-neon-light focus:ring-offset-2 focus:ring-offset-gray-800"
+          placeholder="Enter your name"
           required
         />
       </div>
-      <div className="mb-4">
-        <label htmlFor="email" className="block text-gray-400">Email</label>
+      <div className="mb-6">
+        <label
+          htmlFor="email"
+          className="block text-lg font-semibold text-gray-300 mb-2"
+        >
+          Email
+        </label>
         <input
           type="email"
           id="email"
           name="email"
           value={form.email}
           onChange={handleChange}
-          className="w-full px-4 py-2 rounded-lg bg-gray-700 text-gray-200"
+          className="w-full px-6 py-3 rounded-lg bg-gray-700 text-gray-200 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-neon-light focus:ring-offset-2 focus:ring-offset-gray-800"
+          placeholder="Enter your email"
           required
         />
       </div>
-      <div className="mb-4">
-        <label htmlFor="message" className="block text-gray-400">Message</label>
+      <div className="mb-6">
+        <label
+          htmlFor="message"
+          className="block text-lg font-semibold text-gray-300 mb-2"
+        >
+          Message
+        </label>
         <textarea
           id="message"
           name="message"
           value={form.message}
           onChange={handleChange}
-          className="w-full px-4 py-2 rounded-lg bg-gray-700 text-gray-200"
+          className="w-full px-6 py-3 rounded-lg bg-gray-700 text-gray-200 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-neon-light focus:ring-offset-2 focus:ring-offset-gray-800"
+          placeholder="Write your message..."
           rows={4}
           required
         ></textarea>
       </div>
       <button
         type="submit"
-        className="w-full py-2 bg-neon text-gray-900 font-bold rounded-lg hover:bg-neon-light transition duration-300"
+        className="w-full py-3 bg-gradient-to-r from-neon-light to-yellow-500 text-gray-900 font-bold rounded-lg shadow-md hover:scale-105 hover:shadow-lg transition-transform duration-300"
       >
         Send Message
       </button>
