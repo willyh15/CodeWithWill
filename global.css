@@ -227,4 +227,18 @@ nav a {
   .icon-glow {
     box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
   }
+  
+  /* Icon container styling */
+.icon-container {
+  background: rgba(255, 165, 0, 0.2); /* Light orange background for icons */
+  box-shadow: 0 4px 12px rgba(255, 165, 0, 0.3); /* Glow effect */
+  border-radius: 50%;
+  padding: 1rem;
+}
+
+/* Button hover effect */
+button:hover,
+a:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
 }
