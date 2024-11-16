@@ -107,4 +107,10 @@ body {
   animation: slideIn 1s ease-out forwards;
 }
 
+/* Hover Transform */
+a:hover {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transform: scale(1.05);
+}
+
   
