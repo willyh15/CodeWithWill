@@ -7,6 +7,13 @@ const skills = [
   { name: "React", value: 90 },
   { name: "Node.js", value: 75 },
   { name: "TypeScript", value: 80 },
+  { name: "Django", value: 88 },
+  { name: "C++", value: 70 },
+  { name: "Go", value: 65 },
+  { name: "SQL", value: 85 },
+  { name: "Docker", value: 80 },
+  { name: "Kubernetes", value: 75 },
+  { name: "Cloud Computing", value: 90 },
 ];
 
 export default function Skills() {
@@ -27,7 +34,7 @@ export default function Skills() {
         My Skills
       </h2>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-8 relative z-10">
+      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8 relative z-10">
         {skills.map((skill, idx) => (
           <motion.div
             key={idx}
