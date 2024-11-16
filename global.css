@@ -242,3 +242,12 @@ a:hover {
   transform: scale(1.05);
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
 }
+/* Button glow effect */
+.cta-button span {
+  transition: all 0.3s ease-in-out;
+}
+
+.cta-button:hover span {
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+}
+}
