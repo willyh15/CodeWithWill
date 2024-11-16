@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { FaArrowRight } from "react-icons/fa";
 
 export function HeroSection() {
   return (
@@ -28,9 +29,10 @@ export function HeroSection() {
             boxShadow: "0px 0px 15px rgba(255, 215, 0, 0.8)",
           }}
           whileTap={{ scale: 0.95 }}
-          className="cta-button bg-neon text-gray-900 font-bold py-3 px-8 rounded-full shadow-md hover:bg-neon-light transition duration-300"
+          className="cta-button bg-neon text-gray-900 font-bold py-3 px-8 rounded-full shadow-md hover:bg-neon-light transition duration-300 flex items-center justify-center space-x-2"
         >
-          Hire Me
+          <span>Hire Me</span>
+          <FaArrowRight />
         </motion.button>
       </motion.div>
 
