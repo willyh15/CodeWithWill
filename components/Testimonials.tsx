@@ -16,7 +16,7 @@ export function Testimonials() {
   return (
     <div id="testimonials" className="testimonials-section py-16 bg-gray-900 text-center">
       <h2 className="text-3xl font-bold text-neon mb-8">Testimonials</h2>
-      <AnimatePresence exitBeforeEnter>
+      <AnimatePresence mode="wait">
         <motion.div
           key={current}
           className="testimonial"

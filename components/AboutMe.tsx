@@ -20,12 +20,12 @@ function useScrollAnimation() {
 }
 
 export function AboutMe() {
-  const aboutRef = useScrollAnimation();
-
   return (
-    <div ref={aboutRef} id="about-me" className="py-16 bg-gray-900 text-center">
+    <section id="about-me" className="py-16 bg-gray-900 text-center">
       <h2 className="text-3xl font-bold text-neon mb-8">About Me</h2>
-      <p className="text-gray-300 mb-8 max-w-3xl mx-auto">I’m a developer...</p>
-    </div>
+      <p className="text-gray-300 max-w-2xl mx-auto">
+        I’m a developer passionate about crafting seamless digital experiences.
+      </p>
+    </section>
   );
 }

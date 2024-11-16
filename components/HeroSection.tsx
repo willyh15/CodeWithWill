@@ -2,20 +2,16 @@ import { motion } from "framer-motion";
 
 export function HeroSection() {
   return (
-    <section className="hero-section bg-gray-900 text-center py-16">
-      <h1 className="text-5xl font-bold text-neon mb-4">
+    <section className="hero-section bg-gray-900 text-center py-32">
+      <h1 className="text-5xl font-bold text-neon mb-6">
         Welcome to My Portfolio
       </h1>
-      <p className="text-xl text-gray-400 mb-8">
+      <p className="text-lg text-gray-400 mb-8">
         Showcasing my skills and projects. Let&apos;s work together!
       </p>
-      <motion.button
-        whileHover={{ scale: 1.05, boxShadow: "0px 0px 8px #FFD700" }}
-        whileTap={{ scale: 0.95 }}
-        className="cta-button bg-neon text-gray-900 font-bold py-2 px-6 rounded-full"
-      >
+      <button className="cta-button bg-neon text-gray-900 font-bold py-3 px-6 rounded-full hover:bg-neon-light transition duration-300">
         Hire Me
-      </motion.button>
+      </button>
     </section>
   );
 }
