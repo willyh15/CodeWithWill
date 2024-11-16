@@ -1,6 +1,6 @@
-import { fetchBackground } from "../utils/fetchBackground";
-import fs from "fs";
-import path from "path";
+const { fetchBackground } = require("../utils/fetchBackground");
+const fs = require("fs");
+const path = require("path");
 
 async function fetchAndSaveBackground() {
   const imageUrl = await fetchBackground("abstract");
