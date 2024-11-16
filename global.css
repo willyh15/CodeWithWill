@@ -2,95 +2,46 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Global Styles */
 body {
-    background-color: #0a0a0a;
-    color: #ffffff;
-    font-family: 'Arial', sans-serif;
+  background-color: #0a0a0a;
+  color: #ffffff;
+  font-family: 'Arial', sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Typography */
+.text-neon {
+  color: var(--tw-color-neon);
+}
+
+/* Responsive Typography */
+h1 {
+  @apply text-3xl sm:text-4xl md:text-5xl lg:text-6xl;
+}
+
+p {
+  @apply text-base sm:text-lg md:text-xl;
+}
+
+/* Hero Section */
+.hero-section {
+  @apply relative flex flex-col justify-center items-center min-h-screen;
+}
+
+.hero-glow {
+  @apply absolute top-1/2 left-1/2 w-[700px] h-[700px] bg-[radial-gradient(circle,rgba(255,215,0,0.3),transparent)] transform -translate-x-1/2 -translate-y-1/2 blur-[100px] z-0 opacity-70;
+}
+
+@media (min-width: 768px) {
+  .hero-glow {
+    @apply w-[900px] h-[900px];
   }
-  .text-neon {
-    color: var(--tw-color-neon);
-  }
-  html {
-    scroll-behavior: smooth;
-  }
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(-20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  
-  @keyframes bounceIn {
-    from {
-      opacity: 0;
-      transform: scale(0.8);
-    }
-    to {
-      opacity: 1;
-      transform: scale(1);
-    }
-  }
-  
-  .animate-fadeIn {
-    animation: fadeIn 1s ease-in-out;
-  }
-  
-  .animate-bounceIn {
-    animation: bounceIn 0.8s ease-out;
-  }
-  @keyframes slideIn {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  
-  .animate-slideIn {
-    animation: slideIn 1s ease-in-out;
-  }
-  @keyframes growAndShadow {
-    from {
-      transform: scale(1);
-      box-shadow: none;
-    }
-    to {
-      transform: scale(1.05);
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-    }
-  }
-  
-  .hover\\:animate-growAndShadow:hover {
-    animation: growAndShadow 0.3s ease-in-out forwards;
-  }
-  @keyframes ping {
-    0% {
-      transform: scale(1);
-      opacity: 1;
-    }
-    75% {
-      transform: scale(1.5);
-      opacity: 0;
-    }
-    100% {
-      transform: scale(2);
-      opacity: 0;
-    }
-  }
-  
-  .animate-ping {
-    animation: ping 1.5s infinite;
-  }
-  .cta-button {
-    @apply bg-yellow-500 text-gray-900 font-bold py-2 px-6 rounded-full transition-transform;
-  }
+}
+
 /* Animations */
 @keyframes slideIn {
   from {
@@ -107,98 +58,32 @@ body {
   animation: slideIn 1s ease-out forwards;
 }
 
-/* Hover Transform */
-a:hover {
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  transform: scale(1.05);
+@keyframes growAndShadow {
+  from {
+    transform: scale(1);
+    box-shadow: none;
+  }
+  to {
+    transform: scale(1.05);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+  }
 }
 
-/* iframe styles */
-iframe {
-  border: none;
+.hover\\:animate-growAndShadow:hover {
+  animation: growAndShadow 0.3s ease-in-out forwards;
 }
 
-/* Additional hover/transition effects if needed */
-div:hover {
-  transition: box-shadow 0.3s ease, transform 0.3s ease;
-  box-shadow: 0 15px 25px rgba(0, 0, 0, 0.4);
-  transform: scale(1.02);
-}
-
-/* Button animations */
+/* Button Styles */
 .cta-button {
-  position: relative;
-  overflow: hidden;
-  transition: all 0.3s ease-in-out;
+  @apply relative overflow-hidden bg-yellow-500 text-gray-900 font-bold py-2 px-6 rounded-full transition-transform;
 }
 
 .cta-button:hover {
-  transform: scale(1.05);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  @apply scale-105 shadow-[0px_20px_40px_rgba(0,0,0,0.3)];
 }
 
-.cta-button span {
-  transition: all 0.3s ease-in-out;
-}
-/* Glow effect for Testimonials section */
-.testimonials-section {
-  position: relative;
-}
-
-.testimonials-glow {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 1000px;
-  height: 1000px;
-  background: radial-gradient(circle, rgba(255, 215, 0, 0.3), transparent);
-  transform: translate(-50%, -50%);
-  filter: blur(120px);
-  z-index: 0;
-  opacity: 0.7;
-}
-
-/* Testimonial button hover effect */
-.testimonial-button:hover {
-  box-shadow: 0px 4px 20px rgba(255, 215, 0, 0.5);
-}
-
-/* Testimonial card styling */
-.testimonial-item {
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-/* Glow effect for Tech Stack section */
-.tech-stack-section {
-  position: relative;
-}
-
-.tech-stack-glow {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 900px;
-  height: 900px;
-  background: radial-gradient(circle, rgba(255, 215, 0, 0.3), transparent);
-  transform: translate(-50%, -50%);
-  filter: blur(120px);
-  z-index: 0;
-  opacity: 0.7;
-}
-
-/* Card hover effect */
-.tech-card:hover p {
-  text-shadow: 0px 0px 8px rgba(255, 215, 0, 0.8);
-}
-
-.tech-card:hover {
-  box-shadow: 0 4px 20px rgba(255, 215, 0, 0.5);
-}
-/* Glow effect for Skills section */
-.skills-section {
-  position: relative;
-}
-
-.skills-glow {
+/* Glow Effects */
+.glow {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -211,111 +96,121 @@ div:hover {
   z-index: 0;
 }
 
-/* Skill name hover effect */
-.skill-card:hover p {
-  text-shadow: 0px 0px 8px rgba(255, 215, 0, 0.8);
-}
-/* Projects Section Glow Effect */
-.projects-section {
-  position: relative;
+@media (min-width: 768px) {
+  .glow {
+    @apply w-[1200px] h-[1200px];
+  }
 }
 
-.projects-glow {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 900px;
-  height: 900px;
-  background: radial-gradient(circle, rgba(255, 215, 0, 0.3), transparent);
-  transform: translate(-50%, -50%);
-  filter: blur(120px);
-  z-index: 0;
-  opacity: 0.7;
+/* Section Styles */
+section {
+  @apply py-12 sm:py-16 lg:py-24;
 }
 
-/* Project Card Hover Effect */
-.project-card:hover h3 {
-  text-shadow: 0px 0px 8px rgba(255, 215, 0, 0.8);
-}
-/* Glow effect for nav links */
-nav a:hover {
-  text-shadow: 0px 0px 8px rgba(255, 215, 0, 0.8);
-}
-/* Hero Section Glow Effect */
-.hero-section {
-  position: relative;
-}
-
-.hero-glow {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 700px;
-  height: 700px;
-  background: radial-gradient(circle, rgba(255, 215, 0, 0.3), transparent);
-  transform: translate(-50%, -50%);
-  filter: blur(100px);
-  z-index: 0;
-  opacity: 0.7;
-}
-/* Footer Glow Effect */
-.footer {
-  position: relative;
-  overflow: hidden;
-}
-
-.footer-glow {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 400px;
-  height: 400px;
-  background: radial-gradient(circle, rgba(255, 215, 0, 0.4), transparent);
-  transform: translate(-50%, -50%);
-  filter: blur(80px);
-  z-index: 0;
-  opacity: 0.8;
-}
-
-.footer a:hover {
-  color: #ffd700; /* Neon effect */
-  text-shadow: 0px 0px 10px rgba(255, 215, 0, 0.7);
-}
-/* Contact Form Enhancements */
+/* Contact Form */
 .contact-form {
-  position: relative;
-  overflow: hidden;
-  transition: all 0.3s ease-in-out;
+  @apply relative overflow-hidden bg-gray-800 p-6 rounded-lg shadow-lg transition-all max-w-lg mx-auto;
 }
 
 .contact-form:hover {
-  box-shadow: 0px 20px 50px rgba(0, 0, 0, 0.5);
+  @apply shadow-[0px_20px_50px_rgba(0,0,0,0.5)];
 }
 
 input,
 textarea {
-  transition: all 0.2s ease-in-out;
+  @apply w-full px-4 py-2 rounded-lg bg-gray-700 text-gray-200 transition-all;
 }
 
 input:focus,
 textarea:focus {
   border-color: #ffd700;
 }
-/* Button animations */
-.cta-button {
-  position: relative;
-  overflow: hidden;
-  transition: all 0.3s ease-in-out;
+
+/* Navigation */
+nav {
+  @apply fixed top-0 left-0 w-full bg-gray-900 text-gray-300 py-4 shadow-md z-50;
 }
 
-.cta-button:hover {
-  transform: scale(1.05);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+nav ul {
+  @apply flex justify-center space-x-6;
 }
 
-.cta-button span {
-  transition: all 0.3s ease-in-out;
+nav a {
+  @apply hover:text-neon transition-colors duration-200;
 }
 
+/* Testimonials Section */
+.testimonials-section {
+  @apply relative text-center py-16 bg-gray-900;
+}
 
-  
+.testimonials-glow {
+  @apply absolute top-1/2 left-1/2 w-[1000px] h-[1000px] bg-[radial-gradient(circle,rgba(255,215,0,0.3),transparent)] transform -translate-x-1/2 -translate-y-1/2 blur-[120px] z-0 opacity-70;
+}
+
+/* Testimonial Buttons */
+.testimonial-button {
+  @apply px-4 py-2 bg-gray-700 rounded-full hover:shadow-[0px_4px_20px_rgba(255,215,0,0.5)] transition-shadow;
+}
+
+/* Projects Section */
+.projects-section {
+  @apply relative text-center py-16 bg-gray-900;
+}
+
+.project-card {
+  @apply bg-gray-800 p-6 rounded-lg shadow-lg transition-transform;
+}
+
+.project-card:hover {
+  @apply scale-105 shadow-[0px_4px_20px_rgba(255,215,0,0.5)];
+}
+
+/* Tech Stack Section */
+.tech-stack-section {
+  @apply relative py-16 bg-gray-900;
+}
+
+.tech-card {
+  @apply bg-gray-800 p-4 rounded-lg text-center transition-all;
+}
+
+.tech-card:hover {
+  @apply shadow-[0px_4px_20px_rgba(255,215,0,0.5)];
+}
+
+.tech-card:hover p {
+  @apply text-shadow-[0px_0px_8px_rgba(255,215,0,0.8)];
+}
+
+/* Footer */
+.footer {
+  @apply relative text-center py-6 bg-gray-900;
+}
+
+.footer-glow {
+  @apply absolute top-1/2 left-1/2 w-[400px] h-[400px] bg-[radial-gradient(circle,rgba(255,215,0,0.4),transparent)] transform -translate-x-1/2 -translate-y-1/2 blur-[80px] z-0 opacity-80;
+}
+
+.footer a:hover {
+  @apply text-yellow-500 text-shadow-[0px_0px_10px_rgba(255,215,0,0.7)];
+}
+
+/* Mobile-Specific Adjustments */
+@media (max-width: 640px) {
+  nav ul {
+    @apply flex-col space-y-4;
+  }
+
+  .cta-button {
+    @apply py-3 px-4;
+  }
+
+  .project-card {
+    @apply text-center;
+  }
+
+  section {
+    @apply py-8;
+  }
+}
