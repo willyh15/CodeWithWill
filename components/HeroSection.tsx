@@ -2,17 +2,31 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { fetchBackground } from "@/utils/fetchBackground";
 import { FaArrowRight } from "react-icons/fa";
+import dynamic from "next/dynamic";
 
-export function HeroSection() {
+const HeroSection = () => {
   const [background, setBackground] = useState<string | null>(null);
+  const [keywords] = useState([
+    "Web Development",
+    "Mobile Apps",
+    "Backend Systems",
+    "Full-Stack Projects",
+  ]);
+  const [currentKeywordIndex, setCurrentKeywordIndex] = useState(0);
 
   useEffect(() => {
     async function loadBackground() {
-      const image = await fetchBackground("technology"); // Use your desired category
+      const image = await fetchBackground("technology");
       setBackground(image);
     }
     loadBackground();
-  }, []);
+
+    const keywordInterval = setInterval(() => {
+      setCurrentKeywordIndex((prevIndex) => (prevIndex + 1) % keywords.length);
+    }, 3000);
+
+    return () => clearInterval(keywordInterval);
+  }, [keywords]);
 
   return (
     <section
@@ -23,29 +37,28 @@ export function HeroSection() {
         backgroundPosition: "center",
       }}
     >
-      {/* Glow effect */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="hero-glow"></div>
-      </div>
-
       {/* Content */}
       <motion.div
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
-        className="relative z-10"
+        className="relative z-10 max-w-4xl mx-auto text-white"
       >
-        {/* Logo */}
-        <img
-          src="/logo.png" // Path to your logo in the public directory
-          alt="Logo"
-          className="w-32 md:w-40 mx-auto mb-6"
-        />
+        {/* Dynamic Heading */}
+        <h1 className="text-4xl sm:text-5xl font-bold mb-4">
+          Let&apos;s Build Amazing{" "}
+          <span className="text-purple-400">
+            {keywords[currentKeywordIndex]}
+          </span>
+        </h1>
 
+        {/* Subtitle */}
         <p className="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto mb-8">
-          Showcasing my skills and projects. Let&apos;s work together to create
-          amazing digital experiences.
+          I specialize in delivering high-quality digital solutions. Explore my
+          portfolio and see what we can create together.
         </p>
+
+        {/* Call to Action */}
         <motion.button
           whileHover={{
             scale: 1.05,
@@ -60,4 +73,6 @@ export function HeroSection() {
       </motion.div>
     </section>
   );
-}
+};
+
+export default HeroSection;
