@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { FaUser, FaEnvelope, FaPaperPlane } from "react-icons/fa";
 
 export default function ContactForm() {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
@@ -30,6 +31,7 @@ export default function ContactForm() {
           htmlFor="name"
           className="block text-lg font-semibold text-gray-300 mb-2"
         >
+          <FaUser className="inline-block mr-2 text-neon" />
           Name
         </label>
         <input
@@ -48,6 +50,7 @@ export default function ContactForm() {
           htmlFor="email"
           className="block text-lg font-semibold text-gray-300 mb-2"
         >
+          <FaEnvelope className="inline-block mr-2 text-neon" />
           Email
         </label>
         <input
@@ -81,8 +84,9 @@ export default function ContactForm() {
       </div>
       <button
         type="submit"
-        className="w-full py-3 bg-gradient-to-r from-neon-light to-yellow-500 text-gray-900 font-bold rounded-lg shadow-md hover:scale-105 hover:shadow-lg transition-transform duration-300"
+        className="w-full flex items-center justify-center py-3 bg-gradient-to-r from-neon-light to-yellow-500 text-gray-900 font-bold rounded-lg shadow-md hover:scale-105 hover:shadow-lg transition-transform duration-300"
       >
+        <FaPaperPlane className="mr-2" />
         Send Message
       </button>
     </form>
