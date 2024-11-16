@@ -1,46 +1,41 @@
-import type { Config } from "tailwindcss";
-const plugin = require("tailwindcss/plugin");
+import type { Config } from 'tailwindcss';
 
 const config: Config = {
-  content: ["./pages/**/*.{js,ts,jsx,tsx}", "./components/**/*.{js,ts,jsx,tsx}"],
+  content: [
+    './pages/**/*.{js,ts,jsx,tsx}',
+    './components/**/*.{js,ts,jsx,tsx}',
+  ],
   theme: {
     extend: {
       colors: {
-        primary: "#0a0a0a", // Dark background color
-        accent: "#ffdd57", // Accent color, similar to the yellow in the images
-        neonBlue: "#00f0ff",
-        neonPink: "#ff00cc",
-        neon: '#FFD700',
-        'neon-light': '#ff99ff',
+        neon: '#FFD700', // Bright yellow for neon effects
+        'neon-light': '#FFF5A3', // Lighter neon shade
+        'gray-900': '#121212', // Dark gray for the background
+        'gray-800': '#1F1F1F', // Slightly lighter dark gray
+        'gray-700': '#2D2D2D', // Medium-dark gray
       },
-      backdropBlur: {
-        sm: "4px",
-        md: "8px",
-        lg: "12px",
+      fontFamily: {
+        sans: ['Inter', 'sans-serif'], // Modern sans-serif font
+      },
+      animation: {
+        slideIn: 'slideIn 0.6s ease-out', // For scroll animations
+        ping: 'ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite', // For button effects
+      },
+      keyframes: {
+        slideIn: {
+          '0%': { transform: 'translateY(20px)', opacity: '0' },
+          '100%': { transform: 'translateY(0)', opacity: '1' },
+        },
       },
       boxShadow: {
-        lg: "0 10px 15px rgba(0, 0, 0, 0.3)",
+        neon: '0 0 20px rgba(255, 215, 0, 0.8)', // Neon-like glow
       },
-      borderRadius: {
-        xl: "1rem",
-      },
-      gradientColorStops: {
-        "pink-to-purple": ["rgba(255, 105, 180, 0.3)", "rgba(138, 43, 226, 0.3)"],
+      backdropBlur: {
+        lg: '10px', // Glassmorphism effect
       },
     },
   },
-  plugins: [
-    plugin(function ({ addUtilities }) {
-      const newUtilities = {
-        ".glass": {
-          backgroundColor: "rgba(255, 255, 255, 0.15)",
-          backdropFilter: "blur(12px)",
-          borderRadius: "10px",
-        },
-      };
-      addUtilities(newUtilities, ["responsive", "hover"]);
-    }),
-  ],
+  plugins: [],
 };
 
 export default config;
