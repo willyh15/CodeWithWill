@@ -2,25 +2,48 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 
 const testimonials = [
-  { text: "Will is fantastic to work with. His coding skills are top-notch!", author: "Client A" },
-  { text: "Delivered beyond expectations. Highly recommend!", author: "Client B" },
-  { text: "A truly skilled developer with a great sense of design!", author: "Client C" },
+  {
+    text: "Will brought our vision to life with exceptional coding expertise and innovative ideas. Truly a pleasure to work with.",
+    author: "Jessica M., Creative Director at Pixel Studio",
+  },
+  {
+    text: "Incredibly talented developer! Will's React and Next.js skills were instrumental in launching our app ahead of schedule.",
+    author: "Michael L., CEO at StartupForge",
+  },
+  {
+    text: "The attention to detail and commitment to quality Will provided were beyond our expectations. Our website performs flawlessly.",
+    author: "Emily R., Marketing Manager at BrightPath",
+  },
+  {
+    text: "Will is a problem solver who consistently goes above and beyond to deliver solutions that work. Highly recommend!",
+    author: "Daniel K., CTO at Innovatech",
+  },
+  {
+    text: "Amazing experience! Will's ability to simplify complex problems and deliver creative solutions is unmatched.",
+    author: "Sarah T., Product Manager at CloudHive",
+  },
 ];
 
 export function Testimonials() {
   const [current, setCurrent] = useState(0);
 
   const nextTestimonial = () => setCurrent((current + 1) % testimonials.length);
-  const prevTestimonial = () => setCurrent((current - 1 + testimonials.length) % testimonials.length);
+  const prevTestimonial = () =>
+    setCurrent((current - 1 + testimonials.length) % testimonials.length);
 
   return (
-    <section id="testimonials" className="testimonials-section py-16 bg-gray-900 text-center relative">
+    <section
+      id="testimonials"
+      className="testimonials-section py-16 bg-gray-900 text-center relative overflow-hidden"
+    >
       {/* Glow effect */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="testimonials-glow"></div>
       </div>
 
-      <h2 className="text-4xl font-extrabold text-neon mb-12 relative z-10">What Clients Say</h2>
+      <h2 className="text-4xl font-extrabold text-neon drop-shadow-md mb-12 relative z-10">
+        What Clients Say
+      </h2>
 
       <div className="relative z-10 max-w-3xl mx-auto">
         <AnimatePresence mode="wait">
@@ -32,8 +55,12 @@ export function Testimonials() {
             exit={{ opacity: 0, x: -50 }}
             transition={{ duration: 0.6 }}
           >
-            <p className="text-gray-300 italic text-lg mb-6">{testimonials[current].text}</p>
-            <p className="text-neon font-bold text-sm">- {testimonials[current].author}</p>
+            <p className="text-gray-300 italic text-lg mb-6">
+              {testimonials[current].text}
+            </p>
+            <p className="text-neon font-bold text-sm">
+              - {testimonials[current].author}
+            </p>
           </motion.div>
         </AnimatePresence>
       </div>
