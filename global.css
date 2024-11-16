@@ -250,4 +250,23 @@ a:hover {
 .cta-button:hover span {
   text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
 }
+
+/* Contact Form Focus and Transitions */
+.contact-form input:focus,
+.contact-form textarea:focus {
+  border: 2px solid #ffd700;
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+  outline: none;
+}
+
+/* Contact Form Shadow Hover Effect */
+.contact-form:hover {
+  box-shadow: 0px 20px 50px rgba(255, 255, 0, 0.3);
+}
+
+/* Button Hover Effect */
+.contact-form button:hover {
+  box-shadow: 0px 10px 20px rgba(255, 215, 0, 0.6);
+}
+
 }
