@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef } from "react";
 
 function useScrollAnimation() {
   const ref = useRef(null);
@@ -7,7 +7,7 @@ function useScrollAnimation() {
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          entry.target.classList.add('animate-slideIn');
+          entry.target.classList.add("animate-slideIn");
         }
       },
       { threshold: 0.2 }
@@ -20,11 +20,21 @@ function useScrollAnimation() {
 }
 
 export function AboutMe() {
+  const aboutRef = useScrollAnimation();
+
   return (
-    <section id="about-me" className="py-16 bg-gray-900 text-center">
-      <h2 className="text-3xl font-bold text-neon mb-8">About Me</h2>
-      <p className="text-gray-300 max-w-2xl mx-auto">
+    <section
+      ref={aboutRef}
+      id="about-me"
+      className="relative py-20 px-6 bg-gradient-to-r from-blue-500/30 to-purple-500/30 backdrop-blur-lg glass rounded-xl mx-auto max-w-4xl text-center"
+    >
+      <h2 className="text-4xl font-extrabold text-white drop-shadow-md mb-6">
+        About Me
+      </h2>
+      <p className="text-gray-200 text-lg leading-relaxed">
         I’m a developer passionate about crafting seamless digital experiences.
+        I love working on cutting-edge projects that combine creativity and
+        technology to deliver impactful results.
       </p>
     </section>
   );
