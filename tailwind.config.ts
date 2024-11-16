@@ -15,7 +15,7 @@ const config: Config = {
         text: "#EAEAEA", // Light text color
       },
       fontFamily: {
-        sans: ["Poppins", "sans-serif"], // Modern font from Google Fonts
+        sans: ["Roboto Mono", "monospace"],
       },
       boxShadow: {
         glow: "0 0 20px rgba(110, 68, 255, 0.7)", // Purple glow
