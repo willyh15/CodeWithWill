@@ -1,20 +1,19 @@
-import Image from "next/image";
 import { motion } from "framer-motion";
 
 export default function TechStack() {
   const techs = [
-    "React",
-    "Next.js",
-    "Node.js",
-    "TailwindCSS",
-    "TypeScript",
-    "Django",
-    "C++",
-    "Go",
-    "Docker",
-    "Kubernetes",
-    "AWS",
-    "GraphQL",
+    { name: "React", icon: "react.svg" },
+    { name: "Next.js", icon: "nextjs.svg" },
+    { name: "Node.js", icon: "nodejs.svg" },
+    { name: "TailwindCSS", icon: "tailwindcss.svg" },
+    { name: "TypeScript", icon: "typescript.svg" },
+    { name: "Django", icon: "django-original.svg" },
+    { name: "C++", icon: "c.svg" },
+    { name: "Go", icon: "go.svg" },
+    { name: "Docker", icon: "docker-original-wordmark.svg" },
+    { name: "Kubernetes", icon: "kubernetes.svg" },
+    { name: "AWS", icon: "aws.svg" },
+    { name: "Swift", icon: "swift-original-wordmark.svg" },
   ];
 
   return (
@@ -42,15 +41,15 @@ export default function TechStack() {
             whileHover={{ scale: 1.1 }}
             transition={{ duration: 0.3 }}
           >
-            <Image
-              src={`/icons/${tech.toLowerCase()}.png`}
-              alt={`${tech} logo`}
+            <img
+              src={`/icons/${tech.icon}`}
+              alt={`${tech.name} logo`}
               width={64}
               height={64}
               className="mb-4 group-hover:scale-110 transition-transform"
             />
             <p className="text-gray-300 font-semibold text-lg group-hover:text-neon transition">
-              {tech}
+              {tech.name}
             </p>
           </motion.div>
         ))}
