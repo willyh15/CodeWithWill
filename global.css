@@ -140,6 +140,182 @@ div:hover {
 .cta-button span {
   transition: all 0.3s ease-in-out;
 }
+/* Glow effect for Testimonials section */
+.testimonials-section {
+  position: relative;
+}
+
+.testimonials-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 1000px;
+  height: 1000px;
+  background: radial-gradient(circle, rgba(255, 215, 0, 0.3), transparent);
+  transform: translate(-50%, -50%);
+  filter: blur(120px);
+  z-index: 0;
+  opacity: 0.7;
+}
+
+/* Testimonial button hover effect */
+.testimonial-button:hover {
+  box-shadow: 0px 4px 20px rgba(255, 215, 0, 0.5);
+}
+
+/* Testimonial card styling */
+.testimonial-item {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+/* Glow effect for Tech Stack section */
+.tech-stack-section {
+  position: relative;
+}
+
+.tech-stack-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 900px;
+  height: 900px;
+  background: radial-gradient(circle, rgba(255, 215, 0, 0.3), transparent);
+  transform: translate(-50%, -50%);
+  filter: blur(120px);
+  z-index: 0;
+  opacity: 0.7;
+}
+
+/* Card hover effect */
+.tech-card:hover p {
+  text-shadow: 0px 0px 8px rgba(255, 215, 0, 0.8);
+}
+
+.tech-card:hover {
+  box-shadow: 0 4px 20px rgba(255, 215, 0, 0.5);
+}
+/* Glow effect for Skills section */
+.skills-section {
+  position: relative;
+}
+
+.skills-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 900px;
+  height: 900px;
+  background: radial-gradient(circle, rgba(255, 215, 0, 0.3), transparent);
+  transform: translate(-50%, -50%);
+  filter: blur(120px);
+  opacity: 0.7;
+  z-index: 0;
+}
+
+/* Skill name hover effect */
+.skill-card:hover p {
+  text-shadow: 0px 0px 8px rgba(255, 215, 0, 0.8);
+}
+/* Projects Section Glow Effect */
+.projects-section {
+  position: relative;
+}
+
+.projects-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 900px;
+  height: 900px;
+  background: radial-gradient(circle, rgba(255, 215, 0, 0.3), transparent);
+  transform: translate(-50%, -50%);
+  filter: blur(120px);
+  z-index: 0;
+  opacity: 0.7;
+}
+
+/* Project Card Hover Effect */
+.project-card:hover h3 {
+  text-shadow: 0px 0px 8px rgba(255, 215, 0, 0.8);
+}
+/* Glow effect for nav links */
+nav a:hover {
+  text-shadow: 0px 0px 8px rgba(255, 215, 0, 0.8);
+}
+/* Hero Section Glow Effect */
+.hero-section {
+  position: relative;
+}
+
+.hero-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 700px;
+  height: 700px;
+  background: radial-gradient(circle, rgba(255, 215, 0, 0.3), transparent);
+  transform: translate(-50%, -50%);
+  filter: blur(100px);
+  z-index: 0;
+  opacity: 0.7;
+}
+/* Footer Glow Effect */
+.footer {
+  position: relative;
+  overflow: hidden;
+}
+
+.footer-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(255, 215, 0, 0.4), transparent);
+  transform: translate(-50%, -50%);
+  filter: blur(80px);
+  z-index: 0;
+  opacity: 0.8;
+}
+
+.footer a:hover {
+  color: #ffd700; /* Neon effect */
+  text-shadow: 0px 0px 10px rgba(255, 215, 0, 0.7);
+}
+/* Contact Form Enhancements */
+.contact-form {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease-in-out;
+}
+
+.contact-form:hover {
+  box-shadow: 0px 20px 50px rgba(0, 0, 0, 0.5);
+}
+
+input,
+textarea {
+  transition: all 0.2s ease-in-out;
+}
+
+input:focus,
+textarea:focus {
+  border-color: #ffd700;
+}
+/* Button animations */
+.cta-button {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease-in-out;
+}
+
+.cta-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.cta-button span {
+  transition: all 0.3s ease-in-out;
+}
 
 
   
