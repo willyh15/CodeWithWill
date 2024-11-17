@@ -11,7 +11,7 @@ jobs:
 
     steps:
       # Step 1: Check out the repository
-      - name: Check out the code
+      - name: Check out the repository
         uses: actions/checkout@v2
 
       # Step 2: Set up Node.js environment
@@ -24,16 +24,15 @@ jobs:
       - name: Install dependencies
         run: |
           npm ci
-          npm install @tailwindcss/forms @tailwindcss/typography react-circular-progressbar axios dotenv fs path
+          npm install @tailwindcss/forms @tailwindcss/typography react-circular-progressbar axios dotenv
 
       # Step 4: Set Pexels API Key Environment Variable
       - name: Set Pexels API Key
         run: echo "PEXELS_API_KEY=${{ secrets.PEXELS_API_KEY }}" >> $GITHUB_ENV
 
-      # Step 5: Fetch Background Images from Pexels
-      - name: Fetch Background Images
-        run: |
-          node ./scripts/fetchBackgrounds.js
+      # Step 5: Preload Background Images
+      - name: Preload Background Images
+        run: node ./scripts/preloadImages.js
 
       # Step 6: Generate CSS with Tailwind
       - name: Generate CSS with Tailwind
@@ -60,4 +59,4 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./out
-          cname: "codewithwill.tech"
+          cname: "codewithwill.tech" # Replace with your custom domain if needed
