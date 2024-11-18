@@ -23,9 +23,8 @@ jobs:
         with:
           node-version: "18"
 
-      # Step 3: Install dependencies
       - name: Install dependencies
-        run: npm ci
+        run: npm install
 
       # Step 4: Set environment variables
       - name: Set Pexels API Key
