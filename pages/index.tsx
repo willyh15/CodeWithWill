@@ -1,35 +1,21 @@
-import NavBar from "@/components/NavBar";
-import { HeroSection } from "@/components/HeroSection";
-import { AboutMe } from "@/components/AboutMe";
-import Skills from "@/components/Skills";
-import TechStack from "@/components/TechStack";
-import { Projects } from "@/components/Projects";
-import { Testimonials } from "@/components/Testimonials";
-import ContactForm from "@/components/ContactForm";
-import Footer from "@/components/Footer";
+import HeroSection from "@/components/Hero/HeroSection";
+import Projects from "@/components/Projects/Projects";
+import Skills from "@/components/Skills/Skills";
+import Testimonials from "@/components/Testimonials/Testimonials";
+import TechStack from "@/components/TechStack/TechStack";
+import ContactForm from "@/components/Contact/ContactForm";
+import BookingCTA from "@/components/Booking/BookingCTA";
 
-export default function HomePage() {
-  console.log(NavBar);
-  console.log(HeroSection);
-  console.log(AboutMe);
-  console.log(Skills);
-  console.log(TechStack);
-  console.log(Projects);
-  console.log(Testimonials);
-  console.log(ContactForm);
-  console.log(Footer);
-
+export default function Home() {
   return (
-    <main className="space-y-16">
-      <NavBar />
+    <>
       <HeroSection />
-      <AboutMe />
+      <Projects />
       <Skills />
       <TechStack />
-      <Projects />
       <Testimonials />
+      <BookingCTA />
       <ContactForm />
-      <Footer />
-    </main>
+    </>
   );
 }
