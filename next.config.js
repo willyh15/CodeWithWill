@@ -5,7 +5,7 @@ const nextConfig = {
   },
   output: "export",
   images: {
-    unoptimized: true, // Optimize if external loaders aren't used
+    unoptimized: true,
   },
   trailingSlash: true,
   async headers() {
@@ -35,4 +35,4 @@ const nextConfig = {
   },
 };
 
-module.exports = nextConfig;
+export default nextConfig;
