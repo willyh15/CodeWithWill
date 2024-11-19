@@ -1,14 +1,15 @@
-// next.config.cjs
-/** @type {import('next').NextConfig} */
-const nextConfig = {
+import { NextConfig } from 'next';
+
+/** @type {NextConfig} */
+const nextConfig: NextConfig = {
   env: {
     PEXELS_API_KEY: process.env.PEXELS_API_KEY,
   },
-  output: "standalone",
+  output: "standalone", // For Vercel deployment
   images: {
-    unoptimized: true,
+    unoptimized: true, // Simplifies image handling
   },
   trailingSlash: true,
 };
 
-module.exports = nextConfig;
+export default nextConfig;
