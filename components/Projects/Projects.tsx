@@ -78,3 +78,5 @@ export function Projects() {
     </motion.section>
   );
 }
+
+export default Projects;
