@@ -23,35 +23,30 @@ jobs:
         with:
           node-version: "18"
 
+      # Step 3: Install dependencies
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       # Step 4: Set environment variables
       - name: Set Pexels API Key
         run: echo "PEXELS_API_KEY=${{ secrets.PEXELS_API_KEY }}" >> $GITHUB_ENV
 
       # Step 5: Preload Background Images
-      # This script preloads images for better performance and caching.
       - name: Preload Background Images
-        run: node ./scripts/preloadImages.js
+        run: npm run preload-images
 
-      # Step 6: Run Utility Scripts (if applicable)
-      # Add other utility scripts that need execution
-      - name: Run Utility Scripts
-        run: node ./scripts/utilityScripts.js
-
-      # Step 7: Generate CSS with Tailwind
+      # Step 6: Generate CSS with Tailwind
       - name: Generate CSS with Tailwind
         run: |
           mkdir -p ./styles
           echo -e "@tailwind base;\n@tailwind components;\n@tailwind utilities;" > ./styles/input.css
           npx tailwindcss -i ./styles/input.css -o ./styles/output.css --minify
 
-      # Step 8: Build the project
+      # Step 7: Build the project
       - name: Build the project
         run: npm run build
 
-      # Step 9: Deploy to GitHub Pages
+      # Step 8: Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
@@ -78,7 +73,7 @@ jobs:
         run: echo "PEXELS_API_KEY=${{ secrets.PEXELS_API_KEY }}" >> $GITHUB_ENV
 
       - name: Preload Background Images
-        run: node ./scripts/preloadImages.js
+        run: npm run preload-images
 
       - name: Commit and Push Preloaded Images
         run: |
