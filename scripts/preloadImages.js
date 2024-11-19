@@ -1,8 +1,9 @@
 // /scripts/preloadImages.js
 
-import axios from "axios";
-import fs from "fs";
-import path from "path";
+const axios = require("axios");
+const fs = require("fs");
+const path = require("path");
+
 
 const API_KEY = process.env.PEXELS_API_KEY;
 const OUTPUT_DIR = path.resolve("./public/preloaded-images");
