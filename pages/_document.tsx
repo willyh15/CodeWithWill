@@ -4,13 +4,18 @@ export default function Document() {
   return (
     <Html lang="en">
       <Head>
-        {/* Add Roboto Mono font */}
-        <link
-          href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;700&display=swap"
-          rel="stylesheet"
+        <meta
+          httpEquiv="Content-Security-Policy"
+          content="default-src 'self'; img-src 'self' data: https://images.pexels.com;"
+        />
+        <meta httpEquiv="X-Content-Type-Options" content="nosniff" />
+        <meta httpEquiv="X-Frame-Options" content="DENY" />
+        <meta
+          httpEquiv="Strict-Transport-Security"
+          content="max-age=31536000; includeSubDomains; preload"
         />
       </Head>
-      <body className="bg-background text-text font-sans">
+      <body>
         <Main />
         <NextScript />
       </body>
