@@ -1,6 +1,6 @@
-const axios = require("axios");
+import axios from "axios";
 
-async function fetchBackground(query = "abstract") {
+export async function fetchBackground(query = "abstract") {
   const apiKey = process.env.PEXELS_API_KEY;
   const endpoint = `https://api.pexels.com/v1/search?query=${query}&per_page=1`;
 
@@ -22,5 +22,3 @@ async function fetchBackground(query = "abstract") {
     throw error;
   }
 }
-
-module.exports = { fetchBackground };
