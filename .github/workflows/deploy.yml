@@ -20,6 +20,10 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
+      - name: Set up Pexels API Key
+        run: echo "PEXELS_API_KEY=${{ secrets.PEXELS_API_KEY }}" >> $GITHUB_ENV
+      
+
       - name: Build the Project
         run: npm run build
 
