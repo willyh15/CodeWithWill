@@ -76,10 +76,10 @@ jobs:
       - name: Post ChatGPT Suggestions to PR
         if: failure() && github.event_name == 'pull_request'
         env:
-          GITHUB_TOKEN: ${{ secrets.MY_CUSTOM_TOKEN }}
+          MY_CUSTOM_TOKEN: ${{ secrets.MY_CUSTOM_TOKEN }}
         run: |
           COMMENT_BODY=$(jq -r '.choices[0].text' suggestions.json)
-          curl -H "Authorization: Bearer $GITHUB_TOKEN" \
+          curl -H "Authorization: Bearer $MY_CUSTOM_TOKEN" \
             -X POST \
             -d '{"body": "'"ChatGPT Suggestions:\n$COMMENT_BODY"'"}' \
             "https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/comments"
@@ -88,8 +88,13 @@ jobs:
       - name: Generate Fix PR
         if: failure()
         env:
-          GITHUB_TOKEN: ${{ secrets.MY_CUSTOM_TOKEN }}
+          MY_CUSTOM_TOKEN: ${{ secrets.MY_CUSTOM_TOKEN }}
         run: |
+          # Set Git User Configuration
+          git config user.email "willharrison2016@gmail.com"
+          git config user.name "willyh15"
+
+          # Extract ChatGPT Suggestions and Create a Fix Branch
           COMMENT_BODY=$(jq -r '.choices[0].text' suggestions.json)
           echo "Creating Fix Branch"
           git checkout -b chatgpt-fix
@@ -97,7 +102,9 @@ jobs:
           git add FIX_SUGGESTIONS.md
           git commit -m "ChatGPT Fix Suggestions"
           git push origin chatgpt-fix
-          curl -H "Authorization: Bearer $GITHUB_TOKEN" \
+
+          # Create a Pull Request for the Fix Branch
+          curl -H "Authorization: Bearer $MY_CUSTOM_TOKEN" \
             -X POST \
             -d '{"title": "Fix Based on ChatGPT Suggestions", "head": "chatgpt-fix", "base": "main", "body": "This PR contains fixes suggested by ChatGPT."}' \
             "https://api.github.com/repos/${{ github.repository }}/pulls"
