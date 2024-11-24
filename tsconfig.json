@@ -1,37 +1,38 @@
 {
   "compilerOptions": {
-    "target": "ESNext",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
-    "allowJs": true,
-    "skipLibCheck": true,
-    "strict": true,
-    "noEmit": true,
-    "esModuleInterop": true,
-    "module": "ESNext",
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "jsx": "preserve",
-    "allowSyntheticDefaultImports": true,
-    "incremental": true,
-    "baseUrl": ".",
+    "target": "ESNext", // Use the latest ECMAScript features
+    "lib": ["dom", "dom.iterable", "esnext"], // Include DOM and latest ECMAScript libraries
+    "allowJs": true, // Allow JavaScript files
+    "skipLibCheck": true, // Skip type checking of declaration files
+    "strict": true, // Enable all strict type-checking options
+    "noEmit": true, // Disable emitting output files
+    "esModuleInterop": true, // Enable ES Module interop
+    "module": "ESNext", // Use the latest ECMAScript module system
+    "moduleResolution": "node", // Use Node.js style module resolution
+    "resolveJsonModule": true, // Allow importing JSON modules
+    "isolatedModules": true, // Ensure each file can be safely transpiled on its own
+    "jsx": "preserve", // Keep JSX as-is for further processing
+    "allowSyntheticDefaultImports": true, // Allow default imports for modules with no default
+    "incremental": true, // Enable incremental compilation
+    "baseUrl": ".", // Base directory for resolving paths
     "paths": {
-      "@/*": [
-        "./*"
-      ]
-    }
+      "@/*": ["./*"] // Map '@/' to the root directory
+    },
+    "types": ["node"], // Include Node.js types
+    "forceConsistentCasingInFileNames": true, // Enforce case-sensitive imports
+    "useUnknownInCatchVariables": false // Use `any` instead of `unknown` in catch clauses
   },
   "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    ".next/types/**/*.ts"
-, "next.config.cjs", "next.config.js"  ],
+    "next-env.d.ts", // Next.js environment types
+    "**/*.ts", // All TypeScript files
+    "**/*.tsx", // All TypeScript React files
+    ".next/types/**/*.ts", // Next.js build types
+    "next.config.cjs", // Next.js configuration in CommonJS
+    "next.config.js" // Next.js configuration in JavaScript
+  ],
   "exclude": [
-    "node_modules"
+    "node_modules", // Exclude dependencies
+    ".turbo", // Exclude Turbopack cache (if applicable)
+    "dist" // Exclude output directories
   ]
 }
