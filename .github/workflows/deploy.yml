@@ -48,6 +48,7 @@ jobs:
         run: |
           npx npm-check-updates -u
           npm install
+          npm audit fix
         continue-on-error: true
 
       # Step 7: Build the project
@@ -57,7 +58,14 @@ jobs:
           npm run build 2>&1 | tee build_logs.txt
         continue-on-error: true
 
-      # Step 8: Upload Build Logs for Debugging
+      # Step 8: Analyze Build Logs
+      - name: Analyze Build Logs
+        if: failure()
+        run: |
+          echo "Build failed. Logs are being uploaded."
+          cat build_logs.txt
+
+      # Step 9: Upload Build Logs for Debugging
       - name: Upload Build Logs
         if: failure()
         uses: actions/upload-artifact@v3
@@ -65,7 +73,7 @@ jobs:
           name: build-logs
           path: build_logs.txt
 
-      # Step 9: Analyze Build Errors with ChatGPT
+      # Step 10: Analyze Build Errors with ChatGPT
       - name: Analyze Build Errors with ChatGPT
         if: failure()
         run: |
@@ -78,7 +86,7 @@ jobs:
               "max_tokens": 500
             }' > suggestions.json
 
-      # Step 10: Post ChatGPT Suggestions to Pull Request
+      # Step 11: Post ChatGPT Suggestions to Pull Request
       - name: Post ChatGPT Suggestions
         if: failure() && github.event_name == 'pull_request'
         env:
@@ -90,7 +98,7 @@ jobs:
             -d '{"body": "'"ChatGPT Suggestions:\n$COMMENT_BODY"'"}' \
             "https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/comments"
 
-      # Step 11: Deploy to Vercel
+      # Step 12: Deploy to Vercel
       - name: Deploy to Vercel
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
