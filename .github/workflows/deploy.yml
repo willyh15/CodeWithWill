@@ -1,9 +1,13 @@
-name: Deploy to Vercel
+name: Deploy to Vercel with Advanced AI Features
 
 on:
   push:
     branches:
       - main
+  pull_request:
+    types:
+      - opened
+      - synchronize
 
 jobs:
   deploy:
@@ -33,24 +37,101 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      # Step 5: Install Autoprefixer
-      - name: Install Autoprefixer
-        run: npm install autoprefixer --save-dev
+      # Step 5: Update Dependencies
+      - name: Update Dependencies
+        run: |
+          npx npm-check-updates -u
+          npm install
+        continue-on-error: true
 
-      # Step 6: Verify CSS Files
-      - name: Verify CSS Files
-        run: ls -R styles
-
-      # Step 7: Set up environment variables
-      - name: Set up Pexels API Key
-        run: echo "PEXELS_API_KEY=${{ secrets.PEXELS_API_KEY }}" >> $GITHUB_ENV
-
-      # Step 8: Build the project
+      # Step 6: Build the project
       - name: Build the Project
-        run: npm run build
+        run: |
+          set -o pipefail
+          npm run build 2>&1 | tee build_logs.txt
 
-      # Step 9: Deploy to Vercel
+      # Step 7: Upload Build Logs for Debugging
+      - name: Upload Build Logs
+        if: failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-logs
+          path: build_logs.txt
+
+      # Step 8: Analyze Build Errors with ChatGPT
+      - name: Analyze Build Errors with ChatGPT
+        if: failure()
+        run: |
+          curl https://api.openai.com/v1/completions \
+            -H "Content-Type: application/json" \
+            -H "Authorization: Bearer ${{ secrets.OPENAI_API_KEY }}" \
+            -d '{
+              "model": "gpt-4",
+              "prompt": "The following is a build log from a Next.js project. Analyze the errors and suggest specific fixes:\n\n$(cat build_logs.txt)\n\nSuggestions:",
+              "max_tokens": 500
+            }' > suggestions.json
+        continue-on-error: true
+
+      # Step 9: Post ChatGPT Suggestions as Pull Request Comments
+      - name: Post ChatGPT Suggestions to PR
+        if: failure() && github.event_name == 'pull_request'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          COMMENT_BODY=$(jq -r '.choices[0].text' suggestions.json)
+          curl -H "Authorization: Bearer $GITHUB_TOKEN" \
+            -X POST \
+            -d '{"body": "'"ChatGPT Suggestions:\n$COMMENT_BODY"'"}' \
+            "https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/comments"
+
+      # Step 10: Generate a Fix Pull Request
+      - name: Generate Fix PR
+        if: failure()
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          COMMENT_BODY=$(jq -r '.choices[0].text' suggestions.json)
+          echo "Creating Fix Branch"
+          git checkout -b chatgpt-fix
+          echo "$COMMENT_BODY" > FIX_SUGGESTIONS.md
+          git add FIX_SUGGESTIONS.md
+          git commit -m "ChatGPT Fix Suggestions"
+          git push origin chatgpt-fix
+          curl -H "Authorization: Bearer $GITHUB_TOKEN" \
+            -X POST \
+            -d '{"title": "Fix Based on ChatGPT Suggestions", "head": "chatgpt-fix", "base": "main", "body": "This PR contains fixes suggested by ChatGPT."}' \
+            "https://api.github.com/repos/${{ github.repository }}/pulls"
+
+      # Step 11: Lint and Type Check
+      - name: Lint Code
+        run: npm run lint
+
+      - name: Check TypeScript Types
+        run: npm run type-check
+
+      # Step 12: AI Dependency Analysis
+      - name: Analyze Dependencies with ChatGPT
+        run: |
+          PACKAGE_JSON=$(cat package.json)
+          curl https://api.openai.com/v1/completions \
+            -H "Content-Type: application/json" \
+            -H "Authorization: Bearer ${{ secrets.OPENAI_API_KEY }}" \
+            -d '{
+              "model": "gpt-4",
+              "prompt": "Analyze the following dependencies in package.json. Suggest optimizations or replacements:\n\n$PACKAGE_JSON\n\nSuggestions:",
+              "max_tokens": 500
+            }' > dependency_analysis.json
+        continue-on-error: true
+
+      # Step 13: Upload Dependency Suggestions as Artifact
+      - name: Upload Dependency Suggestions
+        uses: actions/upload-artifact@v3
+        with:
+          name: dependency-analysis
+          path: dependency_analysis.json
+
+      # Step 14: Deploy to Vercel
       - name: Deploy to Vercel
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-        run: npx vercel --prod
+        run: npx vercel --prod --yes
