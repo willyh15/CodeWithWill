@@ -8,25 +8,48 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
+      # Step 1: Check out the code
       - name: Checkout Code
         uses: actions/checkout@v3
 
+      # Step 2: Cache dependencies
+      - name: Cache Node Modules
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      # Step 3: Set up Node.js
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 18
 
+      # Step 4: Install dependencies
       - name: Install Dependencies
         run: npm install
 
+      # Step 5: Install Autoprefixer
+      - name: Install Autoprefixer
+        run: npm install autoprefixer --save-dev
+
+      # Step 6: Verify CSS Files
+      - name: Verify CSS Files
+        run: ls -R styles
+
+      # Step 7: Set up environment variables
       - name: Set up Pexels API Key
         run: echo "PEXELS_API_KEY=${{ secrets.PEXELS_API_KEY }}" >> $GITHUB_ENV
-      
 
+      # Step 8: Build the project
       - name: Build the Project
         run: npm run build
 
+      # Step 9: Deploy to Vercel
       - name: Deploy to Vercel
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
