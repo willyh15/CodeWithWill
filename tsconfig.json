@@ -28,7 +28,7 @@
     "**/*.tsx", // All TypeScript React files
     ".next/types/**/*.ts", // Next.js build types
     "next.config.cjs", // Next.js configuration in CommonJS
-    "next.config.js" // Next.js configuration in JavaScript
+    "next.config.mjs" // Next.js configuration in JavaScript
   ],
   "exclude": [
     "node_modules", // Exclude dependencies

@@ -6,7 +6,6 @@ const nextConfig = {
     domains: ["images.pexels.com"],
   },
   trailingSlash: true,
-  output: "export",
   async headers() {
     return [
       {
