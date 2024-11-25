@@ -1,10 +1,14 @@
-import type { Config } from "tailwindcss";
+import forms from "@tailwindcss/forms";
+import typography from "@tailwindcss/typography";
+import aspectRatio from "@tailwindcss/aspect-ratio";
+import lineClamp from "@tailwindcss/line-clamp";
 
 const config: Config = {
   content: [
     "./pages/**/*.{js,ts,jsx,tsx}",
     "./components/**/*.{js,ts,jsx,tsx}",
   ],
+  darkMode: "class", // Enables dark mode via class
   theme: {
     extend: {
       colors: {
@@ -21,15 +25,15 @@ const config: Config = {
         glow: "0 0 20px rgba(110, 68, 255, 0.7)", // Purple glow
       },
       backgroundImage: {
-        'hero-pattern': "url('/public/backgrounds/hero-bg.svg')", // Hero background
-        'section-pattern': "url('/public/backgrounds/section-bg.svg')", // Section background
+        "hero-pattern": "url('/backgrounds/hero-bg.svg')", // Hero background
+        "section-pattern": "url('/backgrounds/section-bg.svg')", // Section background
+      },
+      screens: {
+        xs: "480px", // Small devices
       },
     },
   },
-  plugins: [
-    require("@tailwindcss/forms"),
-    require("@tailwindcss/typography"),
-  ],
+  plugins: [forms, typography, aspectRatio, lineClamp],
 };
 
 export default config;
