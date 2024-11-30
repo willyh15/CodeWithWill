@@ -21,12 +21,4 @@ module.exports = {
   rules: {
     // Add or modify rules as needed
   },
-  overrides: [
-    {
-      files: ["**/*.ts", "**/*.tsx"], // Ensure TypeScript files are included
-      rules: {
-        // TypeScript-specific rules
-      },
-    },
-  ],
 };
