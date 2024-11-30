@@ -1,6 +1,6 @@
 {
   "name": "codewithwill",
-   "headers": [
+  "headers": [
     {
       "source": "/(.*)",
       "headers": [
