@@ -1,39 +1,29 @@
-import { Canvas } from "@react-three/fiber";
-import { Points, PointMaterial } from "@react-three/drei";
+import StarfieldCanvas from "@/components/Starfield/Starfield";
 
-const Stars = () => {
-  const points = new Float32Array(
-    Array.from({ length: 1000 }, () => Math.random() * 2 - 1)
-  );
-
+const HeroSection: React.FC = () => {
   return (
-    <Points positions={points} stride={3} frustumCulled>
-      <PointMaterial
-        size={0.01}
-        sizeAttenuation
-        color="#6E44FF"
-        depthWrite={false}
-        transparent
-        opacity={0.75}
-      />
-    </Points>
-  );
-};
+    <section className="relative h-screen w-full overflow-hidden">
+      {/* Starfield Background */}
+      <StarfieldCanvas />
 
-export default function HeroSection() {
-  return (
-    <section className="hero-section relative w-full h-screen text-center text-white overflow-hidden">
-      <Canvas camera={{ position: [0, 0, 1], fov: 75 }}>
-        <Stars />
-      </Canvas>
-      <div className="absolute inset-0 flex flex-col justify-center items-center z-10">
-        <h1 className="text-5xl font-extrabold drop-shadow-lg mb-4">
-          Crafting Digital Excellence
+      {/* Foreground Content */}
+      <div className="relative z-10 flex flex-col items-center justify-center h-full text-center text-white px-6">
+        <h1 className="text-5xl md:text-7xl font-bold mb-6 drop-shadow-lg">
+          Crafting Cutting-Edge Digital Experiences
         </h1>
-        <p className="text-lg text-gray-300">
-          Let’s create seamless digital experiences together.
+        <p className="text-lg md:text-xl text-gray-300 mb-8 max-w-2xl">
+          I specialize in creating innovative solutions for web, mobile, and
+          desktop applications. Let’s build something extraordinary together.
         </p>
+        <a
+          href="#booking"
+          className="px-8 py-4 bg-gradient-to-r from-neon-light to-yellow-500 text-gray-900 font-bold rounded-lg shadow-md hover:scale-105 hover:shadow-lg transition-transform duration-300"
+        >
+          Get Started
+        </a>
       </div>
     </section>
   );
-}
+};
+
+export default HeroSection;
