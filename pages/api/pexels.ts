@@ -4,18 +4,18 @@ export default async function handler(req, res) {
 
   try {
     const response = await fetch(API_URL, {
-      headers: {
-        Authorization: PEXELS_API_KEY,
-      },
+      headers: { Authorization: PEXELS_API_KEY },
     });
 
     if (!response.ok) {
-      throw new Error(`API Error: ${response.statusText}`);
+      const errorData = await response.json();
+      throw new Error(errorData.error || `API Error: ${response.status}`);
     }
 
     const data = await response.json();
     res.status(200).json(data);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error("API Error:", error);
+    res.status(500).json({ error: error.message || "Server Error" });
   }
 }
