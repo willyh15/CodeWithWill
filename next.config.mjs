@@ -1,6 +1,6 @@
 const nextConfig = {
   env: {
-    PEXELS_API_KEY: process.env.PEXELS_API_KEY, // Ensure this is set in .env.local
+    PEXELS_API_KEY: process.env.PEXELS_API_KEY, // Ensure this is set in your .env.local file
   },
   images: {
     domains: ["images.pexels.com"], // Allow images from Pexels
@@ -13,11 +13,20 @@ const nextConfig = {
         headers: [
           {
             key: "Content-Security-Policy",
-            value: "default-src 'self'; connect-src 'self' https://api.pexels.com; img-src 'self' https://images.pexels.com data:; style-src 'self' 'unsafe-inline';",
+            value:
+              "default-src 'self'; connect-src 'self' https://api.pexels.com; img-src 'self' data: https://images.pexels.com; style-src 'self' 'unsafe-inline';",
+          },
+          {
+            key: "X-Content-Type-Options",
+            value: "nosniff",
           },
           {
             key: "X-Frame-Options",
-            value: "SAMEORIGIN", // Prevent clickjacking
+            value: "DENY",
+          },
+          {
+            key: "Strict-Transport-Security",
+            value: "max-age=31536000; includeSubDomains; preload",
           },
         ],
       },
