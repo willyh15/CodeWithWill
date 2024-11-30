@@ -1,3 +1,4 @@
+import type { Config } from "tailwindcss"; // Import the type
 import forms from "@tailwindcss/forms";
 import typography from "@tailwindcss/typography";
 import aspectRatio from "@tailwindcss/aspect-ratio";
