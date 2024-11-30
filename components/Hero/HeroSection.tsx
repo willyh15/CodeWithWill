@@ -4,7 +4,9 @@ const HeroSection: React.FC = () => {
   return (
     <section className="relative h-screen w-full overflow-hidden">
       {/* Starfield Background */}
-      <StarfieldCanvas />
+      <div className="absolute inset-0 -z-10">
+        <StarfieldCanvas />
+      </div>
 
       {/* Foreground Content */}
       <div className="relative z-10 flex flex-col items-center justify-center h-full text-center text-white px-6 glassmorphism-bg backdrop-blur-glass rounded-xl">
