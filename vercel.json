@@ -1,4 +1,5 @@
 {
+  "name": "codewithwill",
   "headers": [
     {
       "source": "/(.*)",
