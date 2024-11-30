@@ -1,14 +1,16 @@
-import { Canvas } from "@react-three/fiber";
+import { Canvas, useFrame } from "@react-three/fiber";
 import { useRef } from "react";
-import { useFrame } from "@react-three/fiber";
+import * as THREE from "three";
 
 const Starfield = () => {
-  const pointsRef = useRef(null);
+  const pointsRef = useRef<THREE.Points>(null);
 
+  // Generate random particles
   const particles = new Float32Array(
     Array.from({ length: 1000 }, () => Math.random() * 500 - 250)
   );
 
+  // Animation frame to rotate the points
   useFrame(() => {
     if (pointsRef.current) {
       pointsRef.current.rotation.x += 0.0005;
