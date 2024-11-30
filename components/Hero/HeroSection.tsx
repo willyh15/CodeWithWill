@@ -7,7 +7,7 @@ const HeroSection: React.FC = () => {
   useEffect(() => {
     async function loadBackground() {
       try {
-        const background = await fetchBackground("abstract");
+        const background = await fetchBackground("abstract"); // Pass the query here
         setBackgroundImage(background);
       } catch (error) {
         console.error("Failed to load background image:", error);
