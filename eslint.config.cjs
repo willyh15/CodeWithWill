@@ -1,5 +1,4 @@
 module.exports = {
-  root: true,
   env: {
     browser: true,
     es2021: true,
@@ -19,6 +18,6 @@ module.exports = {
   },
   plugins: ["react", "@typescript-eslint"],
   rules: {
-    // Add or modify rules as needed
+    // Add your custom rules here
   },
 };
