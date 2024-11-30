@@ -1,4 +1,4 @@
-import React from "react"; // Add this line to explicitly import React
+import React, { ReactNode } from "react"; // Import React and types
 import HeroSection from "@/components/Hero/HeroSection";
 import Projects from "@/components/Projects/Projects";
 import Skills from "@/components/Skills/Skills";
@@ -7,17 +7,27 @@ import Testimonials from "@/components/Testimonials/Testimonials";
 import ContactForm from "@/components/Contact/ContactForm";
 import BookingCTA from "@/components/Booking/BookingCTA";
 
-class ErrorBoundary extends React.Component {
-  constructor(props) {
+// Define props and state interfaces
+interface ErrorBoundaryProps {
+  children: ReactNode;
+}
+
+interface ErrorBoundaryState {
+  hasError: boolean;
+  error: Error | null;
+}
+
+class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
+  constructor(props: ErrorBoundaryProps) {
     super(props);
     this.state = { hasError: false, error: null };
   }
 
-  static getDerivedStateFromError(error) {
+  static getDerivedStateFromError(error: Error): ErrorBoundaryState {
     return { hasError: true, error };
   }
 
-  componentDidCatch(error, errorInfo) {
+  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
     console.error("ErrorBoundary caught an error", error, errorInfo);
   }
 
