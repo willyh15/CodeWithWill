@@ -1,11 +1,11 @@
 const nextConfig = {
   env: {
-    PEXELS_API_KEY: process.env.PEXELS_API_KEY, // Ensure this is set in your .env.local file
+    PEXELS_API_KEY: process.env.PEXELS_API_KEY, // Ensure this is set in your environment variables
   },
   images: {
     domains: ["images.pexels.com"], // Allow images from Pexels
   },
-  trailingSlash: true, // Ensure trailing slashes in routes
+  trailingSlash: true,
   async headers() {
     return [
       {
