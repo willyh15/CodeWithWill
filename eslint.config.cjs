@@ -3,22 +3,19 @@ const globals = require("globals");
 module.exports = [
   {
     languageOptions: {
+      ecmaVersion: "latest", // Modern JavaScript
+      sourceType: "module", // ES modules
       globals: {
-        ...globals.browser, // Replaces `env.browser: true`
-        ...globals.es2021, // Replaces `env.es2021: true`
-      },
-      ecmaVersion: "latest", // Same as `ecmaVersion: 2021`
-      sourceType: "module", // Specifies ES module system
-      ecmaFeatures: {
-        jsx: true, // Enables JSX
+        ...globals.browser, // Browser globals
+        ...globals.es2021, // ES2021 globals
       },
     },
     plugins: {
-      react: require("eslint-plugin-react"),
-      "@typescript-eslint": require("@typescript-eslint/eslint-plugin"),
+      react: require("eslint-plugin-react"), // React linting
+      "@typescript-eslint": require("@typescript-eslint/eslint-plugin"), // TypeScript linting
     },
     rules: {
-      // Add your custom rules here
+      // Add custom rules here
     },
   },
 ];
