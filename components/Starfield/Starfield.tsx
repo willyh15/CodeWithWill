@@ -28,7 +28,7 @@ const Starfield = () => {
           itemSize={3}
         />
       </bufferGeometry>
-      <pointsMaterial size={1.5} color="#6E44FF" />
+      <pointsMaterial size={2.5} color="#FFFFFF" opacity={0.8} transparent />
     </points>
   );
 };
@@ -36,7 +36,7 @@ const Starfield = () => {
 const StarfieldCanvas = () => {
   return (
     <Canvas className="absolute top-0 left-0 w-full h-full">
-      <ambientLight intensity={0.5} />
+      <ambientLight intensity={0.7} />
       <Starfield />
     </Canvas>
   );
