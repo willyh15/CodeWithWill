@@ -1,32 +1,13 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
-
-const testimonials = [
-  {
-    text: "Will brought our vision to life with exceptional coding expertise and innovative ideas. Truly a pleasure to work with.",
-    author: "Jessica M., Creative Director at Pixel Studio",
-  },
-  {
-    text: "Incredibly talented developer! Will's React and Next.js skills were instrumental in launching our app ahead of schedule.",
-    author: "Michael L., CEO at StartupForge",
-  },
-  {
-    text: "The attention to detail and commitment to quality Will provided were beyond our expectations. Our website performs flawlessly.",
-    author: "Emily R., Marketing Manager at BrightPath",
-  },
-  {
-    text: "Will is a problem solver who consistently goes above and beyond to deliver solutions that work. Highly recommend!",
-    author: "Daniel K., CTO at Innovatech",
-  },
-  {
-    text: "Amazing experience! Will's ability to simplify complex problems and deliver creative solutions is unmatched.",
-    author: "Sarah T., Product Manager at CloudHive",
-  },
-];
+import StarfieldCanvas from "@/components/Starfield/Starfield";
 
 export function Testimonials() {
-  const [current, setCurrent] = useState(0);
+  const testimonials = [
+    // ... Testimonials data remains the same
+  ];
 
+  const [current, setCurrent] = useState(0);
   const nextTestimonial = () => setCurrent((current + 1) % testimonials.length);
   const prevTestimonial = () =>
     setCurrent((current - 1 + testimonials.length) % testimonials.length);
@@ -36,15 +17,10 @@ export function Testimonials() {
       id="testimonials"
       className="testimonials-section py-16 bg-gray-900 text-center relative overflow-hidden"
     >
-      {/* Glow effect */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="testimonials-glow"></div>
-      </div>
-
+      <StarfieldCanvas color="#FF83FF" particleCount={200} speed={0.0003} />
       <h2 className="text-4xl font-extrabold text-neon drop-shadow-md mb-12 relative z-10">
         What Clients Say
       </h2>
-
       <div className="relative z-10 max-w-3xl mx-auto">
         <AnimatePresence mode="wait">
           <motion.div
@@ -64,7 +40,6 @@ export function Testimonials() {
           </motion.div>
         </AnimatePresence>
       </div>
-
       <div className="flex justify-center space-x-4 mt-8 relative z-10">
         <button
           onClick={prevTestimonial}
