@@ -1,6 +1,7 @@
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { motion } from "framer-motion";
+import StarfieldCanvas from "@/components/Starfield/Starfield";
 
 const skills = [
   { name: "JavaScript", value: 85 },
@@ -16,24 +17,18 @@ const skills = [
   { name: "Cloud Computing", value: 90 },
 ];
 
-export default function Skills() {
-  return (
+return (
     <motion.section
       id="skills"
-      className="skills-section bg-gray-900 py-16 text-center relative"
+      className="skills-section bg-gray-900 py-16 text-center relative overflow-hidden"
       initial={{ opacity: 0, y: 50 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8 }}
     >
-      {/* Glow effect */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="skills-glow"></div>
-      </div>
-
+      <StarfieldCanvas color="#FFD700" particleCount={300} speed={0.0005} />
       <h2 className="text-4xl font-extrabold text-neon drop-shadow-md mb-12 relative z-10">
         My Skills
       </h2>
-
       <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8 relative z-10">
         {skills.map((skill, idx) => (
           <motion.div
@@ -54,11 +49,3 @@ export default function Skills() {
               />
             </div>
             <p className="text-gray-300 font-semibold mt-4 group-hover:text-neon transition">
-              {skill.name}
-            </p>
-          </motion.div>
-        ))}
-      </div>
-    </motion.section>
-  );
-}
