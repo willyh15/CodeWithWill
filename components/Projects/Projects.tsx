@@ -1,4 +1,3 @@
-
 import { motion } from "framer-motion";
 import StarfieldCanvas from "@/components/Starfield/Starfield";
 
@@ -44,7 +43,12 @@ export function Projects() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8 }}
     >
-      <StarfieldCanvas color="#FF83FF" particleCount={500} speed={0.001} />
+      {/* Starfield Background */}
+      <div className="absolute inset-0 -z-10">
+        <StarfieldCanvas color="#FF83FF" particleCount={500} speed={0.001} />
+      </div>
+
+      {/* Foreground Content */}
       <motion.h2
         className="text-4xl font-extrabold text-neon drop-shadow-md mb-12 relative z-10"
         initial={{ opacity: 0 }}
@@ -53,6 +57,7 @@ export function Projects() {
       >
         My Projects
       </motion.h2>
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 relative z-10">
         {projects.map((project, idx) => (
           <motion.div
@@ -74,3 +79,5 @@ export function Projects() {
     </motion.section>
   );
 }
+
+export default Projects;

@@ -25,10 +25,16 @@ export default function TechStack() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8 }}
     >
-      <StarfieldCanvas color="#6E44FF" particleCount={400} speed={0.0007} />
+      {/* Starfield Background */}
+      <div className="absolute inset-0 -z-10">
+        <StarfieldCanvas color="#6E44FF" particleCount={400} speed={0.0007} />
+      </div>
+
+      {/* Foreground Content */}
       <h2 className="text-4xl font-extrabold text-center text-neon drop-shadow-md mb-12 relative z-10">
         Tech Stack
       </h2>
+
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-8 relative z-10">
         {techs.map((tech, idx) => (
           <motion.div

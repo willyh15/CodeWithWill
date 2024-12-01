@@ -1,11 +1,12 @@
 import { FaCalendarAlt } from "react-icons/fa";
+import StarfieldCanvas from "@/components/Starfield/Starfield";
 
 const BookingCTA = () => {
   return (
-    <section className="py-16 px-8 bg-gradient-to-br from-pink-600/20 to-purple-600/20 backdrop-blur-md rounded-3xl text-center shadow-xl max-w-5xl mx-auto relative overflow-hidden">
-      {/* Glow effect */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="glow bg-[radial-gradient(circle,rgba(255,105,180,0.2),transparent)]"></div>
+    <section className="relative py-16 px-8 bg-gradient-to-br from-pink-600/20 to-purple-600/20 backdrop-blur-md rounded-3xl text-center shadow-xl max-w-5xl mx-auto overflow-hidden">
+      {/* Starfield Background */}
+      <div className="absolute inset-0 -z-10">
+        <StarfieldCanvas color="#FF69B4" particleCount={250} speed={0.0006} />
       </div>
 
       <div className="flex justify-center mb-8">

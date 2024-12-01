@@ -2,10 +2,10 @@ import StarfieldCanvas from "@/components/Starfield/Starfield";
 
 const HeroSection: React.FC = () => {
   return (
-    <section className="relative h-screen w-full overflow-hidden bg-background">
+    <section className="relative h-screen w-full overflow-hidden">
       {/* Starfield Background */}
       <div className="absolute inset-0 -z-10">
-        <StarfieldCanvas />
+        <StarfieldCanvas color="#6E44FF" particleCount={1000} speed={0.0005} />
       </div>
 
       {/* Foreground Content */}
