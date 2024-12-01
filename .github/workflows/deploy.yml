@@ -37,10 +37,8 @@ jobs:
         run: |
           mkdir -p lib
           echo "import { createClient } from '@supabase/supabase-js';
-
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_KEY;
-
 export const supabase = createClient(supabaseUrl, supabaseKey);" > lib/supabaseClient.ts
 
         env:
@@ -52,7 +50,6 @@ export const supabase = createClient(supabaseUrl, supabaseKey);" > lib/supabaseC
         run: |
           mkdir -p pages/api
           echo "import { supabase } from '@/lib/supabaseClient';
-
 export default async function handler(req, res) {
   try {
     const { data, error } = await supabase.from('bookings').select('*');
@@ -65,7 +62,6 @@ export default async function handler(req, res) {
 }" > pages/api/testSupabase.ts
 
           echo "import { supabase } from '@/lib/supabaseClient';
-
 export default async function handler(req, res) {
   try {
     const { error } = await supabase.from('bookings').select('id');
@@ -82,7 +78,6 @@ export default async function handler(req, res) {
         run: |
           mkdir -p utils
           echo "import pino from 'pino';
-
 export const logger = pino({
   level: process.env.NODE_ENV === 'production' ? 'info' : 'debug',
   transport: process.env.NODE_ENV !== 'production'
@@ -94,17 +89,14 @@ export const logger = pino({
 });" > utils/logger.ts
 
       # Step 7: Lint the code
-      - name: Lint the code
         run: npm run lint
 
       # Step 8: Build the application
-      - name: Build the application
         env:
           CI: false # Disables certain Next.js optimizations not compatible with CI
         run: npm run build
 
       # Step 9: Deploy to Vercel
-      - name: Deploy to Vercel
         run: npx vercel --prod --yes --name="personal-digital-shop" --token=$VERCEL_TOKEN
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
