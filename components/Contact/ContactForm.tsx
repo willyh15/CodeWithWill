@@ -13,7 +13,6 @@ export default function ContactForm() {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Simulate form submission or integrate with a backend service
     console.log("Form submitted:", form);
     alert("Thank you for your message!");
   };
@@ -21,16 +20,19 @@ export default function ContactForm() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="contact-form bg-gradient-to-br from-gray-800 to-gray-900 bg-opacity-50 p-8 rounded-2xl shadow-xl max-w-2xl mx-auto backdrop-blur-lg border border-gray-700 hover:shadow-2xl transition-shadow duration-300"
+      className="contact-form bg-gradient-to-br from-gray-800 to-gray-900 bg-opacity-60 p-10 rounded-3xl shadow-2xl max-w-3xl mx-auto backdrop-blur-md border border-gray-700 hover:shadow-neon transition duration-300 relative overflow-hidden"
     >
-      <h2 className="text-4xl font-extrabold text-neon mb-6 text-center">
+      {/* Glow effect */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="glow bg-[radial-gradient(circle,rgba(110,68,255,0.2),transparent)]"></div>
+      </div>
+
+      <h2 className="text-4xl font-extrabold text-neon mb-8 text-center drop-shadow-md">
         Contact Me
       </h2>
+
       <div className="mb-6">
-        <label
-          htmlFor="name"
-          className="block text-lg font-semibold text-gray-300 mb-2"
-        >
+        <label htmlFor="name" className="block text-lg font-semibold text-gray-300 mb-2">
           <FaUser className="inline-block mr-2 text-neon" />
           Name
         </label>
@@ -40,16 +42,14 @@ export default function ContactForm() {
           name="name"
           value={form.name}
           onChange={handleChange}
-          className="w-full px-6 py-3 rounded-lg bg-gray-700 text-gray-200 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-neon-light focus:ring-offset-2 focus:ring-offset-gray-800"
+          className="w-full px-6 py-3 rounded-xl bg-gray-700 text-gray-200 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-neon-light focus:ring-offset-2 focus:ring-offset-gray-800"
           placeholder="Enter your name"
           required
         />
       </div>
+
       <div className="mb-6">
-        <label
-          htmlFor="email"
-          className="block text-lg font-semibold text-gray-300 mb-2"
-        >
+        <label htmlFor="email" className="block text-lg font-semibold text-gray-300 mb-2">
           <FaEnvelope className="inline-block mr-2 text-neon" />
           Email
         </label>
@@ -59,16 +59,14 @@ export default function ContactForm() {
           name="email"
           value={form.email}
           onChange={handleChange}
-          className="w-full px-6 py-3 rounded-lg bg-gray-700 text-gray-200 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-neon-light focus:ring-offset-2 focus:ring-offset-gray-800"
+          className="w-full px-6 py-3 rounded-xl bg-gray-700 text-gray-200 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-neon-light focus:ring-offset-2 focus:ring-offset-gray-800"
           placeholder="Enter your email"
           required
         />
       </div>
+
       <div className="mb-6">
-        <label
-          htmlFor="message"
-          className="block text-lg font-semibold text-gray-300 mb-2"
-        >
+        <label htmlFor="message" className="block text-lg font-semibold text-gray-300 mb-2">
           Message
         </label>
         <textarea
@@ -76,15 +74,16 @@ export default function ContactForm() {
           name="message"
           value={form.message}
           onChange={handleChange}
-          className="w-full px-6 py-3 rounded-lg bg-gray-700 text-gray-200 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-neon-light focus:ring-offset-2 focus:ring-offset-gray-800"
+          className="w-full px-6 py-3 rounded-xl bg-gray-700 text-gray-200 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-neon-light focus:ring-offset-2 focus:ring-offset-gray-800"
           placeholder="Write your message..."
           rows={4}
           required
         ></textarea>
       </div>
+
       <button
         type="submit"
-        className="w-full flex items-center justify-center py-3 bg-gradient-to-r from-neon-light to-yellow-500 text-gray-900 font-bold rounded-lg shadow-md hover:scale-105 hover:shadow-lg transition-transform duration-300"
+        className="w-full flex items-center justify-center py-3 bg-gradient-to-r from-neon-light to-yellow-500 text-gray-900 font-bold rounded-xl shadow-lg hover:scale-105 hover:shadow-neon transition-transform duration-300"
       >
         <FaPaperPlane className="mr-2" />
         Send Message
