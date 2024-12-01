@@ -10,9 +10,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Step 1: Checkout the code
       - name: Checkout code
         uses: actions/checkout@v3
 
+      # Step 2: Cache Node.js modules
       - name: Cache Node.js modules
         uses: actions/cache@v3
         with:
@@ -21,27 +23,36 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
+      # Step 3: Install dependencies
       - name: Install dependencies
         run: |
           npm install
+          npm install @supabase/supabase-js
           npm install @react-three/fiber three --save
           npm install @types/three eslint-config-next --save-dev
 
-      - name: Add Next.js ESLint Plugin
+      # Step 4: Create Supabase client
+      - name: Setup Supabase client
         run: |
-          npx eslint --init
-          echo '{
-            "extends": "next/core-web-vitals"
-          }' > .eslintrc.json
+          mkdir -p lib
+          echo 'import { createClient } from "@supabase/supabase-js";
 
+const supabaseUrl = "${{ secrets.SUPABASE_URL }}";
+const supabaseKey = "${{ secrets.SUPABASE_KEY }}";
+
+export const supabase = createClient(supabaseUrl, supabaseKey);' > lib/supabaseClient.ts
+
+      # Step 5: Lint the code
       - name: Lint the code
         run: npm run lint
 
+      # Step 6: Build the application
       - name: Build the application
         env:
           CI: false # Disables certain Next.js optimizations not compatible with CI
         run: npm run build
 
+      # Step 7: Deploy to Vercel
       - name: Deploy to Vercel
         run: npx vercel --prod --yes --name="personal-digital-shop" --token=$VERCEL_TOKEN
         env:
