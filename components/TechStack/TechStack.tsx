@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import StarfieldCanvas from "@/components/Starfield/Starfield";
 
 export default function TechStack() {
   const techs = [
