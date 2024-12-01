@@ -38,10 +38,14 @@ jobs:
           mkdir -p lib
           echo "import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = '${{ secrets.SUPABASE_URL }}';
-const supabaseKey = '${{ secrets.SUPABASE_KEY }}';
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseKey = process.env.SUPABASE_KEY;
 
 export const supabase = createClient(supabaseUrl, supabaseKey);" > lib/supabaseClient.ts
+
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
 
       # Step 5: Add API health check and testSupabase.ts routes
       - name: Add API routes
