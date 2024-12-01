@@ -17,7 +17,8 @@ const skills = [
   { name: "Cloud Computing", value: 90 },
 ];
 
-return (
+const Skills = () => {
+  return (
     <motion.section
       id="skills"
       className="skills-section bg-gray-900 py-16 text-center relative overflow-hidden"
@@ -49,3 +50,13 @@ return (
               />
             </div>
             <p className="text-gray-300 font-semibold mt-4 group-hover:text-neon transition">
+              {skill.name}
+            </p>
+          </motion.div>
+        ))}
+      </div>
+    </motion.section>
+  );
+};
+
+export default Skills;
