@@ -1,4 +1,6 @@
+
 import { motion } from "framer-motion";
+import StarfieldCanvas from "@/components/Starfield/Starfield";
 
 export function Projects() {
   const projects = [
@@ -37,16 +39,12 @@ export function Projects() {
   return (
     <motion.section
       id="projects"
-      className="projects-section py-16 px-6 relative text-center"
+      className="projects-section py-16 px-6 relative text-center overflow-hidden"
       initial={{ opacity: 0, y: 50 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8 }}
     >
-      {/* Glow effect */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="projects-glow"></div>
-      </div>
-
+      <StarfieldCanvas color="#FF83FF" particleCount={500} speed={0.001} />
       <motion.h2
         className="text-4xl font-extrabold text-neon drop-shadow-md mb-12 relative z-10"
         initial={{ opacity: 0 }}
@@ -55,7 +53,6 @@ export function Projects() {
       >
         My Projects
       </motion.h2>
-
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 relative z-10">
         {projects.map((project, idx) => (
           <motion.div
@@ -64,7 +61,6 @@ export function Projects() {
             whileHover={{ scale: 1.05 }}
             transition={{ duration: 0.4 }}
           >
-            <div className="absolute inset-0 bg-neon opacity-0 group-hover:opacity-10 transition duration-300"></div>
             <h3 className="text-2xl font-bold text-gray-300 mb-4 group-hover:text-neon transition">
               {project.title}
             </h3>
@@ -78,5 +74,3 @@ export function Projects() {
     </motion.section>
   );
 }
-
-export default Projects;
