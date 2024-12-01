@@ -25,7 +25,14 @@ jobs:
         run: |
           npm install
           npm install @react-three/fiber three --save
-          npm install @types/three --save-dev
+          npm install @types/three eslint-config-next --save-dev
+
+      - name: Add Next.js ESLint Plugin
+        run: |
+          npx eslint --init
+          echo '{
+            "extends": "next/core-web-vitals"
+          }' > .eslintrc.json
 
       - name: Lint the code
         run: npm run lint
