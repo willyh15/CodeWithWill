@@ -48,20 +48,26 @@ jobs:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
 
-      # Step 5: Add API health check and testSupabase.ts routes
+      # Step 5: Add API routes with logging and error handling
       - name: Add API routes
         run: |
           mkdir -p pages/api
           echo > pages/api/testSupabase.ts <<- EOL
           import { supabase } from '@/lib/supabaseClient';
+          import { logger } from '@/utils/logger';
 
           export default async function handler(req, res) {
             try {
+              logger.info('Fetching bookings from Supabase');
               const { data, error } = await supabase.from('bookings').select('*');
-              if (error) throw error;
+              if (error) {
+                logger.error('Error fetching bookings', { error });
+                throw error;
+              }
+              logger.info('Bookings fetched successfully', { data });
               res.status(200).json({ bookings: data });
             } catch (err) {
-              console.error('Error fetching bookings:', err);
+              logger.error('Error in fetching bookings', { err });
               res.status(500).json({ error: 'Failed to fetch bookings' });
             }
           }
@@ -69,21 +75,30 @@ jobs:
 
           echo > pages/api/healthCheck.ts <<- EOL
           import { supabase } from '@/lib/supabaseClient';
+          import { logger } from '@/utils/logger';
 
           export default async function handler(req, res) {
             try {
-              const { error } = await supabase.from('bookings').select('id');
-              if (error) throw error;
+              logger.info('Performing Supabase health check');
+              const { error } = await supabase.from('bookings').select('id').limit(1);
+              if (error) {
+                logger.error('Supabase health check failed', { error });
+                throw error;
+              }
+              logger.info('Supabase connection is healthy');
               res.status(200).json({ status: 'Supabase connection is healthy' });
             } catch (err) {
-              console.error('Health check failed:', err);
-              res.status(500).json({ status: 'Supabase connection failed' });
+              logger.error('Health check failed', { err });
+              res.status(500).json({
+                status: 'Supabase connection failed',
+                message: err.message,
+              });
             }
           }
           EOL
 
       # Step 6: Add logging setup
-      - name: Setup logging
+      - name: Setup logging and environment validation
         run: |
           mkdir -p utils
           echo > utils/logger.ts <<- EOL
@@ -98,6 +113,18 @@ jobs:
                 }
               : undefined,
           });
+          EOL
+
+          echo > utils/validateEnv.ts <<- EOL
+          export function validateEnv() {
+            const requiredEnvVars = ['SUPABASE_URL', 'SUPABASE_KEY'];
+            requiredEnvVars.forEach((env) => {
+              if (!process.env[env]) {
+                console.error(\`Missing environment variable: \${env}\`);
+                throw new Error(\`Environment variable \${env} is not set.\`);
+              }
+            });
+          }
           EOL
 
       # Step 7: Lint the code
