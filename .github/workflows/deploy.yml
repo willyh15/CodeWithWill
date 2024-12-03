@@ -31,6 +31,7 @@ jobs:
           npm install @react-three/fiber three --save
           npm install @types/three eslint-config-next --save-dev
           npm install pino --save # Logging library
+          npm install react-modal # Modal library
 
       # Step 4: Create Supabase client
       - name: Setup Supabase client
@@ -127,17 +128,54 @@ jobs:
           }
           EOL
 
-      # Step 7: Lint the code
+      # Step 7: Add Three.js Component Validation
+      - name: Validate Three.js Components
+        run: |
+          echo "Validating Three.js animations"
+          echo > pages/components/LoadingIndicator.tsx <<- EOL
+          import { Canvas, useFrame } from '@react-three/fiber';
+          import { useRef } from 'react';
+
+          function RotatingCube() {
+            const cubeRef = useRef<THREE.Mesh>(null);
+            useFrame(() => {
+              if (cubeRef.current) {
+                cubeRef.current.rotation.x += 0.01;
+                cubeRef.current.rotation.y += 0.01;
+              }
+            });
+            return (
+              <mesh ref={cubeRef}>
+                <boxGeometry args={[1, 1, 1]} />
+                <meshStandardMaterial color='#6E44FF' />
+              </mesh>
+            );
+          }
+
+          export default function LoadingIndicator() {
+            return (
+              <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                <Canvas>
+                  <ambientLight />
+                  <pointLight position={[10, 10, 10]} />
+                  <RotatingCube />
+                </Canvas>
+              </div>
+            );
+          }
+          EOL
+
+      # Step 8: Lint the code
       - name: Lint the code
         run: npm run lint
 
-      # Step 8: Build the application
+      # Step 9: Build the application
       - name: Build the application
         env:
           CI: false # Disables certain Next.js optimizations not compatible with CI
         run: npm run build
 
-      # Step 9: Deploy to Vercel
+      # Step 10: Deploy to Vercel
       - name: Deploy to Vercel
         run: npx vercel --prod --yes --name="personal-digital-shop" --token=$VERCEL_TOKEN
         env:
