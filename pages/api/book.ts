@@ -1,3 +1,14 @@
+import sgMail from "@sendgrid/mail";
+
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
+await sgMail.send({
+  to: email,
+  from: "your-email@example.com",
+  subject: "Booking Confirmation",
+  text: `Hello ${name}, your booking on ${date} at ${time} has been confirmed.`,
+});
+
 export default async function handler(req, res) {
   if (req.method !== "POST") {
     res.setHeader("Allow", ["POST"]);
