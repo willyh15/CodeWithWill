@@ -31,7 +31,7 @@ jobs:
           npm install @react-three/fiber three --save
           npm install @types/three eslint-config-next --save-dev
           npm install pino --save # Logging library
-          npm install react-modal # Modal library
+          npm install react-modal react-lazyload # Additional libraries
 
       # Step 4: Create Supabase client
       - name: Setup Supabase client
@@ -49,59 +49,20 @@ jobs:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
 
-      # Step 5: Add API routes with logging and error handling
-      - name: Add API routes
-        run: |
-          mkdir -p pages/api
-          echo > pages/api/testSupabase.ts <<- EOL
-          import { supabase } from '@/lib/supabaseClient';
-          import { logger } from '@/utils/logger';
-
-          export default async function handler(req, res) {
-            try {
-              logger.info('Fetching bookings from Supabase');
-              const { data, error } = await supabase.from('bookings').select('*');
-              if (error) {
-                logger.error('Error fetching bookings', { error });
-                throw error;
-              }
-              logger.info('Bookings fetched successfully', { data });
-              res.status(200).json({ bookings: data });
-            } catch (err) {
-              logger.error('Error in fetching bookings', { err });
-              res.status(500).json({ error: 'Failed to fetch bookings' });
-            }
-          }
-          EOL
-
-          echo > pages/api/healthCheck.ts <<- EOL
-          import { supabase } from '@/lib/supabaseClient';
-          import { logger } from '@/utils/logger';
-
-          export default async function handler(req, res) {
-            try {
-              logger.info('Performing Supabase health check');
-              const { error } = await supabase.from('bookings').select('id').limit(1);
-              if (error) {
-                logger.error('Supabase health check failed', { error });
-                throw error;
-              }
-              logger.info('Supabase connection is healthy');
-              res.status(200).json({ status: 'Supabase connection is healthy' });
-            } catch (err) {
-              logger.error('Health check failed', { err });
-              res.status(500).json({
-                status: 'Supabase connection failed',
-                message: err.message,
-              });
-            }
-          }
-          EOL
-
-      # Step 6: Add logging setup
-      - name: Setup logging and environment validation
+      # Step 5: Add utility functions
+      - name: Add Utility Functions
         run: |
           mkdir -p utils
+          echo > utils/detectPerformance.ts <<- EOL
+          export function detectLowPerformance() {
+            const ua = navigator.userAgent;
+            const isLowPerformance =
+              /Android|iPhone|iPad|iPod|Windows Phone/i.test(ua) ||
+              navigator.hardwareConcurrency < 4;
+            return isLowPerformance;
+          }
+          EOL
+
           echo > utils/logger.ts <<- EOL
           import pino from 'pino';
 
@@ -128,11 +89,11 @@ jobs:
           }
           EOL
 
-      # Step 7: Add Three.js Component Validation
+      # Step 6: Validate Three.js components
       - name: Validate Three.js Components
         run: |
-          echo "Validating Three.js animations"
-          echo > pages/components/LoadingIndicator.tsx <<- EOL
+          mkdir -p components
+          echo > components/LoadingIndicator.tsx <<- EOL
           import { Canvas, useFrame } from '@react-three/fiber';
           import { useRef } from 'react';
 
@@ -160,6 +121,44 @@ jobs:
                   <pointLight position={[10, 10, 10]} />
                   <RotatingCube />
                 </Canvas>
+              </div>
+            );
+          }
+          EOL
+
+      # Step 7: Optimize lazy-loaded components
+      - name: Optimize Lazy-Loaded Components
+        run: |
+          mkdir -p components/Layout
+          echo > components/Layout/GlobalLayout.tsx <<- EOL
+          import React, { ReactNode } from "react";
+          import dynamic from "next/dynamic";
+          import { useRouter } from "next/router";
+
+          const StarfieldCanvas = dynamic(() => import("@/components/Starfield/Starfield"), { ssr: false });
+          const ThreeDBackground = dynamic(() => import("@/components/ThreeDBackground"), { ssr: false });
+
+          export default function GlobalLayout({ children }: { children: ReactNode }) {
+            const router = useRouter();
+
+            const routeConfig = {
+              "/": { starColor: "#FFD700", threeColor: 0x6e44ff },
+              "/projects": { starColor: "#FF83FF", threeColor: 0xff0000 },
+              "/contact": { starColor: "#00FF00", threeColor: 0x00ff00 },
+            };
+
+            const { starColor, threeColor } = routeConfig[router.pathname] || {
+              starColor: "#6E44FF",
+              threeColor: 0x00ff00,
+            };
+
+            return (
+              <div className="relative overflow-hidden">
+                <div className="absolute inset-0 -z-10">
+                  <StarfieldCanvas color={starColor} />
+                  <ThreeDBackground cubeColor={threeColor} />
+                </div>
+                <div className="relative z-10">{children}</div>
               </div>
             );
           }
