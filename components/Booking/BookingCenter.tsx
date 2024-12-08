@@ -6,17 +6,25 @@ import { ModalWithVortex } from "@/components/ModalWithVortex";
 import { LoadingIndicator } from "@/components/LoadingIndicator";
 import { useGlobalState } from "@/lib/globalState";
 
+interface Booking {
+  id: number; // Assuming there's an 'id' field in the bookings table
+  name: string;
+  email: string;
+  date: string;
+  time?: string; // Optional if time is not always included
+}
+
 export const BookingCenter = () => {
   const [modal, setModal] = useGlobalState("modal");
   const [loading, setLoading] = useGlobalState("loading");
-  const [bookings, setBookings] = useState([]);
+  const [bookings, setBookings] = useState<Booking[]>([]); // Explicit type annotation
 
   const fetchBookings = async () => {
     setLoading(true);
     try {
-      const { data, error } = await supabase.from("bookings").select("*");
+      const { data, error } = await supabase.from<Booking>("bookings").select("*"); // Type Supabase query
       if (error) throw error;
-      setBookings(data);
+      if (data) setBookings(data); // Ensure data is not null
     } catch (error) {
       setModal({
         isVisible: true,
@@ -28,12 +36,7 @@ export const BookingCenter = () => {
     }
   };
 
-  const handleBookingSubmit = async (formData: {
-    name: string;
-    email: string;
-    date: string;
-    time: string;
-  }) => {
+  const handleBookingSubmit = async (formData: Booking) => {
     setLoading(true);
     try {
       const { error } = await supabase.from("bookings").insert([formData]);
