@@ -1,5 +1,7 @@
-// components/ModalWithVortex.tsx
+import React from "react";
+import { useGlobalState } from "@/lib/globalState";
 import { Canvas, useFrame } from "@react-three/fiber";
+import { motion, AnimatePresence } from "framer-motion";
 import { useRef } from "react";
 
 function SwirlingVortex() {
@@ -28,35 +30,46 @@ function SwirlingVortex() {
   );
 }
 
-export function ModalWithVortex({
-  message,
-  type,
-  onClose,
-}: {
-  message: string;
-  type: "success" | "error";
-  onClose: () => void;
-}) {
+export const ModalWithVortex = () => {
+  const { modal, setModal } = useGlobalState();
+
+  if (!modal.isVisible) return null;
+
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <Canvas className="absolute inset-0">
-        <SwirlingVortex />
-      </Canvas>
-      <div className="relative z-10 bg-white p-4 rounded shadow-lg max-w-sm w-full text-center">
-        <p
-          className={`text-lg font-bold ${
-            type === "success" ? "text-green-500" : "text-red-500"
-          }`}
+    <AnimatePresence>
+      <motion.div
+        className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+      >
+        <Canvas className="absolute inset-0">
+          <SwirlingVortex />
+        </Canvas>
+        <motion.div
+          className="relative z-10 bg-white p-4 rounded shadow-lg max-w-sm w-full text-center"
+          initial={{ scale: 0.9, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          exit={{ scale: 0.9, opacity: 0 }}
+          transition={{ duration: 0.3 }}
         >
-          {message}
-        </p>
-        <button
-          onClick={onClose}
-          className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-        >
-          Close
-        </button>
-      </div>
-    </div>
+          <p
+            className={`text-lg font-bold ${
+              modal.type === "success" ? "text-green-500" : "text-red-500"
+            }`}
+          >
+            {modal.content}
+          </p>
+          <button
+            onClick={() =>
+              setModal({ isVisible: false, type: null, content: "" })
+            }
+            className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+          >
+            Close
+          </button>
+        </motion.div>
+      </motion.div>
+    </AnimatePresence>
   );
-}
+};

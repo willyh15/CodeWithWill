@@ -1,3 +1,8 @@
+import { supabase } from "@/lib/supabaseClient";
+import { oAuth2Client } from "@/lib/googleCalendarClient";
+import { logger } from "@/utils/logger";
+import { google } from "googleapis";
+
 export default async function handler(req, res) {
   if (req.method !== "POST") {
     res.setHeader("Allow", ["POST"]);
@@ -6,8 +11,11 @@ export default async function handler(req, res) {
 
   const { bookingId } = req.body;
 
+  if (!bookingId) {
+    return res.status(400).json({ error: "Missing booking ID." });
+  }
+
   try {
-    // Fetch booking details
     const { data: booking, error: fetchError } = await supabase
       .from("bookings")
       .select("*")
@@ -18,17 +26,26 @@ export default async function handler(req, res) {
       return res.status(404).json({ error: "Booking not found." });
     }
 
-    // Remove from Google Calendar
-    const { data: tokens } = await supabase.from("google_tokens").select("token").single();
-    oAuth2Client.setCredentials(tokens?.token);
+    const { data: tokens, error: tokenError } = await supabase.from("google_tokens").select("token").single();
+    if (tokenError || !tokens?.token) {
+      throw new Error("Google tokens are missing or invalid.");
+    }
+
+    oAuth2Client.setCredentials(tokens.token);
 
     const calendar = google.calendar({ version: "v3", auth: oAuth2Client });
-    await calendar.events.delete({
-      calendarId: "primary",
-      eventId: booking.googleEventId,
-    });
+    if (booking.googleEventId) {
+      try {
+        await calendar.events.delete({
+          calendarId: "primary",
+          eventId: booking.googleEventId,
+        });
+      } catch (err) {
+        logger.error("Failed to delete Google Calendar event", { err });
+        // Allow cancellation to proceed even if Google Calendar fails.
+      }
+    }
 
-    // Remove from Supabase
     const { error: deleteError } = await supabase
       .from("bookings")
       .delete()

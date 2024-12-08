@@ -1,5 +1,7 @@
-import { Canvas, useFrame } from '@react-three/fiber';
-import { useRef } from 'react';
+import React from "react";
+import { useGlobalState } from "@/lib/globalState";
+import { Canvas, useFrame } from "@react-three/fiber";
+import { useRef } from "react";
 
 function RotatingCube() {
   const cubeRef = useRef<THREE.Mesh>(null);
@@ -17,7 +19,11 @@ function RotatingCube() {
   );
 }
 
-export default function LoadingIndicator() {
+export const LoadingIndicator = () => {
+  const { loading } = useGlobalState();
+
+  if (!loading) return null;
+
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <Canvas>
@@ -27,4 +33,4 @@ export default function LoadingIndicator() {
       </Canvas>
     </div>
   );
-}
+};
