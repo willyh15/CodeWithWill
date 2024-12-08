@@ -168,6 +168,14 @@ jobs:
       - name: Lint the code
         run: npm run lint
 
+      # Step: Validate StarfieldCanvas Export
+      - name: Validate StarfieldCanvas Export
+        run: | 
+        node -e "
+        const { StarfieldCanvas } = require('./components/Starfield/Starfield');
+        console.log('StarfieldCanvas export is valid:', !!StarfieldCanvas);
+        "
+
       # Step 9: Build the application
       - name: Build the application
         env:
