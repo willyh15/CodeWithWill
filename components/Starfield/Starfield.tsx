@@ -1,4 +1,3 @@
-// components/Starfield/Starfield.tsx
 import { Canvas, useFrame } from "@react-three/fiber";
 import { useRef } from "react";
 import * as THREE from "three";
@@ -9,11 +8,11 @@ interface StarfieldCanvasProps {
   speed?: number;
 }
 
-export function StarfieldCanvas({
+const StarfieldCanvas = ({
   color = "#6E44FF",
   particleCount = 1000,
   speed = 0.0005,
-}: StarfieldCanvasProps) {
+}: StarfieldCanvasProps) => {
   const pointsRef = useRef<THREE.Points>(null);
 
   const particles = new Float32Array(
@@ -42,4 +41,6 @@ export function StarfieldCanvas({
       </points>
     </Canvas>
   );
-}
+};
+
+export default StarfieldCanvas;
