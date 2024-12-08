@@ -177,7 +177,7 @@ jobs:
           node -e "
           const StarfieldCanvas = require('./components/Starfield/Starfield').default;
           console.log('StarfieldCanvas export is valid:', !!StarfieldCanvas);
-    "
+          "
 
       # Step 10: Lint the code
       - name: Lint the code
