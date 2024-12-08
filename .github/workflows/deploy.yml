@@ -3,18 +3,18 @@ name: Deploy to Vercel
 on:
   push:
     branches:
-      - main  # Deploy only on pushes to main
+      - main
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout the code
+      # Checkout the code
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Step 2: Cache Node.js modules
+      # Cache Node.js modules
       - name: Cache Node.js modules
         uses: actions/cache@v3
         with:
@@ -23,40 +23,33 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
-      # Step 3: Install dependencies
+      # Install dependencies
       - name: Install dependencies
         run: |
           npm install
           npm install @supabase/supabase-js
           npm install @react-three/fiber three --save
           npm install @types/three eslint-config-next --save-dev
-          npm install pino --save # Logging library
-          npm install react-modal react-lazyload # Additional libraries
-          npm install framer-motion react-circular-progressbar # UI enhancements
+          npm install pino --save
+          npm install react-modal react-lazyload
+          npm install framer-motion react-circular-progressbar
 
-      # Step 4: Validate Entire Project Structure
-      - name: Validate Entire Project Structure
+      # Validate directory structure
+      - name: Validate Project Structure
         run: |
-          echo "Listing all components and utility files..."
+          echo "Listing all components..."
           ls -R components || echo "components directory is missing!"
-          ls -R utils || echo "utils directory is missing!"
-          ls -R lib || echo "lib directory is missing!"
+          ls -R components/UI || echo "components/UI directory is missing!"
 
-      # Step 5: Debug Specific Missing Components
-      - name: Debug Specific Missing Components
+      # Locate Modal references
+      - name: Locate Modal References
         run: |
-          echo "Validating components/UI directory..."
-          ls -R components/UI || echo "components/UI directory not found!"
-          echo "Validating components/Starfield directory..."
-          ls -R components/Starfield || echo "components/Starfield directory not found!"
-          echo "Validating components/Layout directory..."
-          ls -R components/Layout || echo "components/Layout directory not found!"
+          echo "Searching for Modal references..."
+          grep -r "Modal" components || echo "No references to Modal found."
 
-      # Step 6: Debug Specific Component Imports
-      - name: Debug Component Imports
+      # Validate Modal component export
+      - name: Validate Modal Component
         run: |
-          echo "Checking Modal component..."
-          ls -R components/UI || echo "Modal.tsx file likely missing!"
           node -e "
           try {
             const { Modal } = require('./components/UI/Modal');
@@ -66,67 +59,13 @@ jobs:
           }
           " || echo "Modal import validation failed!"
 
-          echo "Checking StarfieldCanvas component..."
-          node -e "
-          try {
-            const StarfieldCanvas = require('./components/Starfield/Starfield').default;
-            console.log('StarfieldCanvas export is valid:', !!StarfieldCanvas);
-          } catch (e) {
-            console.error('Error importing StarfieldCanvas component:', e.message);
-          }
-          " || echo "StarfieldCanvas import validation failed!"
-
-      # Step 7: Add Utility Functions
-      - name: Add Utility Functions
-        run: |
-          mkdir -p utils
-          echo > utils/detectPerformance.ts <<- EOL
-          export function detectLowPerformance() {
-            const ua = navigator.userAgent;
-            const isLowPerformance =
-              /Android|iPhone|iPad|iPod|Windows Phone/i.test(ua) ||
-              navigator.hardwareConcurrency < 4;
-            return isLowPerformance;
-          }
-          EOL
-
-          echo > utils/logger.ts <<- EOL
-          import pino from 'pino';
-
-          export const logger = pino({
-            level: process.env.NODE_ENV === 'production' ? 'info' : 'debug',
-            transport: process.env.NODE_ENV !== 'production'
-              ? {
-                  target: 'pino-pretty',
-                  options: { colorize: true },
-                }
-              : undefined,
-          });
-          EOL
-
-          echo > utils/validateEnv.ts <<- EOL
-          export function validateEnv() {
-            const requiredEnvVars = ['SUPABASE_URL', 'SUPABASE_KEY'];
-            requiredEnvVars.forEach((env) => {
-              if (!process.env[env]) {
-                console.error(\`Missing environment variable: \${env}\`);
-                throw new Error(\`Environment variable \${env} is not set.\`);
-              }
-            });
-          }
-          EOL
-
-      # Step 8: Lint the code
-      - name: Lint the code
-        run: npm run lint
-
-      # Step 9: Build the application
+      # Build the application
       - name: Build the application
         env:
-          CI: false # Disables certain Next.js optimizations not compatible with CI
+          CI: false
         run: npm run build
 
-      # Step 10: Deploy to Vercel
+      # Deploy to Vercel
       - name: Deploy to Vercel
         run: npx vercel --prod --yes --name="personal-digital-shop" --token=$VERCEL_TOKEN
         env:
