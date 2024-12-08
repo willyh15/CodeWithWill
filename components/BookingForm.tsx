@@ -1,6 +1,15 @@
 import React, { useState } from "react";
 
-export default function BookingForm() {
+interface BookingFormProps {
+  onSubmit: (formData: {
+    name: string;
+    email: string;
+    date: string;
+    time: string;
+  }) => void;
+}
+
+export default function BookingForm({ onSubmit }: BookingFormProps) {
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -13,23 +22,9 @@ export default function BookingForm() {
     setForm({ ...form, [name]: value });
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    try {
-      const res = await fetch("/api/book", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
-      });
-
-      if (!res.ok) throw new Error("Failed to submit booking");
-
-      alert("Booking submitted successfully!");
-    } catch (error) {
-      console.error(error);
-      alert("There was an error submitting your booking.");
-    }
+    onSubmit(form);
   };
 
   return (
