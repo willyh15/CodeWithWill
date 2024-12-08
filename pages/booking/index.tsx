@@ -1,5 +1,5 @@
-import BookingCTA from "@/components/Booking/BookingCTA";
+import { BookingCenter } from "@/components/Booking/BookingCenter";
 
 export default function BookingPage() {
-  return <BookingCTA />;
+  return <BookingCenter />;
 }
