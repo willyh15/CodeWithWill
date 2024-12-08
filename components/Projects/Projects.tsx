@@ -36,48 +36,19 @@ export function Projects() {
   ];
 
   return (
-    <motion.section
-      id="projects"
-      className="projects-section py-16 px-6 relative text-center overflow-hidden"
-      initial={{ opacity: 0, y: 50 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8 }}
-    >
-      {/* Starfield Background */}
-      <div className="absolute inset-0 -z-10">
-        <StarfieldCanvas color="#FF83FF" particleCount={500} speed={0.001} />
-      </div>
-
-      {/* Foreground Content */}
-      <motion.h2
-        className="text-4xl font-extrabold text-neon drop-shadow-md mb-12 relative z-10"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.2, duration: 0.8 }}
-      >
-        My Projects
-      </motion.h2>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 relative z-10">
+    <section className="relative text-center py-16 px-6">
+      <h2 className="text-4xl font-extrabold text-neon mb-12">My Projects</h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {projects.map((project, idx) => (
-          <motion.div
+          <div
             key={idx}
-            className="project-card relative bg-gradient-to-br from-gray-800 to-gray-900 bg-opacity-70 backdrop-blur-lg rounded-lg p-8 shadow-lg overflow-hidden group"
-            whileHover={{ scale: 1.05 }}
-            transition={{ duration: 0.4 }}
+            className="bg-gray-800 p-6 rounded-lg shadow-lg transition-transform hover:scale-105"
           >
-            <h3 className="text-2xl font-bold text-gray-300 mb-4 group-hover:text-neon transition">
-              {project.title}
-            </h3>
-            <p className="text-sm font-semibold text-gray-500 uppercase mb-2">
-              {project.category}
-            </p>
-            <p className="text-gray-400">{project.description}</p>
-          </motion.div>
+            <h3 className="text-2xl font-bold text-gray-300">{project.title}</h3>
+            <p className="text-gray-400 mt-2">{project.description}</p>
+          </div>
         ))}
       </div>
-    </motion.section>
+    </section>
   );
 }
-
-export default Projects;
