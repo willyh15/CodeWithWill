@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, ReactNode } from "react";
+import React, { createContext, useContext, useState, ReactNode, Dispatch, SetStateAction } from "react";
 
 interface ModalState {
   isVisible: boolean;
@@ -7,10 +7,8 @@ interface ModalState {
 }
 
 interface GlobalStateContextProps {
-  modal: ModalState;
-  setModal: (modal: ModalState) => void;
-  loading: boolean;
-  setLoading: (loading: boolean) => void;
+  modal: [ModalState, Dispatch<SetStateAction<ModalState>>];
+  loading: [boolean, Dispatch<SetStateAction<boolean>>];
 }
 
 const GlobalStateContext = createContext<GlobalStateContextProps | undefined>(
@@ -26,18 +24,18 @@ export const GlobalStateProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(false);
 
   return (
-    <GlobalStateContext.Provider value={{ modal, setModal, loading, setLoading }}>
+    <GlobalStateContext.Provider value={{ modal: [modal, setModal], loading: [loading, setLoading] }}>
       {children}
     </GlobalStateContext.Provider>
   );
 };
 
-export const useGlobalState = () => {
+export const useGlobalState = <K extends keyof GlobalStateContextProps>(
+  key: K
+): GlobalStateContextProps[K] => {
   const context = useContext(GlobalStateContext);
   if (!context) {
-    throw new Error(
-      "useGlobalState must be used within a GlobalStateProvider"
-    );
+    throw new Error("useGlobalState must be used within a GlobalStateProvider");
   }
-  return context;
+  return context[key];
 };
