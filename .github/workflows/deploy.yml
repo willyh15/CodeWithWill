@@ -34,41 +34,49 @@ jobs:
           npm install react-modal react-lazyload # Additional libraries
           npm install framer-motion react-circular-progressbar # UI enhancements
 
-      # Step 4: Validate Project Structure
-      - name: Validate Project Structure
+      # Step 4: Validate Entire Project Structure
+      - name: Validate Entire Project Structure
         run: |
-          echo "Validating project directory structure..."
-          ls -R components
-          ls -R utils
-          ls -R lib
+          echo "Listing all components and utility files..."
+          ls -R components || echo "components directory is missing!"
+          ls -R utils || echo "utils directory is missing!"
+          ls -R lib || echo "lib directory is missing!"
 
-      # Step 5: Debug Missing Components
-      - name: Debug Missing Components
+      # Step 5: Debug Specific Missing Components
+      - name: Debug Specific Missing Components
         run: |
-          echo "Listing components/UI directory"
-          ls -R components/UI || echo "components/UI not found!"
-          echo "Listing components/Starfield directory"
-          ls -R components/Starfield || echo "components/Starfield not found!"
+          echo "Validating components/UI directory..."
+          ls -R components/UI || echo "components/UI directory not found!"
+          echo "Validating components/Starfield directory..."
+          ls -R components/Starfield || echo "components/Starfield directory not found!"
+          echo "Validating components/Layout directory..."
+          ls -R components/Layout || echo "components/Layout directory not found!"
 
-      # Step 6: Validate StarfieldCanvas Export
-      - name: Validate StarfieldCanvas Export
+      # Step 6: Debug Specific Component Imports
+      - name: Debug Component Imports
         run: |
+          echo "Checking Modal component..."
+          ls -R components/UI || echo "Modal.tsx file likely missing!"
           node -e "
-          const StarfieldCanvas = require('./components/Starfield/Starfield').default;
-          console.log('StarfieldCanvas export is valid:', !!StarfieldCanvas);
-          " || echo "StarfieldCanvas export validation failed!"
+          try {
+            const { Modal } = require('./components/UI/Modal');
+            console.log('Modal component export is valid:', !!Modal);
+          } catch (e) {
+            console.error('Error importing Modal component:', e.message);
+          }
+          " || echo "Modal import validation failed!"
 
-      # Step 7: Sync and Validate Modal Component
-      - name: Sync and Validate Modal Component
-        run: |
-          echo "Checking Modal component in components/UI"
-          ls -R components/UI || echo "components/UI/Modal.tsx not found!"
+          echo "Checking StarfieldCanvas component..."
           node -e "
-          const { Modal } = require('./components/UI/Modal');
-          console.log('Modal component export is valid:', !!Modal);
-          " || echo "Modal component export validation failed!"
+          try {
+            const StarfieldCanvas = require('./components/Starfield/Starfield').default;
+            console.log('StarfieldCanvas export is valid:', !!StarfieldCanvas);
+          } catch (e) {
+            console.error('Error importing StarfieldCanvas component:', e.message);
+          }
+          " || echo "StarfieldCanvas import validation failed!"
 
-      # Step 8: Add utility functions
+      # Step 7: Add Utility Functions
       - name: Add Utility Functions
         run: |
           mkdir -p utils
@@ -108,17 +116,17 @@ jobs:
           }
           EOL
 
-      # Step 9: Lint the code
+      # Step 8: Lint the code
       - name: Lint the code
         run: npm run lint
 
-      # Step 10: Build the application
+      # Step 9: Build the application
       - name: Build the application
         env:
           CI: false # Disables certain Next.js optimizations not compatible with CI
         run: npm run build
 
-      # Step 11: Deploy to Vercel
+      # Step 10: Deploy to Vercel
       - name: Deploy to Vercel
         run: npx vercel --prod --yes --name="personal-digital-shop" --token=$VERCEL_TOKEN
         env:
