@@ -165,7 +165,13 @@ jobs:
           }
           EOL
 
-      # Step 8: Validate StarfieldCanvas Export
+      # Step 8: Debug Directory Structure
+      - name: Debug Directory Structure
+        run: |
+          echo "Listing components directory"
+          ls -R components
+
+      # Step 9: Validate StarfieldCanvas Export
       - name: Validate StarfieldCanvas Export
         run: | 
           node -e "
@@ -173,17 +179,17 @@ jobs:
           console.log('StarfieldCanvas export is valid:', !!StarfieldCanvas);
           "
 
-      # Step 9: Lint the code
+      # Step 10: Lint the code
       - name: Lint the code
         run: npm run lint
 
-      # Step 10: Build the application
+      # Step 11: Build the application
       - name: Build the application
         env:
           CI: false # Disables certain Next.js optimizations not compatible with CI
         run: npm run build
 
-      # Step 11: Deploy to Vercel
+      # Step 12: Deploy to Vercel
       - name: Deploy to Vercel
         run: npx vercel --prod --yes --name="personal-digital-shop" --token=$VERCEL_TOKEN
         env:
