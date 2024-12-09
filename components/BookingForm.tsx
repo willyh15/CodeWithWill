@@ -1,28 +1,23 @@
 import React, { useState } from "react";
 
-interface BookingFormProps {
-  onSubmit: (formData: {
-    name: string;
-    email: string;
-    date: string;
-    time: string;
-  }) => void;
-}
-
-export default function BookingForm({ onSubmit }: BookingFormProps) {
+export default function BookingForm({
+  onSubmit,
+}: {
+  onSubmit: (formData: { name: string; email: string; date: string; notes?: string }) => void;
+}) {
   const [form, setForm] = useState({
     name: "",
     email: "",
     date: "",
-    time: "",
+    notes: "",
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setForm({ ...form, [name]: value });
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     onSubmit(form);
   };
@@ -64,14 +59,12 @@ export default function BookingForm({ onSubmit }: BookingFormProps) {
         required
       />
 
-      <label className="block text-white mb-2">Time</label>
-      <input
-        type="time"
-        name="time"
-        value={form.time}
+      <label className="block text-white mb-2">Notes</label>
+      <textarea
+        name="notes"
+        value={form.notes}
         onChange={handleChange}
         className="w-full p-2 mb-4 rounded"
-        required
       />
 
       <button
