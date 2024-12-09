@@ -28,38 +28,21 @@ jobs:
         run: |
           npm install
           npm install @supabase/supabase-js
+          npm install @react-three/fiber three
           npm install react-chartjs-2 chart.js
           npm install --save-dev @types/chart.js
-          npm install @react-three/fiber three --save
-          npm install @types/three eslint-config-next --save-dev
-          npm install pino --save
           npm install react-modal react-lazyload
           npm install framer-motion react-circular-progressbar
 
-      # Validate directory structure
-      - name: Validate Project Structure
-        run: |
-          echo "Listing all components..."
-          ls -R components || echo "components directory is missing!"
-          ls -R components/UI || echo "components/UI directory is missing!"
-
-      # Locate Modal references
-      - name: Locate Modal References
-        run: |
-          echo "Searching for Modal references..."
-          grep -r "Modal" components || echo "No references to Modal found."
-
-      # Validate Modal component export
+      # Validate Modal component
       - name: Validate Modal Component
         run: |
-          node -e "
-          try {
-            const { Modal } = require('./components/UI/Modal');
-            console.log('Modal component export is valid:', !!Modal);
-          } catch (e) {
-            console.error('Error importing Modal component:', e.message);
-          }
-          " || echo "Modal import validation failed!"
+          if [ -f ./components/UI/Modal.tsx ]; then
+            echo "Modal component found."
+          else
+            echo "Modal component missing!"
+            exit 1
+          fi
 
       # Build the application
       - name: Build the application
@@ -69,6 +52,6 @@ jobs:
 
       # Deploy to Vercel
       - name: Deploy to Vercel
-        run: npx vercel --prod --yes --name="personal-digital-shop" --token=$VERCEL_TOKEN
+        run: npx vercel --prod --yes --token=$VERCEL_TOKEN
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
