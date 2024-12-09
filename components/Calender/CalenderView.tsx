@@ -1,18 +1,19 @@
-import React, { useState, useEffect } from "react";
-import { supabase } from "@/lib/supabaseClient";
+import React from "react";
 
-const CalendarView = () => {
-  const [bookings, setBookings] = useState([]);
+interface Booking {
+  id: string;
+  name: string;
+  email: string;
+  date: string;
+  notes?: string;
+  created_at: string;
+}
 
-  useEffect(() => {
-    const fetchBookings = async () => {
-      const { data, error } = await supabase.from("bookings").select("*");
-      if (!error) setBookings(data);
-    };
+interface CalendarViewProps {
+  bookings: Booking[];
+}
 
-    fetchBookings();
-  }, []);
-
+const CalendarView: React.FC<CalendarViewProps> = ({ bookings }) => {
   return (
     <div className="calendar-view">
       <h2 className="text-3xl font-bold text-center mb-6">Your Bookings</h2>
@@ -25,6 +26,7 @@ const CalendarView = () => {
             <h3 className="text-xl font-bold">{booking.name}</h3>
             <p>{booking.email}</p>
             <p>{new Date(booking.date).toLocaleDateString()}</p>
+            {booking.notes && <p>{booking.notes}</p>}
           </div>
         ))}
       </div>
