@@ -55,11 +55,10 @@ const LiveDataChart = () => {
 
   useEffect(() => {
     const fetchBookings = async () => {
-      // Specify the correct number of generic type arguments
-      const { data, error } = await supabase.from<Booking, Booking[]>("bookings").select("*");
+      const { data, error } = await supabase.from("bookings").select("*"); // Removed type arguments
 
       if (!error && data) {
-        const dates = data.map((booking) => booking.date);
+        const dates = data.map((booking: Booking) => booking.date); // Explicitly cast the data
         const dateCounts = dates.reduce((acc: { [x: string]: number }, date: string) => {
           acc[date] = (acc[date] || 0) + 1;
           return acc;
