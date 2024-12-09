@@ -27,8 +27,9 @@ export const BookingCenter = () => {
   const fetchBookings = async () => {
     setLoading(true);
     try {
+      // Use two generic arguments: row type and optional schema type
       const { data, error } = await supabase
-        .from<Booking>("bookings")
+        .from<Booking, any>("bookings") // Use `any` for the second argument if unsure
         .select("*");
       if (error) throw error;
       if (data) setBookings(data);
@@ -47,7 +48,7 @@ export const BookingCenter = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      const { error } = await supabase.from<Booking>("bookings").insert([
+      const { error } = await supabase.from<Booking, any>("bookings").insert([
         {
           name: formData.name,
           email: formData.email,
