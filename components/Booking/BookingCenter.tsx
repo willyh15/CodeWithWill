@@ -26,21 +26,21 @@ export const BookingCenter = () => {
   });
 
   const fetchBookings = async () => {
-    setLoading(true);
-    try {
-      const { data, error } = await supabase.from("bookings").select<Booking>("*");
-      if (error) throw error;
-      if (data) setBookings(data);
-    } catch (error) {
-      setModal({
-        isVisible: true,
-        type: "error",
-        content: "Failed to fetch bookings. Please try again.",
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
+  setLoading(true);
+  try {
+    const { data, error } = await supabase.from("bookings").select("*");
+    if (error) throw error;
+    if (data) setBookings(data);
+  } catch (error) {
+    setModal({
+      isVisible: true,
+      type: "error",
+      content: "Failed to fetch bookings. Please try again.",
+    });
+  } finally {
+    setLoading(false);
+  }
+};
 
   const handleBookingSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
