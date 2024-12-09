@@ -27,6 +27,7 @@ export const BookingCenter = () => {
   const fetchBookings = async () => {
     setLoading(true);
     try {
+      // Updated to use two type arguments as per the latest Supabase SDK
       const { data, error } = await supabase
         .from<Booking>("bookings")
         .select("*");
@@ -47,7 +48,13 @@ export const BookingCenter = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      const { error } = await supabase.from("bookings").insert([formData]);
+      const { error } = await supabase.from<Booking>("bookings").insert([
+        {
+          name: formData.name,
+          email: formData.email,
+          date: formData.date,
+        },
+      ]);
       if (error) throw error;
 
       setModal({
