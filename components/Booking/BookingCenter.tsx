@@ -7,11 +7,12 @@ import { LoadingIndicator } from "@/components/LoadingIndicator";
 import { useGlobalState } from "@/lib/globalState";
 
 interface Booking {
-  id: number; // Assuming there's an 'id' field in the bookings table
+  id: string; // UUID type
   name: string;
   email: string;
-  date: string;
-  time?: string; // Optional if time is not always included
+  date: string; // Date in ISO format
+  notes?: string; // Optional notes field
+  created_at: string; // Timestamp in ISO format
 }
 
 export const BookingCenter = () => {
@@ -22,7 +23,9 @@ export const BookingCenter = () => {
   const fetchBookings = async () => {
     setLoading(true);
     try {
-      const { data, error } = await supabase.from<Booking>("bookings").select("*"); // Type Supabase query
+      const { data, error } = await supabase
+        .from<Booking>("bookings")
+        .select("*");
       if (error) throw error;
       if (data) setBookings(data); // Ensure data is not null
     } catch (error) {
@@ -36,7 +39,7 @@ export const BookingCenter = () => {
     }
   };
 
-  const handleBookingSubmit = async (formData: Booking) => {
+  const handleBookingSubmit = async (formData: Omit<Booking, "id" | "created_at">) => {
     setLoading(true);
     try {
       const { error } = await supabase.from("bookings").insert([formData]);
