@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import CalendarView from "@/components/Calender/CalenderView";
-import BookingForm from "@/components/BookingForm";
 import { ModalWithVortex } from "@/components/ModalWithVortex";
 import { LoadingIndicator } from "@/components/LoadingIndicator";
 import { useGlobalState } from "@/lib/globalState";
@@ -19,15 +18,20 @@ export const BookingCenter = () => {
   const [modal, setModal] = useGlobalState("modal");
   const [loading, setLoading] = useGlobalState("loading");
   const [bookings, setBookings] = useState<Booking[]>([]);
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    date: "",
+  });
 
   const fetchBookings = async () => {
     setLoading(true);
     try {
       const { data, error } = await supabase
-        .from<Booking>("bookings") // Specify only the row type here
+        .from<Booking>("bookings")
         .select("*");
       if (error) throw error;
-      if (data) setBookings(data); // Ensure data is not null
+      if (data) setBookings(data);
     } catch (error) {
       setModal({
         isVisible: true,
@@ -39,7 +43,8 @@ export const BookingCenter = () => {
     }
   };
 
-  const handleBookingSubmit = async (formData: Omit<Booking, "id" | "created_at">) => {
+  const handleBookingSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
     setLoading(true);
     try {
       const { error } = await supabase.from("bookings").insert([formData]);
@@ -53,6 +58,7 @@ export const BookingCenter = () => {
 
       // Refresh bookings
       fetchBookings();
+      setFormData({ name: "", email: "", date: "" });
     } catch (error) {
       setModal({
         isVisible: true,
@@ -64,6 +70,10 @@ export const BookingCenter = () => {
     }
   };
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
   return (
     <div className="booking-center">
       <h1 className="text-4xl font-extrabold text-center mb-6 text-white">
@@ -72,7 +82,42 @@ export const BookingCenter = () => {
 
       {/* Booking Form */}
       <div className="mb-12">
-        <BookingForm onSubmit={handleBookingSubmit} />
+        <form onSubmit={handleBookingSubmit} className="space-y-4">
+          <input
+            type="text"
+            name="name"
+            placeholder="Your Name"
+            value={formData.name}
+            onChange={handleInputChange}
+            className="w-full p-3 rounded-lg"
+            required
+          />
+          <input
+            type="email"
+            name="email"
+            placeholder="Your Email"
+            value={formData.email}
+            onChange={handleInputChange}
+            className="w-full p-3 rounded-lg"
+            required
+          />
+          <input
+            type="date"
+            name="date"
+            placeholder="Select Date"
+            value={formData.date}
+            onChange={handleInputChange}
+            className="w-full p-3 rounded-lg"
+            required
+          />
+          <button
+            type="submit"
+            className="w-full bg-blue-500 text-white py-3 rounded-lg"
+            disabled={loading}
+          >
+            {loading ? "Booking..." : "Confirm Booking"}
+          </button>
+        </form>
       </div>
 
       {/* Calendar View */}
