@@ -1,57 +1,18 @@
-name: Deploy to Vercel
+# Cache Node.js modules
+- name: Cache Node.js modules
+  uses: actions/cache@v3
+  with:
+    path: ~/.npm
+    key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+    restore-keys: |
+      ${{ runner.os }}-node-
 
-on:
-  push:
-    branches:
-      - main
+# Install Dependencies
+- name: Install dependencies
+  run: npm install
 
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-
-    steps:
-      # Checkout the code
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      # Cache Node.js modules
-      - name: Cache Node.js modules
-        uses: actions/cache@v3
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-
-      # Install dependencies
-      - name: Install dependencies
-        run: |
-          npm install
-          npm install @supabase/supabase-js
-          npm install @react-three/fiber three
-          npm install react-chartjs-2 chart.js
-          npm install --save-dev @types/chart.js
-          npm install react-modal react-lazyload
-          npm install framer-motion react-circular-progressbar
-
-      # Validate Modal component
-      - name: Validate Modal Component
-        run: |
-          if [ -f ./components/UI/Modal.tsx ]; then
-            echo "Modal component found."
-          else
-            echo "Modal component missing!"
-            exit 1
-          fi
-
-      # Build the application
-      - name: Build the application
-        env:
-          CI: false
-        run: npm run build
-
-      # Deploy to Vercel
-      - name: Deploy to Vercel
-        run: npx vercel --prod --yes --token=$VERCEL_TOKEN
-        env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+# Build
+- name: Build the application
+  env:
+    CI: false
+  run: npm run build
