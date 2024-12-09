@@ -28,8 +28,8 @@ export const BookingCenter = () => {
   const fetchBookings = async () => {
     setLoading(true);
     try {
-      // Correctly specify the two type arguments for from()
-      const { data, error } = await supabase.from<Booking, null>("bookings").select("*");
+      // Do not use generic arguments unless necessary
+      const { data, error } = await supabase.from("bookings").select<Booking>("*");
       if (error) throw error;
       if (data) setBookings(data);
     } catch (error) {
@@ -47,15 +47,13 @@ export const BookingCenter = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      const { error } = await supabase
-        .from<Booking, null>("bookings")
-        .insert([
-          {
-            name: formData.name,
-            email: formData.email,
-            date: formData.date,
-          },
-        ]);
+      const { error } = await supabase.from("bookings").insert([
+        {
+          name: formData.name,
+          email: formData.email,
+          date: formData.date,
+        },
+      ]);
       if (error) throw error;
 
       setModal({
