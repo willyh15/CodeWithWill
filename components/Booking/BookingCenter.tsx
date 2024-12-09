@@ -5,7 +5,6 @@ import { Modal } from "@/components/UI/Modal";
 import { LoadingIndicator } from "@/components/LoadingIndicator";
 import { useGlobalState } from "@/lib/globalState";
 
-// Define the Booking type
 interface Booking {
   id: string; // UUID primary key
   name: string;
@@ -28,8 +27,9 @@ export const BookingCenter = () => {
   const fetchBookings = async () => {
     setLoading(true);
     try {
-      // Fetch bookings using the table name as a string
-      const { data, error } = await supabase.from<Booking>("bookings").select("*");
+      const { data, error } = await supabase
+        .from<Booking>("bookings")
+        .select("*");
       if (error) throw error;
       if (data) setBookings(data);
     } catch (error) {
@@ -47,9 +47,13 @@ export const BookingCenter = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      const { error } = await supabase
-        .from<Booking>("bookings")
-        .insert([{ ...formData }]);
+      const { error } = await supabase.from<Booking>("bookings").insert([
+        {
+          name: formData.name,
+          email: formData.email,
+          date: formData.date,
+        },
+      ]);
       if (error) throw error;
 
       setModal({
@@ -131,7 +135,7 @@ export const BookingCenter = () => {
         isVisible={modal.isVisible}
         onClose={() => setModal({ isVisible: false, type: null, content: "" })}
         title={modal.type === "success" ? "Success" : "Error"}
-        content={modal.content}
+        content={modal.content || "No content available."} {/* Provide fallback */}
       />
       <LoadingIndicator />
     </div>
