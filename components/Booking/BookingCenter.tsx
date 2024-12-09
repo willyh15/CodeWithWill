@@ -24,7 +24,7 @@ export const BookingCenter = () => {
     setLoading(true);
     try {
       const { data, error } = await supabase
-        .from<Booking, "id">("bookings") // Provide both row type and primary key type
+        .from<Booking>("bookings") // Only pass the row type here
         .select("*");
       if (error) throw error;
       if (data) setBookings(data); // Ensure data is not null
