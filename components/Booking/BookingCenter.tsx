@@ -28,7 +28,7 @@ export const BookingCenter = () => {
     setLoading(true);
     try {
       const { data, error } = await supabase
-        .from<Booking, never>("bookings")
+        .from<Booking, null>("bookings") // Use `null` for the second generic argument
         .select("*");
       if (error) throw error;
       if (data) setBookings(data);
@@ -47,13 +47,15 @@ export const BookingCenter = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      const { error } = await supabase.from<Booking, never>("bookings").insert([
-        {
-          name: formData.name,
-          email: formData.email,
-          date: formData.date,
-        },
-      ]);
+      const { error } = await supabase
+        .from<Booking, null>("bookings") // Use `null` for the second generic argument
+        .insert([
+          {
+            name: formData.name,
+            email: formData.email,
+            date: formData.date,
+          },
+        ]);
       if (error) throw error;
 
       setModal({
