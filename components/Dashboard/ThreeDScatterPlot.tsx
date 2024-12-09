@@ -17,14 +17,14 @@ const ThreeDScatterPlot = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const { data, error } = await supabase.from<Booking>("bookings").select("*");
+      const { data, error } = await supabase.from<Booking, Booking[]>("bookings").select("*");
       if (error || !data) {
         console.error("Failed to fetch data", error);
         return;
       }
 
       const positions = new Float32Array(
-        data.map((_, i) => [i * 2, Math.random() * 10, Math.random() * 10]).flat()
+        data.map((booking, i) => [i * 2, Math.random() * 10, Math.random() * 10]).flat()
       );
 
       if (pointsRef.current) {
