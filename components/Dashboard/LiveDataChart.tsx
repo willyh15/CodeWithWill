@@ -25,8 +25,21 @@ interface Booking {
   created_at: string;
 }
 
+// Define the type for chart data
+interface ChartData {
+  labels: string[];
+  datasets: {
+    label: string;
+    data: number[];
+    borderColor: string;
+    backgroundColor: string;
+    borderWidth: number;
+    fill: boolean;
+  }[];
+}
+
 const LiveDataChart = () => {
-  const [chartData, setChartData] = useState({
+  const [chartData, setChartData] = useState<ChartData>({
     labels: [], // X-axis labels
     datasets: [
       {
@@ -45,7 +58,7 @@ const LiveDataChart = () => {
       const { data, error } = await supabase.from<Booking>("bookings").select("*");
 
       if (!error && data) {
-        const dates = data.map((booking: Booking) => booking.date); // Explicitly type `booking`
+        const dates = data.map((booking: Booking) => booking.date);
         const dateCounts = dates.reduce((acc: { [x: string]: number }, date: string) => {
           acc[date] = (acc[date] || 0) + 1;
           return acc;
