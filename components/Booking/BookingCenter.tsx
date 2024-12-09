@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import CalendarView from "@/components/Calender/CalenderView";
-import { ModalWithVortex } from "@/components/ModalWithVortex";
+import { Modal } from "@/components/UI/Modal";
 import { LoadingIndicator } from "@/components/LoadingIndicator";
 import { useGlobalState } from "@/lib/globalState";
 
@@ -27,9 +27,8 @@ export const BookingCenter = () => {
   const fetchBookings = async () => {
     setLoading(true);
     try {
-      // Updated to use two type arguments as per the latest Supabase SDK
       const { data, error } = await supabase
-        .from<Booking>("bookings")
+        .from<Booking, never>("bookings")
         .select("*");
       if (error) throw error;
       if (data) setBookings(data);
@@ -48,7 +47,7 @@ export const BookingCenter = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      const { error } = await supabase.from<Booking>("bookings").insert([
+      const { error } = await supabase.from<Booking, never>("bookings").insert([
         {
           name: formData.name,
           email: formData.email,
@@ -63,7 +62,6 @@ export const BookingCenter = () => {
         content: "Your booking was successful!",
       });
 
-      // Refresh bookings
       fetchBookings();
       setFormData({ name: "", email: "", date: "" });
     } catch (error) {
@@ -133,7 +131,12 @@ export const BookingCenter = () => {
       </div>
 
       {/* Modals and Loading */}
-      <ModalWithVortex />
+      <Modal
+        isVisible={modal.isVisible}
+        onClose={() => setModal({ isVisible: false, type: null, content: "" })}
+        title={modal.type === "success" ? "Success" : "Error"}
+        content={modal.content}
+      />
       <LoadingIndicator />
     </div>
   );
