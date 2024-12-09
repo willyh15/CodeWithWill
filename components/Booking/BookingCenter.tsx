@@ -28,7 +28,6 @@ export const BookingCenter = () => {
   const fetchBookings = async () => {
     setLoading(true);
     try {
-      // Correctly set the second generic type to `any` for flexibility
       const { data, error } = await supabase
         .from<Booking, any>("bookings")
         .select("*");
@@ -139,7 +138,7 @@ export const BookingCenter = () => {
         isVisible={modal.isVisible}
         onClose={() => setModal({ isVisible: false, type: null, content: "" })}
         title={modal.type === "success" ? "Success" : "Error"}
-        content={modal.content || "No content available."} // Provide fallback content
+        content={String(modal.content) || "No content available."} // Ensure content is a string
       />
       <LoadingIndicator />
     </div>
