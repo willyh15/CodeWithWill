@@ -5,7 +5,7 @@ import { Modal } from "@/components/UI/Modal";
 import { LoadingIndicator } from "@/components/LoadingIndicator";
 import { useGlobalState } from "@/lib/globalState";
 
-// Adjust Booking type to match Supabase constraints
+// Define the Booking type to align with Supabase's table schema
 interface Booking {
   id: string; // UUID primary key
   name: string;
@@ -28,9 +28,9 @@ export const BookingCenter = () => {
   const fetchBookings = async () => {
     setLoading(true);
     try {
-      // Explicitly use `Record<string, any>` for the second generic argument
+      // Correctly set the second generic type to `any` for flexibility
       const { data, error } = await supabase
-        .from<Booking, Record<string, any>>("bookings")
+        .from<Booking, any>("bookings")
         .select("*");
       if (error) throw error;
       if (data) setBookings(data);
@@ -50,7 +50,7 @@ export const BookingCenter = () => {
     setLoading(true);
     try {
       const { error } = await supabase
-        .from<Booking, Record<string, any>>("bookings")
+        .from<Booking, any>("bookings")
         .insert([
           {
             name: formData.name,
