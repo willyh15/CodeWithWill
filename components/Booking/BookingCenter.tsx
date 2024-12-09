@@ -7,7 +7,7 @@ import { LoadingIndicator } from "@/components/LoadingIndicator";
 import { useGlobalState } from "@/lib/globalState";
 
 interface Booking {
-  id: string; // UUID type
+  id: string; // UUID primary key
   name: string;
   email: string;
   date: string; // Date in ISO format
@@ -18,13 +18,13 @@ interface Booking {
 export const BookingCenter = () => {
   const [modal, setModal] = useGlobalState("modal");
   const [loading, setLoading] = useGlobalState("loading");
-  const [bookings, setBookings] = useState<Booking[]>([]); // Explicit type annotation
+  const [bookings, setBookings] = useState<Booking[]>([]);
 
   const fetchBookings = async () => {
     setLoading(true);
     try {
       const { data, error } = await supabase
-        .from<Booking>("bookings")
+        .from<Booking, "id">("bookings") // Provide both row type and primary key type
         .select("*");
       if (error) throw error;
       if (data) setBookings(data); // Ensure data is not null
