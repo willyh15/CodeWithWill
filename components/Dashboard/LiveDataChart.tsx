@@ -1,10 +1,29 @@
 import React, { useEffect, useState } from "react";
 import { Line } from "react-chartjs-2";
-import { Chart as ChartJS, LineElement, CategoryScale, LinearScale, PointElement, Title, Tooltip, Legend } from "chart.js";
+import {
+  Chart as ChartJS,
+  LineElement,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
 import { supabase } from "@/lib/supabaseClient";
 
 // Register required components for Chart.js
 ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement, Title, Tooltip, Legend);
+
+// Define the Booking type
+interface Booking {
+  id: string;
+  name: string;
+  email: string;
+  date: string; // Date in ISO format
+  notes?: string;
+  created_at: string;
+}
 
 const LiveDataChart = () => {
   const [chartData, setChartData] = useState({
@@ -23,11 +42,11 @@ const LiveDataChart = () => {
 
   useEffect(() => {
     const fetchBookings = async () => {
-      const { data, error } = await supabase.from("bookings").select("*");
+      const { data, error } = await supabase.from<Booking>("bookings").select("*");
 
       if (!error && data) {
-        const dates = data.map((booking) => booking.date);
-        const dateCounts = dates.reduce((acc: { [x: string]: any; }, date: string | number) => {
+        const dates = data.map((booking: Booking) => booking.date); // Explicitly type `booking`
+        const dateCounts = dates.reduce((acc: { [x: string]: number }, date: string) => {
           acc[date] = (acc[date] || 0) + 1;
           return acc;
         }, {});
