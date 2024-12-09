@@ -20,5 +20,3 @@ export const Modal: React.FC<ModalProps> = ({ isVisible, onClose, title, content
     </div>
   );
 };
-
-export default function Modal;
