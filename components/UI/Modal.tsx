@@ -1,10 +1,10 @@
-import React, { ReactNode } from "react";
+import React from "react";
 
 interface ModalProps {
   isVisible: boolean;
   onClose: () => void;
   title: string;
-  content: string | ReactNode; // Allow ReactNode for content
+  content: string;
 }
 
 export const Modal: React.FC<ModalProps> = ({ isVisible, onClose, title, content }) => {
@@ -14,7 +14,7 @@ export const Modal: React.FC<ModalProps> = ({ isVisible, onClose, title, content
     <div className="modal">
       <div className="modal-content">
         <h2>{title}</h2>
-        <div>{content}</div> {/* Safely render ReactNode */}
+        <p>{content}</p>
         <button onClick={onClose}>Close</button>
       </div>
     </div>
