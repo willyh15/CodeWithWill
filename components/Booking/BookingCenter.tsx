@@ -5,6 +5,7 @@ import { Modal } from "@/components/UI/Modal";
 import { LoadingIndicator } from "@/components/LoadingIndicator";
 import { useGlobalState } from "@/lib/globalState";
 
+// Adjust Booking type to match Supabase constraints
 interface Booking {
   id: string; // UUID primary key
   name: string;
@@ -27,9 +28,9 @@ export const BookingCenter = () => {
   const fetchBookings = async () => {
     setLoading(true);
     try {
-      // Use two generic arguments: row type and optional schema type
+      // Explicitly use `Record<string, any>` for the second generic argument
       const { data, error } = await supabase
-        .from<Booking, any>("bookings") // Use `any` for the second argument if unsure
+        .from<Booking, Record<string, any>>("bookings")
         .select("*");
       if (error) throw error;
       if (data) setBookings(data);
@@ -48,13 +49,15 @@ export const BookingCenter = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      const { error } = await supabase.from<Booking, any>("bookings").insert([
-        {
-          name: formData.name,
-          email: formData.email,
-          date: formData.date,
-        },
-      ]);
+      const { error } = await supabase
+        .from<Booking, Record<string, any>>("bookings")
+        .insert([
+          {
+            name: formData.name,
+            email: formData.email,
+            date: formData.date,
+          },
+        ]);
       if (error) throw error;
 
       setModal({
@@ -136,7 +139,7 @@ export const BookingCenter = () => {
         isVisible={modal.isVisible}
         onClose={() => setModal({ isVisible: false, type: null, content: "" })}
         title={modal.type === "success" ? "Success" : "Error"}
-        content={modal.content || "No content available."} // Properly pass content
+        content={modal.content || "No content available."} // Provide fallback content
       />
       <LoadingIndicator />
     </div>
