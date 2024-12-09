@@ -27,7 +27,7 @@ const LiveDataChart = () => {
 
       if (!error && data) {
         const dates = data.map((booking) => booking.date);
-        const dateCounts = dates.reduce((acc, date) => {
+        const dateCounts = dates.reduce((acc: { [x: string]: any; }, date: string | number) => {
           acc[date] = (acc[date] || 0) + 1;
           return acc;
         }, {});
