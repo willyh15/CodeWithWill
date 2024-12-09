@@ -5,6 +5,7 @@ import { Modal } from "@/components/UI/Modal";
 import { LoadingIndicator } from "@/components/LoadingIndicator";
 import { useGlobalState } from "@/lib/globalState";
 
+// Define the Booking type
 interface Booking {
   id: string; // UUID primary key
   name: string;
@@ -27,9 +28,8 @@ export const BookingCenter = () => {
   const fetchBookings = async () => {
     setLoading(true);
     try {
-      const { data, error } = await supabase
-        .from<Booking, null>("bookings") // Use `null` for the second generic argument
-        .select("*");
+      // Fetch bookings using the table name as a string
+      const { data, error } = await supabase.from<Booking>("bookings").select("*");
       if (error) throw error;
       if (data) setBookings(data);
     } catch (error) {
@@ -48,14 +48,8 @@ export const BookingCenter = () => {
     setLoading(true);
     try {
       const { error } = await supabase
-        .from<Booking, null>("bookings") // Use `null` for the second generic argument
-        .insert([
-          {
-            name: formData.name,
-            email: formData.email,
-            date: formData.date,
-          },
-        ]);
+        .from<Booking>("bookings")
+        .insert([{ ...formData }]);
       if (error) throw error;
 
       setModal({
