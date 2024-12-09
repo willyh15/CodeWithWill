@@ -28,7 +28,7 @@ export const BookingCenter = () => {
   const fetchBookings = async () => {
     setLoading(true);
     try {
-      const { data, error } = await supabase.from<Booking>("bookings").select("*");
+      const { data, error } = await supabase.from<Booking, any>("bookings").select("*");
       if (error) throw error;
       if (data) setBookings(data);
     } catch (error) {
@@ -46,7 +46,7 @@ export const BookingCenter = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      const { error } = await supabase.from<Booking>("bookings").insert([
+      const { error } = await supabase.from<Booking, any>("bookings").insert([
         {
           name: formData.name,
           email: formData.email,
