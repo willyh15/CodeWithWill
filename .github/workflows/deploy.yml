@@ -30,6 +30,8 @@ jobs:
           npm install @supabase/supabase-js
           npm install @react-three/fiber three --save
           npm install @types/three eslint-config-next --save-dev
+          npm install react-chartjs-2 chart.js
+          npm install --save-dev @types/chart.js
           npm install pino --save
           npm install react-modal react-lazyload
           npm install framer-motion react-circular-progressbar
