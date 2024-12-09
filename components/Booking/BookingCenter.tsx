@@ -135,7 +135,7 @@ export const BookingCenter = () => {
         isVisible={modal.isVisible}
         onClose={() => setModal({ isVisible: false, type: null, content: "" })}
         title={modal.type === "success" ? "Success" : "Error"}
-        content={modal.content || "No content available."} {/* Provide fallback */}
+        content={modal.content || "No content available."} // Properly pass content
       />
       <LoadingIndicator />
     </div>
