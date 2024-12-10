@@ -25,14 +25,18 @@ jobs:
 
       # Install dependencies
       - name: Install dependencies
-        run: |
-          npm install
         env:
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_KEY }}
+        run: |
+          echo "Installing dependencies..."
+          npm install
 
       # Validate Environment Variables
       - name: Validate environment variables
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_KEY }}
         run: |
           if [ -z "${NEXT_PUBLIC_SUPABASE_URL}" ] || [ -z "${NEXT_PUBLIC_SUPABASE_ANON_KEY}" ]; then
             echo "Environment variables are missing!"
@@ -42,20 +46,23 @@ jobs:
 
       # Lint and Type-Check Code
       - name: Lint and Type-Check
-        run: |
-          npm run lint || true
-          npm run type-check
         env:
           CI: true
+        run: |
+          echo "Running lint and type-check..."
+          npm run lint || true
+          npm run type-check
 
       # Pre-Build Debugging
       - name: Debug Dependency Tree
         run: |
+          echo "Debugging dependency tree..."
           npm ls --all
 
-      # Advanced Debugging for Missing Modules
+      # Check Missing Modules
       - name: Check Missing Modules
         run: |
+          echo "Checking missing modules..."
           node -e "require('./components/UI/Modal.tsx')"
 
       # Build the application
@@ -64,21 +71,24 @@ jobs:
           CI: false
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_KEY }}
-        run: npm run build
+        run: |
+          echo "Building the application..."
+          npm run build
         continue-on-error: true
 
-      # Advanced Debugging for Build Errors
+      # Collect Build Logs if Failed
       - name: Collect Build Logs
         if: failure()
         run: |
           echo "=== Build Failed Logs ==="
-          cat .next/cache/failed-build.log || echo "No logs found"
+          [ -f .next/cache/failed-build.log ] && cat .next/cache/failed-build.log || echo "No logs found"
 
       # Deploy to Vercel
       - name: Deploy to Vercel
-        run: |
-          npx vercel --prod --yes --token=$VERCEL_TOKEN
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_KEY }}
+        run: |
+          echo "Deploying to Vercel..."
+          npx vercel --prod --yes --token=$VERCEL_TOKEN
