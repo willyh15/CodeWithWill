@@ -23,9 +23,11 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
-      # Install dependencies
+      # Install dependencies, including missing ones
       - name: Install dependencies
-        run: npm install
+        run: |
+          npm install
+          npm install react-lazyload
         env:
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_KEY }}
