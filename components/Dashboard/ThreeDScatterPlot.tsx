@@ -23,9 +23,9 @@ const ThreeDScatterPlot = () => {
         return;
       }
 
-      // Type the booking parameter explicitly as Booking
+      // Explicitly type both `booking` and `i`
       const positions = new Float32Array(
-        data.map((booking: Booking, i) => [i * 2, Math.random() * 10, Math.random() * 10]).flat()
+        data.map((booking: Booking, i: number) => [i * 2, Math.random() * 10, Math.random() * 10]).flat()
       );
 
       if (pointsRef.current) {
