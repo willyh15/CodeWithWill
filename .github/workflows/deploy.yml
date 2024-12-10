@@ -25,45 +25,35 @@ jobs:
 
       # Install dependencies
       - name: Install dependencies
+        run: npm install
         env:
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_KEY }}
-        run: |
-          echo "Installing dependencies..."
-          npm install
 
       # Validate Environment Variables
       - name: Validate environment variables
-        env:
-          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_KEY }}
         run: |
           if [ -z "${NEXT_PUBLIC_SUPABASE_URL}" ] || [ -z "${NEXT_PUBLIC_SUPABASE_ANON_KEY}" ]; then
             echo "Environment variables are missing!"
             exit 1
           fi
           echo "All required environment variables are set."
-
-      # Lint and Type-Check Code
-      - name: Lint and Type-Check
         env:
-          CI: true
-        run: |
-          echo "Running lint and type-check..."
-          npm run lint || echo "Linting skipped."
-          npm run type-check || echo "Type-check skipped."
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_KEY }}
 
-      # Pre-Build Debugging
-      - name: Debug Dependency Tree
-        run: |
-          echo "Debugging dependency tree..."
-          npm ls --all
+      # Dry Run Build
+      - name: Dry Run Build
+        run: npm run build
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_KEY }}
+        continue-on-error: true
 
-      # Check Missing Modules
-      - name: Check Missing Modules
+      # Increase Max Listeners
+      - name: Increase Max Listeners
         run: |
-          echo "Checking missing modules..."
-          node --loader tsx ./components/UI/Modal.tsx || echo "Module check failed, but continuing."
+          export NODE_OPTIONS="--max-old-space-size=4096 --trace-warnings"
 
       # Build the application
       - name: Build the application
@@ -71,17 +61,14 @@ jobs:
           CI: false
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_KEY }}
-        run: |
-          echo "Building the application..."
-          npm run build
-        continue-on-error: true
+        run: npm run build
 
       # Collect Build Logs if Failed
       - name: Collect Build Logs
         if: failure()
         run: |
           echo "=== Build Failed Logs ==="
-          [ -f .next/cache/failed-build.log ] && cat .next/cache/failed-build.log || echo "No logs found"
+          npx vercel logs codewithwill-6ceh6mc4l-codewithwill.vercel.app --token=$VERCEL_TOKEN || echo "No logs found"
 
       # Deploy to Vercel
       - name: Deploy to Vercel
