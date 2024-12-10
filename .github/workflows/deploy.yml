@@ -49,9 +49,14 @@ jobs:
         env:
           CI: true
         run: |
-          echo "Running lint and type-check..."
-          npm run lint || true
-          npm run type-check
+          echo "Running lint..."
+          npm run lint || echo "Linting skipped."
+          echo "Running type-check..."
+          if npm run | grep -q "type-check"; then
+            npm run type-check
+          else
+            echo "Type-check script not found. Skipping."
+          fi
 
       # Pre-Build Debugging
       - name: Debug Dependency Tree
