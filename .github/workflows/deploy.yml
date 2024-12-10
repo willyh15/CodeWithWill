@@ -52,6 +52,7 @@ jobs:
       - name: Add custom type declaration for react-lazyload
         run: |
           echo "Checking for missing type declarations..."
+          mkdir -p src/types
           echo "declare module 'react-lazyload';" > src/types/react-lazyload.d.ts
 
       # Lint and Check Types
