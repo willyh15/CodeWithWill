@@ -27,7 +27,6 @@ jobs:
       - name: Install dependencies
         run: |
           npm install
-          npm install react-lazyload
         env:
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_KEY }}
@@ -44,13 +43,13 @@ jobs:
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_KEY }}
 
-      # Dry Run Build
-      - name: Dry Run Build
-        run: npm run build
+      # Lint and Check Types
+      - name: Lint and Check Types
+        run: |
+          npm run lint
+          npm run type-check
         env:
-          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_KEY }}
-        continue-on-error: true
+          CI: true
 
       # Increase Max Listeners
       - name: Increase Max Listeners
