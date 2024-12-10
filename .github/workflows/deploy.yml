@@ -23,11 +23,12 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
-      # Install dependencies, including error handling
+      # Install dependencies, including ESLint and error handling
       - name: Install dependencies
         run: |
           echo "Installing dependencies..."
           npm install || echo "Failed to install dependencies. Retrying..."
+          npm install eslint || echo "Installing ESLint..."
           if ! npm list react-lazyload >/dev/null 2>&1; then
             echo "React-lazyload missing. Attempting to install an alternative..."
             npm install react-lazyload@2.7.0 || npm install react-lazyload@2.6.0 || echo "React-lazyload installation failed."
