@@ -23,15 +23,18 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
-      # Install dependencies, including ESLint and error handling
+      # Install dependencies
       - name: Install dependencies
         run: |
           echo "Installing dependencies..."
-          npm install || echo "Failed to install dependencies. Retrying..."
-          npm install --save-dev eslint || echo "Installing ESLint..."
-          if ! npm list react-lazyload >/dev/null 2>&1; then
-            echo "React-lazyload missing. Attempting to install an alternative..."
-            npm install react-lazyload@2.7.0 || npm install react-lazyload@2.6.0 || echo "React-lazyload installation failed."
+          npm install || echo "Retrying npm install..."
+          if ! npm list next >/dev/null 2>&1; then
+            echo "Next.js missing, installing manually..."
+            npm install next || exit 1
+          fi
+          if ! npm list eslint >/dev/null 2>&1; then
+            echo "ESLint missing, installing manually..."
+            npm install --save-dev eslint
           fi
         env:
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
@@ -49,13 +52,6 @@ jobs:
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_KEY }}
 
-      # Add type declaration for react-lazyload if needed
-      - name: Add custom type declaration for react-lazyload
-        run: |
-          echo "Checking for missing type declarations..."
-          mkdir -p src/types
-          echo "declare module 'react-lazyload';" > src/types/react-lazyload.d.ts
-
       # Lint and Check Types
       - name: Lint and Check Types
         run: |
@@ -65,10 +61,14 @@ jobs:
         env:
           CI: true
 
-      # Increase Max Listeners
-      - name: Increase Max Listeners
+      # Pre-Build Validation
+      - name: Ensure Next.js CLI
         run: |
-          export NODE_OPTIONS="--max-old-space-size=4096 --trace-warnings"
+          echo "Checking Next.js CLI availability..."
+          if ! npx next --version; then
+            echo "Next.js CLI is missing. Please verify the installation."
+            exit 1
+          fi
 
       # Build the application
       - name: Build the application
