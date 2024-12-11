@@ -1,11 +1,15 @@
 import React, { ReactNode, useRef } from "react";
-import { Canvas } from "@react-three/fiber";
+import { Canvas, useFrame } from "@react-three/fiber";
 import { ScrollControls, useScroll } from "@react-three/drei";
 import StarfieldCanvas from "@/components/Starfield/Starfield";
 import ThreeDBackground from "@/components/ThreeDBackground";
 
-export default function ScrollLayout({ children }: { children: ReactNode }) {
-  const scrollRef = useRef(null);
+interface ScrollLayoutProps {
+  children: ReactNode;
+}
+
+export default function ScrollLayout({ children }: ScrollLayoutProps) {
+  const scrollRef = useRef<THREE.Group>(null);
 
   return (
     <div className="relative overflow-hidden">
@@ -24,7 +28,7 @@ export default function ScrollLayout({ children }: { children: ReactNode }) {
   );
 }
 
-function ScrollAnimation({ scrollRef }: { scrollRef: React.MutableRefObject<any> }) {
+function ScrollAnimation({ scrollRef }: { scrollRef: React.MutableRefObject<THREE.Group | null> }) {
   const scroll = useScroll();
 
   useFrame(() => {
