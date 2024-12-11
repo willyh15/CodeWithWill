@@ -1,11 +1,12 @@
-// Update ThreeDBackground in `components/ThreeDBackground.tsx`
 import React, { useRef, useEffect } from "react";
 import * as THREE from "three";
-import { useRouter } from "next/router";
 
-const ThreeDBackground = () => {
+interface ThreeDBackgroundProps {
+  cubeColor: number;
+}
+
+const ThreeDBackground: React.FC<ThreeDBackgroundProps> = ({ cubeColor }) => {
   const mountRef = useRef<HTMLDivElement>(null);
-  const router = useRouter();
 
   useEffect(() => {
     const mount = mountRef.current;
@@ -24,9 +25,7 @@ const ThreeDBackground = () => {
     mount.appendChild(renderer.domElement);
 
     const geometry = new THREE.BoxGeometry();
-    const material = new THREE.MeshBasicMaterial({
-      color: router.pathname === "/projects" ? 0xff0000 : 0x00ff00,
-    });
+    const material = new THREE.MeshBasicMaterial({ color: cubeColor });
     const cube = new THREE.Mesh(geometry, material);
     scene.add(cube);
 
@@ -44,7 +43,7 @@ const ThreeDBackground = () => {
     return () => {
       mount.removeChild(renderer.domElement);
     };
-  }, [router.pathname]);
+  }, [cubeColor]);
 
   return <div ref={mountRef} className="absolute inset-0 -z-10" />;
 };
