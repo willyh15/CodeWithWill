@@ -1,4 +1,3 @@
-// components/Layout/GlobalLayout.tsx
 import React, { ReactNode } from "react";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
@@ -11,14 +10,16 @@ const ThreeDBackground = dynamic(() => import("@/components/ThreeDBackground"), 
 export default function GlobalLayout({ children }: { children: ReactNode }) {
   const router = useRouter();
 
-  const routeConfig = {
+  // Define route configuration with type safety
+  const routeConfig: Record<string, { starColor: string; threeColor: number; speed: number }> = {
     "/": { starColor: "#FFD700", threeColor: 0x6e44ff, speed: 0.0005 },
     "/projects": { starColor: "#FF83FF", threeColor: 0xff0000, speed: 0.001 },
     "/contact": { starColor: "#00FF00", threeColor: 0x00ff00, speed: 0.0003 },
     "/skills": { starColor: "#6E44FF", threeColor: 0x0000ff, speed: 0.0007 },
   };
 
-  const { starColor, threeColor, speed } = routeConfig[router.pathname] || {
+  // Use a type-safe fallback
+  const { starColor, threeColor, speed } = routeConfig[router.pathname as keyof typeof routeConfig] || {
     starColor: "#6E44FF",
     threeColor: 0x00ff00,
     speed: 0.0005,
