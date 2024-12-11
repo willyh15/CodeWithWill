@@ -23,12 +23,18 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
-      # Install dependencies, including @react-three/drei
+      # Install dependencies
       - name: Install dependencies
         run: |
           echo "Installing dependencies..."
           npm install || echo "Retrying npm install..."
-          
+
+          # Correct `react-lazyload` version
+          if ! npm list react-lazyload >/dev/null 2>&1; then
+            echo "Installing react-lazyload..."
+            npm install react-lazyload@^3.2.0 || exit 1
+          fi
+
           # Ensure @react-three/drei installation
           if ! npm list @react-three/drei >/dev/null 2>&1; then
             echo "@react-three/drei missing. Installing..."
