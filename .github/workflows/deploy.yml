@@ -23,19 +23,19 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
-      # Install dependencies, handling react-lazyload issue
+      # Install dependencies, including @react-three/drei
       - name: Install dependencies
         run: |
           echo "Installing dependencies..."
           npm install || echo "Retrying npm install..."
           
-          # Ensure react-lazyload installation
-          if ! npm list react-lazyload >/dev/null 2>&1; then
-            echo "React-lazyload missing. Attempting to install latest stable version..."
-            npm install react-lazyload@^3.2.0 || echo "React-lazyload installation failed. Proceeding with fallback..."
+          # Ensure @react-three/drei installation
+          if ! npm list @react-three/drei >/dev/null 2>&1; then
+            echo "@react-three/drei missing. Installing..."
+            npm install @react-three/drei || exit 1
           fi
 
-          # Ensure Next.js CLI installation
+          # Ensure Next.js installation
           if ! npm list next >/dev/null 2>&1; then
             echo "Next.js missing, installing manually..."
             npm install next || exit 1
