@@ -1,41 +1,39 @@
-import React, { createContext, useContext, useState, ReactNode, Dispatch, SetStateAction } from "react";
+import React, { createContext, useContext, useState, Dispatch, SetStateAction } from "react";
 
 interface ModalState {
   isVisible: boolean;
-  type: "success" | "error" | "info" | "warning" | null;
-  content: string | ReactNode;
+  type: "success" | "error" | null;
+  content: string;
 }
 
-interface GlobalStateContextProps {
-  modal: [ModalState, Dispatch<SetStateAction<ModalState>>];
-  loading: [boolean, Dispatch<SetStateAction<boolean>>];
+interface GlobalState {
+  loading: boolean;
+  setLoading: Dispatch<SetStateAction<boolean>>;
+  modal: ModalState;
+  setModal: Dispatch<SetStateAction<ModalState>>;
 }
 
-const GlobalStateContext = createContext<GlobalStateContextProps | undefined>(
-  undefined
-);
+const GlobalStateContext = createContext<GlobalState | undefined>(undefined);
 
-export const GlobalStateProvider = ({ children }: { children: ReactNode }) => {
+export const GlobalStateProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [loading, setLoading] = useState(false);
   const [modal, setModal] = useState<ModalState>({
     isVisible: false,
     type: null,
     content: "",
   });
-  const [loading, setLoading] = useState(false);
 
   return (
-    <GlobalStateContext.Provider value={{ modal: [modal, setModal], loading: [loading, setLoading] }}>
+    <GlobalStateContext.Provider value={{ loading, setLoading, modal, setModal }}>
       {children}
     </GlobalStateContext.Provider>
   );
 };
 
-export const useGlobalState = <K extends keyof GlobalStateContextProps>(
-  key: K
-): GlobalStateContextProps[K] => {
+export const useGlobalState = () => {
   const context = useContext(GlobalStateContext);
   if (!context) {
     throw new Error("useGlobalState must be used within a GlobalStateProvider");
   }
-  return context[key];
+  return context;
 };
