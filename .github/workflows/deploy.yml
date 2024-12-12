@@ -10,9 +10,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Checkout the code
       - name: Checkout code
         uses: actions/checkout@v3
 
+      # Cache Node.js modules
       - name: Cache Node.js modules
         uses: actions/cache@v3
         with:
@@ -21,16 +23,23 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
+      # Clean npm cache to avoid stale dependencies
+      - name: Clean npm cache
+        run: npm cache clean --force
+
       # Install dependencies
       - name: Install dependencies
         run: |
           echo "Installing dependencies..."
-          npm install || echo "Retrying npm install..."
+          
+          # Set exact versions for `react`, `react-dom`, and `react-intersection-observer`
+          echo "Ensuring compatible React and dependency versions..."
+          npm install react@18.3.1 react-dom@18.3.1 react-intersection-observer@10.10.1 --legacy-peer-deps
 
           # Ensure @react-three/drei installation
           if ! npm list @react-three/drei >/dev/null 2>&1; then
             echo "@react-three/drei missing. Installing..."
-            npm install @react-three/drei || exit 1
+            npm install @react-three/drei --legacy-peer-deps || exit 1
           fi
 
           # Ensure Next.js installation
@@ -39,9 +48,9 @@ jobs:
             npm install next || exit 1
           fi
 
-          # Update TypeScript, React, and React DOM
-          echo "Ensuring compatible TypeScript and React versions..."
-          npm install typescript@latest react@latest react-dom@latest
+          # Update TypeScript to the latest version
+          echo "Updating TypeScript to the latest version..."
+          npm install typescript@latest --legacy-peer-deps
 
           # Debug dependency tree
           echo "Debugging final dependency tree..."
@@ -50,6 +59,7 @@ jobs:
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_KEY }}
 
+      # Validate Environment Variables
       - name: Validate environment variables
         run: |
           if [ -z "${NEXT_PUBLIC_SUPABASE_URL}" ] || [ -z "${NEXT_PUBLIC_SUPABASE_ANON_KEY}" ]; then
@@ -57,6 +67,7 @@ jobs:
             exit 1
           fi
 
+      # Configure ESLint for Next.js
       - name: Configure ESLint for Next.js
         run: |
           echo "Installing and configuring ESLint for Next.js..."
@@ -65,17 +76,27 @@ jobs:
             "extends": ["next/core-web-vitals"]
           }' > .eslintrc.json
 
+      # Clear cached build files
       - name: Clear cached build files
         run: |
           echo "Clearing cached build files..."
           rm -rf .next
 
+      # Build the application
       - name: Build the application
         env:
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_KEY }}
         run: npm run build
 
+      # Collect Build Logs if Failed
+      - name: Collect Build Logs
+        if: failure()
+        run: |
+          echo "=== Build Failed Logs ==="
+          npx vercel logs codewithwill-6ceh6mc4l-codewithwill.vercel.app --token=$VERCEL_TOKEN || echo "No logs found"
+
+      # Deploy to Vercel
       - name: Deploy to Vercel
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
