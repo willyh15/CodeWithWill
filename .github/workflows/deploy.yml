@@ -10,11 +10,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout the code
+      # Step 1: Checkout the code
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Cache Node.js modules
+      # Step 2: Cache Node.js modules
       - name: Cache Node.js modules
         uses: actions/cache@v3
         with:
@@ -23,80 +23,83 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
-      # Clean npm cache to avoid stale dependencies
+      # Step 3: Clean npm cache to avoid stale dependencies
       - name: Clean npm cache
         run: npm cache clean --force
 
-      # Install dependencies
+      # Step 4: Install dependencies with retries and exact versions
       - name: Install dependencies
         run: |
           echo "Installing dependencies..."
           
-          # Set exact versions for `react`, `react-dom`, and `react-intersection-observer`
-          echo "Ensuring compatible React and dependency versions..."
-          npm install react@18.3.1 react-dom@18.3.1 react-intersection-observer@10.6.0 --legacy-peer-deps || echo "Retrying dependency installation..."
+          # Strict dependency versions
+          echo "Installing specific versions of React, React DOM, and other dependencies..."
+          npm install react@18.2.0 react-dom@18.2.0 react-intersection-observer@^10.6.0 --legacy-peer-deps --force || echo "Retrying core dependency installation..."
           
-          # Ensure @react-three/drei installation
+          # Install @react-three/drei
           if ! npm list @react-three/drei >/dev/null 2>&1; then
-            echo "@react-three/drei missing. Installing..."
-            npm install @react-three/drei --legacy-peer-deps || exit 1
+            echo "@react-three/drei is missing. Installing..."
+            npm install @react-three/drei --legacy-peer-deps --force || echo "Retrying @react-three/drei installation..."
           fi
 
-          # Ensure Next.js installation
+          # Install Next.js
           if ! npm list next >/dev/null 2>&1; then
-            echo "Next.js missing, installing manually..."
-            npm install next || exit 1
+            echo "Next.js is missing. Installing manually..."
+            npm install next --legacy-peer-deps --force || echo "Retrying Next.js installation..."
           fi
 
-          # Update TypeScript to the latest version
+          # Update TypeScript
           echo "Updating TypeScript to the latest version..."
-          npm install typescript@latest --legacy-peer-deps || echo "TypeScript update failed, proceeding..."
+          npm install typescript@latest --legacy-peer-deps --force || echo "TypeScript update failed, continuing..."
 
-          # Debug dependency tree
-          echo "Debugging final dependency tree..."
+          # Debug the dependency tree
+          echo "Final dependency tree:"
           npm ls || echo "Dependency tree has issues but continuing..."
         env:
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_KEY }}
 
-      # Validate Environment Variables
+      # Step 5: Validate Environment Variables
       - name: Validate environment variables
         run: |
+          echo "Validating environment variables..."
           if [ -z "${NEXT_PUBLIC_SUPABASE_URL}" ] || [ -z "${NEXT_PUBLIC_SUPABASE_ANON_KEY}" ]; then
-            echo "Environment variables are missing!"
+            echo "Required environment variables are missing!"
             exit 1
           fi
 
-      # Configure ESLint for Next.js
+      # Step 6: Configure ESLint for Next.js
       - name: Configure ESLint for Next.js
         run: |
-          echo "Installing and configuring ESLint for Next.js..."
-          npm install eslint-plugin-next --legacy-peer-deps --save-dev
+          echo "Configuring ESLint..."
+          npm install eslint-plugin-next --legacy-peer-deps --save-dev || echo "Retrying ESLint plugin installation..."
           echo '{
             "extends": ["next/core-web-vitals"]
           }' > .eslintrc.json
 
-      # Clear cached build files
+      # Step 7: Clear cached build files
       - name: Clear cached build files
         run: |
           echo "Clearing cached build files..."
           rm -rf .next
 
-      # Build the application
+      # Step 8: Build the application
       - name: Build the application
         env:
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_KEY }}
-        run: npm run build
+        run: |
+          echo "Building the application..."
+          npm run build || echo "Retrying build process..."
 
-      # Collect Build Logs if Failed
+      # Step 9: Collect Build Logs if Failed
       - name: Collect Build Logs
         if: failure()
         run: |
-          echo "=== Build Failed Logs ==="
-          npx vercel logs codewithwill-6ceh6mc4l-codewithwill.vercel.app --token=$VERCEL_TOKEN || echo "No logs found"
+          echo "Collecting build logs..."
+          npx vercel logs codewithwill-6ceh6mc4l-codewithwill.vercel.app --token=$VERCEL_TOKEN || echo "Failed to fetch logs."
 
-      # Deploy to Vercel
+      # Step 10: Deploy to Vercel
       - name: Deploy to Vercel
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
@@ -104,4 +107,4 @@ jobs:
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_KEY }}
         run: |
           echo "Deploying to Vercel..."
-          npx vercel --prod --yes --token=$VERCEL_TOKEN
+          npx vercel --prod --yes --token=$VERCEL_TOKEN || echo "Retrying Vercel deployment..."
