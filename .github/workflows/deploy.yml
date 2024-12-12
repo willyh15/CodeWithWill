@@ -50,6 +50,7 @@ jobs:
           npm install three@0.157.0 @react-three/fiber@^8.12.0 --legacy-peer-deps --force
           npm install @react-three/drei@^9.120.4 --legacy-peer-deps --force || echo "Retrying @react-three/drei installation..."
           npm install typescript@^5.7.2 --legacy-peer-deps --force || echo "Retrying TypeScript installation..."
+          npm install eslint-plugin-next eslint-config-next chart.js --legacy-peer-deps --force || echo "Retrying dependency installation..."
           
           # Chartjs install
           echo "installing chartjs..."
