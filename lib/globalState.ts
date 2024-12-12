@@ -20,7 +20,7 @@ interface GlobalState {
   setModal: Dispatch<SetStateAction<ModalState>>;
 }
 
-const GlobalStateContext = createContext<GlobalState | undefined>(undefined);
+const GlobalStateContext = createContext<GlobalState | null>(null);
 
 export const GlobalStateProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(false);
@@ -44,4 +44,3 @@ export const useGlobalState = () => {
   }
   return context;
 };
-
