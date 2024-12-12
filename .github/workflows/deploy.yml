@@ -23,43 +23,39 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
-      # Step 3: Clean npm cache to avoid stale dependencies
+      # Step 3: Clean npm cache
       - name: Clean npm cache
         run: npm cache clean --force
 
-      # Step 4: Install dependencies with retries and exact versions
+      # Step 4: Install dependencies
       - name: Install dependencies
         run: |
           echo "Installing dependencies..."
           
           # Strict dependency versions
-          echo "Installing specific versions of React, React DOM, and other dependencies..."
-          npm install react@18.2.0 react-dom@18.2.0 react-intersection-observer@^10.6.0 --legacy-peer-deps --force || echo "Retrying core dependency installation..."
-          
+          echo "Installing React, React DOM, and other specific dependencies..."
+          npm install react@18.2.0 react-dom@18.2.0 react-intersection-observer@10.6.0 --legacy-peer-deps --force || echo "Retrying dependency installation..."
+
           # Install @react-three/drei
-          if ! npm list @react-three/drei >/dev/null 2>&1; then
-            echo "@react-three/drei is missing. Installing..."
-            npm install @react-three/drei --legacy-peer-deps --force || echo "Retrying @react-three/drei installation..."
-          fi
+          echo "Ensuring @react-three/drei is installed..."
+          npm install @react-three/drei --legacy-peer-deps --force || echo "Retrying @react-three/drei installation..."
 
           # Install Next.js
-          if ! npm list next >/dev/null 2>&1; then
-            echo "Next.js is missing. Installing manually..."
-            npm install next --legacy-peer-deps --force || echo "Retrying Next.js installation..."
-          fi
+          echo "Ensuring Next.js is installed..."
+          npm install next@15.0.3 --legacy-peer-deps --force || echo "Retrying Next.js installation..."
 
           # Update TypeScript
           echo "Updating TypeScript to the latest version..."
-          npm install typescript@latest --legacy-peer-deps --force || echo "TypeScript update failed, continuing..."
+          npm install typescript@5.7.2 --legacy-peer-deps --force || echo "Retrying TypeScript update..."
 
-          # Debug the dependency tree
+          # Debug dependency tree
           echo "Final dependency tree:"
           npm ls || echo "Dependency tree has issues but continuing..."
         env:
-          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_KEY }}
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
 
-      # Step 5: Validate Environment Variables
+      # Step 5: Validate environment variables
       - name: Validate environment variables
         run: |
           echo "Validating environment variables..."
@@ -86,8 +82,8 @@ jobs:
       # Step 8: Build the application
       - name: Build the application
         env:
-          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_KEY }}
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
         run: |
           echo "Building the application..."
           npm run build || echo "Retrying build process..."
@@ -97,14 +93,14 @@ jobs:
         if: failure()
         run: |
           echo "Collecting build logs..."
-          npx vercel logs codewithwill-6ceh6mc4l-codewithwill.vercel.app --token=$VERCEL_TOKEN || echo "Failed to fetch logs."
+          npx vercel logs codewithwill-6ceh6mc4l-codewithwill.vercel.app --token=${{ secrets.VERCEL_TOKEN }} || echo "Failed to fetch logs."
 
       # Step 10: Deploy to Vercel
       - name: Deploy to Vercel
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_KEY }}
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
         run: |
           echo "Deploying to Vercel..."
           npx vercel --prod --yes --token=$VERCEL_TOKEN || echo "Retrying Vercel deployment..."
