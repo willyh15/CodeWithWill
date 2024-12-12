@@ -1,38 +1,47 @@
 {
   "compilerOptions": {
-    "target": "ESNext", // Use the latest ECMAScript features
-    "lib": ["dom", "dom.iterable", "esnext"], // Include DOM and latest ECMAScript libraries
-    "allowJs": true, // Allow JavaScript files
-    "skipLibCheck": true, // Skip type checking of declaration files
-    "strict": true, // Enable all strict type-checking options
+    "target": "ESNext", // Target the latest ECMAScript features
+    "lib": ["dom", "dom.iterable", "esnext"], // Include DOM and ECMAScript libraries
+    "allowJs": true, // Allow JavaScript files in the project
+    "skipLibCheck": true, // Skip type checking of declaration files for faster builds
+    "strict": true, // Enable strict type-checking options
     "noEmit": true, // Disable emitting output files
-    "esModuleInterop": true, // Enable ES Module interop
-    "module": "ESNext", // Use the latest ECMAScript module system
+    "esModuleInterop": true, // Enable interoperability between CommonJS and ES modules
+    "module": "ESNext", // Use ESNext for module resolution
     "moduleResolution": "node", // Use Node.js style module resolution
     "resolveJsonModule": true, // Allow importing JSON modules
-    "isolatedModules": true, // Ensure each file can be safely transpiled on its own
-    "jsx": "preserve", // Keep JSX as-is for further processing
-    "allowSyntheticDefaultImports": true, // Allow default imports for modules with no default
-    "incremental": true, // Enable incremental compilation
-    "baseUrl": ".", // Base directory for resolving paths
+    "isolatedModules": true, // Ensure each file can be transpiled in isolation
+    "jsx": "preserve", // Preserve JSX for further processing by Babel or other tools
+    "allowSyntheticDefaultImports": true, // Enable synthetic default imports
+    "incremental": true, // Enable incremental builds for faster recompilation
+    "baseUrl": ".", // Set the base directory for resolving module paths
     "paths": {
-      "@/*": ["./*"] // Map '@/' to the root directory
+      "@/*": ["./*"] // Map "@/..." imports to the project root directory
     },
-    "types": ["node"], // Include Node.js types
-    "forceConsistentCasingInFileNames": true, // Enforce case-sensitive imports
-    "useUnknownInCatchVariables": false // Use `any` instead of `unknown` in catch clauses
+    "types": ["node", "jest"], // Include Node.js and Jest types for testing
+    "forceConsistentCasingInFileNames": true, // Enforce consistent casing for file names
+    "useUnknownInCatchVariables": false, // Use `any` for catch variables instead of `unknown`
+    "experimentalDecorators": true, // Enable experimental decorators
+    "emitDecoratorMetadata": true, // Emit metadata for decorators
+    "strictNullChecks": true, // Enable strict null checks
+    "strictFunctionTypes": true, // Ensure stricter checking of function types
+    "strictPropertyInitialization": true // Ensure properties are correctly initialized
   },
   "include": [
-    "next-env.d.ts", // Next.js environment types
-    "**/*.ts", // All TypeScript files
-    "**/*.tsx", // All TypeScript React files
-    ".next/types/**/*.ts", // Next.js build types
-    "next.config.cjs", // Next.js configuration in CommonJS
-    "next.config.mjs" // Next.js configuration in JavaScript
+    "next-env.d.ts", // Include Next.js environment types
+    "**/*.ts", // Include all TypeScript files
+    "**/*.tsx", // Include all TypeScript React files
+    ".next/types/**/*.ts", // Include generated Next.js build types
+    "next.config.cjs", // Include CommonJS configuration files
+    "next.config.mjs" // Include JavaScript configuration files
   ],
   "exclude": [
-    "node_modules", // Exclude dependencies
+    "node_modules", // Exclude external dependencies
     ".turbo", // Exclude Turbopack cache (if applicable)
-    "dist" // Exclude output directories
+    "dist", // Exclude output directories
+    "coverage", // Exclude test coverage reports
+    "public", // Exclude the public assets directory
+    ".next", // Exclude the Next.js build directory
+    "jest.config.ts" // Exclude Jest configuration if applicable
   ]
 }
