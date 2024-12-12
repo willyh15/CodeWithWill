@@ -25,7 +25,10 @@ jobs:
 
       # Step 3: Clean npm cache to avoid stale dependencies
       - name: Clean npm cache
-        run: npm cache clean --force
+        run: |
+          echo "Clearing npm and build caches..."
+          npm cache clean --force
+          rm -rf node_modules package-lock.json .next
 
       # Step 4: Validate environment variables
       - name: Validate environment variables
