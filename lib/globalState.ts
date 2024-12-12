@@ -22,9 +22,11 @@ interface GlobalState {
   setModal: Dispatch<SetStateAction<ModalState>>;
 }
 
-const GlobalStateContext = createContext<GlobalState | null>(null);
+// Create context with an undefined default value
+const GlobalStateContext = createContext<GlobalState | undefined>(undefined);
 
-export const GlobalStateProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+// GlobalStateProvider component
+export const GlobalStateProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(false);
   const [modal, setModal] = useState<ModalState>({
     isVisible: false,
@@ -39,11 +41,10 @@ export const GlobalStateProvider: React.FC<{ children: ReactNode }> = ({ childre
   );
 };
 
-
 // Custom hook for accessing the global state
 export const useGlobalState = () => {
   const context = useContext(GlobalStateContext);
-  if (!context) {
+  if (context === undefined) {
     throw new Error("useGlobalState must be used within a GlobalStateProvider");
   }
   return context;
