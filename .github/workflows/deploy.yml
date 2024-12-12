@@ -52,6 +52,10 @@ jobs:
             echo "ESLint missing, installing manually..."
             npm install --save-dev eslint
           fi
+
+          # Update TypeScript, React, and React DOM
+          echo "Ensuring compatible TypeScript and React versions..."
+          npm install typescript@latest react@latest react-dom@latest
         env:
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_KEY }}
@@ -83,6 +87,21 @@ jobs:
           npm run type-check || echo "Type-check errors detected."
         env:
           CI: true
+
+      # Update ESLint Configuration
+      - name: Update ESLint configuration
+        run: |
+          echo "Configuring ESLint for Next.js..."
+          npm install eslint-plugin-next --save-dev
+          echo '{
+            "extends": ["next/core-web-vitals"]
+          }' > .eslintrc.json
+
+      # Clear Cached Build Files
+      - name: Clear cached build files
+        run: |
+          echo "Clearing cached build files..."
+          rm -rf .next
 
       # Increase Max Listeners
       - name: Increase Max Listeners
