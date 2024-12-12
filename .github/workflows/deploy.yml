@@ -44,10 +44,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          npm install react@18.2.0 react-dom@18.2.0 --legacy-peer-deps --force
-          npm install three@0.157.0 @react-three/fiber@8.12.0 --legacy-peer-deps --force
-          npm install @react-three/drei@9.120.4 --legacy-peer-deps --force
-          npm install typescript@5.7.2 eslint-plugin-next eslint-config-next chart.js --legacy-peer-deps --force
+          npm install --legacy-peer-deps
         env:
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
