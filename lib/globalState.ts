@@ -22,11 +22,9 @@ interface GlobalState {
   setModal: Dispatch<SetStateAction<ModalState>>;
 }
 
-// Create context with a proper default value
 const GlobalStateContext = createContext<GlobalState | null>(null);
 
-// GlobalStateProvider component
-export const GlobalStateProvider = ({ children }: { children: ReactNode }) => {
+export const GlobalStateProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [modal, setModal] = useState<ModalState>({
     isVisible: false,
@@ -35,18 +33,12 @@ export const GlobalStateProvider = ({ children }: { children: ReactNode }) => {
   });
 
   return (
-    <GlobalStateContext.Provider
-      value={{
-        loading,
-        setLoading,
-        modal,
-        setModal,
-      }}
-    >
+    <GlobalStateContext.Provider value={{ loading, setLoading, modal, setModal }}>
       {children}
     </GlobalStateContext.Provider>
   );
 };
+
 
 // Custom hook for accessing the global state
 export const useGlobalState = () => {
