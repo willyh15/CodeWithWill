@@ -7,12 +7,14 @@ import React, {
   ReactNode,
 } from "react";
 
+// Define the ModalState interface
 interface ModalState {
   isVisible: boolean;
   type: "success" | "error" | null;
   content: string;
 }
 
+// Define the GlobalState interface
 interface GlobalState {
   loading: boolean;
   setLoading: Dispatch<SetStateAction<boolean>>;
@@ -20,8 +22,10 @@ interface GlobalState {
   setModal: Dispatch<SetStateAction<ModalState>>;
 }
 
-const GlobalStateContext = createContext<GlobalState | null>(null);
+// Correctly type the GlobalStateContext as a React Context object
+const GlobalStateContext = createContext<GlobalState | undefined>(undefined);
 
+// GlobalStateProvider component
 export const GlobalStateProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(false);
   const [modal, setModal] = useState<ModalState>({
@@ -37,6 +41,7 @@ export const GlobalStateProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
+// Custom hook for accessing the global state
 export const useGlobalState = () => {
   const context = useContext(GlobalStateContext);
   if (!context) {
