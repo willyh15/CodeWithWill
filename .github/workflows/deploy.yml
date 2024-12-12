@@ -44,22 +44,13 @@ jobs:
         run: |
           echo "Installing dependencies..."
 
-          # Install core dependencies with strict versions
-          echo "Installing React, React DOM, and other specific dependencies..."
-          npm install react@18.2.0 react-dom@18.2.0 react-intersection-observer@10.6.0 --legacy-peer-deps --force || echo "Retrying dependency installation..."
-
-          # Ensure @react-three/drei installation
-          echo "Ensuring @react-three/drei is installed..."
-          npm install @react-three/drei --legacy-peer-deps --force || echo "Retrying @react-three/drei installation..."
-
-          # Ensure Next.js installation
-          echo "Ensuring Next.js is installed..."
-          npm install next@15.0.3 --legacy-peer-deps --force || echo "Retrying Next.js installation..."
-
-          # Update TypeScript
-          echo "Updating TypeScript to the latest version..."
-          npm install typescript@5.7.2 --legacy-peer-deps --force || echo "Retrying TypeScript update..."
-
+           echo "Installing dependencies..."
+           
+          npm install react@18.2.0 react-dom@18.2.0 --legacy-peer-deps --force
+          npm install three@0.157.0 @react-three/fiber@^8.12.0 --legacy-peer-deps --force
+          npm install @react-three/drei@^9.120.4 --legacy-peer-deps --force || echo "Retrying @react-three/drei installation..."
+          npm install typescript@^5.7.2 --legacy-peer-deps --force || echo "Retrying TypeScript installation..."
+          
           # Chartjs install
           echo "installing chartjs..."
           npm install chart.js --legacy-peer-deps
