@@ -1,4 +1,11 @@
-import React, { createContext, useContext, useState, Dispatch, SetStateAction } from "react";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  Dispatch,
+  SetStateAction,
+  ReactNode,
+} from "react";
 
 interface ModalState {
   isVisible: boolean;
@@ -15,7 +22,7 @@ interface GlobalState {
 
 const GlobalStateContext = createContext<GlobalState | undefined>(undefined);
 
-export const GlobalStateProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const GlobalStateProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(false);
   const [modal, setModal] = useState<ModalState>({
     isVisible: false,
