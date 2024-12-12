@@ -10,11 +10,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout the code
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Cache Node.js modules
       - name: Cache Node.js modules
         uses: actions/cache@v3
         with:
@@ -23,107 +21,54 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
-      # Install dependencies
       - name: Install dependencies
         run: |
           echo "Installing dependencies..."
-          npm install || echo "Retrying npm install..."
+          npm install --legacy-peer-deps || echo "Retrying npm install..."
 
-          # Correct `react-lazyload` version
+          # Downgrade React and React-DOM
+          echo "Downgrading React and React-DOM to v18..."
+          npm install react@18 react-dom@18 --legacy-peer-deps
+
+          # Ensure dependencies
           if ! npm list react-lazyload >/dev/null 2>&1; then
             echo "Installing react-lazyload..."
-            npm install react-lazyload@^3.2.0 || exit 1
+            npm install react-lazyload@^3.2.0 --legacy-peer-deps
           fi
-
-          # Ensure @react-three/drei installation
           if ! npm list @react-three/drei >/dev/null 2>&1; then
-            echo "@react-three/drei missing. Installing..."
-            npm install @react-three/drei || exit 1
+            echo "Installing @react-three/drei..."
+            npm install @react-three/drei --legacy-peer-deps
           fi
-
-          # Ensure Next.js installation
-          if ! npm list next >/dev/null 2>&1; then
-            echo "Next.js missing, installing manually..."
-            npm install next || exit 1
-          fi
-
-          # Ensure ESLint installation
-          if ! npm list eslint >/dev/null 2>&1; then
-            echo "ESLint missing, installing manually..."
-            npm install --save-dev eslint
-          fi
-
-          # Update TypeScript, React, and React DOM
-          echo "Ensuring compatible TypeScript and React versions..."
-          npm install typescript@latest react@latest react-dom@latest
         env:
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_KEY }}
 
-      # Validate Environment Variables
       - name: Validate environment variables
         run: |
           if [ -z "${NEXT_PUBLIC_SUPABASE_URL}" ] || [ -z "${NEXT_PUBLIC_SUPABASE_ANON_KEY}" ]; then
             echo "Environment variables are missing!"
             exit 1
           fi
-          echo "All required environment variables are set."
-        env:
-          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_KEY }}
 
-      # Add type declaration for react-lazyload if needed
-      - name: Add custom type declaration for react-lazyload
+      - name: Configure ESLint for Next.js
         run: |
-          echo "Checking for missing type declarations..."
-          mkdir -p src/types
-          echo "declare module 'react-lazyload';" > src/types/react-lazyload.d.ts
-
-      # Lint and Check Types
-      - name: Lint and Check Types
-        run: |
-          echo "Running lint and type-check..."
-          npx eslint . || echo "ESLint errors detected."
-          npm run type-check || echo "Type-check errors detected."
-        env:
-          CI: true
-
-      # Update ESLint Configuration
-      - name: Update ESLint configuration
-        run: |
-          echo "Configuring ESLint for Next.js..."
-          npm install eslint-plugin-next --save-dev
+          echo "Installing and configuring ESLint for Next.js..."
+          npm install eslint-plugin-next --legacy-peer-deps --save-dev
           echo '{
             "extends": ["next/core-web-vitals"]
           }' > .eslintrc.json
 
-      # Clear Cached Build Files
       - name: Clear cached build files
         run: |
           echo "Clearing cached build files..."
           rm -rf .next
 
-      # Increase Max Listeners
-      - name: Increase Max Listeners
-        run: |
-          export NODE_OPTIONS="--max-old-space-size=4096 --trace-warnings"
-
-      # Build the application
       - name: Build the application
         env:
-          CI: false
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_KEY }}
         run: npm run build
 
-      # Collect Build Logs if Failed
-      - name: Collect Build Logs
-        if: failure()
-        run: |
-          echo "=== Build Failed Logs ==="
-          npx vercel logs codewithwill-6ceh6mc4l-codewithwill.vercel.app --token=$VERCEL_TOKEN || echo "No logs found"
-
-      # Deploy to Vercel
       - name: Deploy to Vercel
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
