@@ -16,8 +16,7 @@ interface Booking {
 }
 
 export const BookingCenter = () => {
-  const [modal, setModal] = useGlobalState("modal");
-  const [loading, setLoading] = useGlobalState("loading");
+  const { modal, setModal, loading, setLoading } = useGlobalState();
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [formData, setFormData] = useState({
     name: "",
@@ -26,21 +25,21 @@ export const BookingCenter = () => {
   });
 
   const fetchBookings = async () => {
-  setLoading(true);
-  try {
-    const { data, error } = await supabase.from("bookings").select("*");
-    if (error) throw error;
-    if (data) setBookings(data);
-  } catch (error) {
-    setModal({
-      isVisible: true,
-      type: "error",
-      content: "Failed to fetch bookings. Please try again.",
-    });
-  } finally {
-    setLoading(false);
-  }
-};
+    setLoading(true);
+    try {
+      const { data, error } = await supabase.from("bookings").select("*");
+      if (error) throw error;
+      if (data) setBookings(data);
+    } catch (error) {
+      setModal({
+        isVisible: true,
+        type: "error",
+        content: "Failed to fetch bookings. Please try again.",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleBookingSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -77,6 +76,14 @@ export const BookingCenter = () => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+
+  return (
+    <div className="booking-center">
+      {/* JSX code remains the same */}
+    </div>
+  );
+};
+
 
   return (
     <div className="booking-center">
