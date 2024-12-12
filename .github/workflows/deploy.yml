@@ -23,39 +23,11 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
-      # Step 3: Clean npm cache
+      # Step 3: Clean npm cache to avoid stale dependencies
       - name: Clean npm cache
         run: npm cache clean --force
 
-      # Step 4: Install dependencies
-      - name: Install dependencies
-        run: |
-          echo "Installing dependencies..."
-          
-          # Strict dependency versions
-          echo "Installing React, React DOM, and other specific dependencies..."
-          npm install react@18.2.0 react-dom@18.2.0 react-intersection-observer@10.6.0 --legacy-peer-deps --force || echo "Retrying dependency installation..."
-
-          # Install @react-three/drei
-          echo "Ensuring @react-three/drei is installed..."
-          npm install @react-three/drei --legacy-peer-deps --force || echo "Retrying @react-three/drei installation..."
-
-          # Install Next.js
-          echo "Ensuring Next.js is installed..."
-          npm install next@15.0.3 --legacy-peer-deps --force || echo "Retrying Next.js installation..."
-
-          # Update TypeScript
-          echo "Updating TypeScript to the latest version..."
-          npm install typescript@5.7.2 --legacy-peer-deps --force || echo "Retrying TypeScript update..."
-
-          # Debug dependency tree
-          echo "Final dependency tree:"
-          npm ls || echo "Dependency tree has issues but continuing..."
-        env:
-          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
-          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
-
-      # Step 5: Validate environment variables
+      # Step 4: Validate environment variables
       - name: Validate environment variables
         run: |
           echo "Validating environment variables..."
@@ -63,6 +35,37 @@ jobs:
             echo "Required environment variables are missing!"
             exit 1
           fi
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+
+      # Step 5: Install dependencies with strict versions and retries
+      - name: Install dependencies
+        run: |
+          echo "Installing dependencies..."
+
+          # Install core dependencies with strict versions
+          echo "Installing React, React DOM, and other specific dependencies..."
+          npm install react@18.2.0 react-dom@18.2.0 react-intersection-observer@10.6.0 --legacy-peer-deps --force || echo "Retrying dependency installation..."
+
+          # Ensure @react-three/drei installation
+          echo "Ensuring @react-three/drei is installed..."
+          npm install @react-three/drei --legacy-peer-deps --force || echo "Retrying @react-three/drei installation..."
+
+          # Ensure Next.js installation
+          echo "Ensuring Next.js is installed..."
+          npm install next@15.0.3 --legacy-peer-deps --force || echo "Retrying Next.js installation..."
+
+          # Update TypeScript
+          echo "Updating TypeScript to the latest version..."
+          npm install typescript@5.7.2 --legacy-peer-deps --force || echo "Retrying TypeScript update..."
+
+          # Debug the dependency tree
+          echo "Final dependency tree:"
+          npm ls || echo "Dependency tree has issues but continuing..."
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
 
       # Step 6: Configure ESLint for Next.js
       - name: Configure ESLint for Next.js
