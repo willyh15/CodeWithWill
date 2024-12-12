@@ -1,7 +1,7 @@
 import React, { ReactNode } from "react";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
-import LazyLoad from "react-lazyload";
+import { useInView } from "react-intersection-observer";
 
 const StarfieldCanvas = dynamic(() => import("@/components/Starfield/Starfield"), { ssr: false });
 const ThreeDBackground = dynamic(() => import("@/components/ThreeDBackground"), { ssr: false });
@@ -16,20 +16,28 @@ export default function GlobalLayout({ children }: { children: ReactNode }) {
     "/skills": { starColor: "#6E44FF", threeColor: 0x0000ff, speed: 0.0007 },
   };
 
-  const { starColor, threeColor, speed } = routeConfig[router.pathname as keyof typeof routeConfig] || {
-    starColor: "#6E44FF",
-    threeColor: 0x00ff00,
-    speed: 0.0005,
-  };
+  const { starColor, threeColor, speed } =
+    routeConfig[router.pathname as keyof typeof routeConfig] || {
+      starColor: "#6E44FF",
+      threeColor: 0x00ff00,
+      speed: 0.0005,
+    };
+
+  const { ref, inView } = useInView({
+    triggerOnce: true,
+    threshold: 0.1,
+  });
 
   return (
     <div className="relative overflow-hidden">
-      <LazyLoad height="100vh">
-        <div className="absolute inset-0 -z-10">
-          <StarfieldCanvas color={starColor} speed={speed} />
-          <ThreeDBackground cubeColor={threeColor} />
-        </div>
-      </LazyLoad>
+      <div ref={ref} className="absolute inset-0 -z-10">
+        {inView && (
+          <>
+            <StarfieldCanvas color={starColor} speed={speed} />
+            <ThreeDBackground cubeColor={threeColor} />
+          </>
+        )}
+      </div>
       <div className="relative z-10">{children}</div>
     </div>
   );
