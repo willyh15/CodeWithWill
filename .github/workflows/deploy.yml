@@ -21,21 +21,27 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
+      # Install dependencies
       - name: Install dependencies
         run: |
-          echo "Installing dependencies with compatibility fixes..."
-          npm cache clean --force
+          echo "Installing dependencies..."
+          npm install || echo "Retrying npm install..."
 
-          # Add overrides in package.json to resolve conflicts
-          echo "Adding overrides to package.json..."
-          jq '. + { "overrides": { "react-lazyload": "3.2.0" } }' package.json > temp.json && mv temp.json package.json
+          # Ensure @react-three/drei installation
+          if ! npm list @react-three/drei >/dev/null 2>&1; then
+            echo "@react-three/drei missing. Installing..."
+            npm install @react-three/drei || exit 1
+          fi
 
-          # Install dependencies
-          npm install --legacy-peer-deps || echo "Retrying npm install..."
+          # Ensure Next.js installation
+          if ! npm list next >/dev/null 2>&1; then
+            echo "Next.js missing, installing manually..."
+            npm install next || exit 1
+          fi
 
-          # Ensure React and React-DOM are at v18
-          echo "Ensuring React and React-DOM are at v18..."
-          npm install react@18 react-dom@18 --legacy-peer-deps
+          # Update TypeScript, React, and React DOM
+          echo "Ensuring compatible TypeScript and React versions..."
+          npm install typescript@latest react@latest react-dom@latest
 
           # Debug dependency tree
           echo "Debugging final dependency tree..."
