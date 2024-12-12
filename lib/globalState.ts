@@ -1,11 +1,4 @@
-import React, {
-  createContext,
-  useContext,
-  useState,
-  Dispatch,
-  SetStateAction,
-  ReactNode,
-} from "react";
+import React, { createContext, useContext, useState, Dispatch, SetStateAction, ReactNode } from "react";
 
 // Define the ModalState interface
 interface ModalState {
@@ -22,8 +15,8 @@ interface GlobalState {
   setModal: Dispatch<SetStateAction<ModalState>>;
 }
 
-// Create context with an undefined default value
-const GlobalStateContext = createContext<GlobalState | undefined>(undefined);
+// Create context with a proper default value
+const GlobalStateContext = createContext<GlobalState | null>(null);
 
 // GlobalStateProvider component
 export const GlobalStateProvider = ({ children }: { children: ReactNode }) => {
@@ -44,7 +37,7 @@ export const GlobalStateProvider = ({ children }: { children: ReactNode }) => {
 // Custom hook for accessing the global state
 export const useGlobalState = () => {
   const context = useContext(GlobalStateContext);
-  if (context === undefined) {
+  if (!context) {
     throw new Error("useGlobalState must be used within a GlobalStateProvider");
   }
   return context;
