@@ -60,6 +60,10 @@ jobs:
           echo "Updating TypeScript to the latest version..."
           npm install typescript@5.7.2 --legacy-peer-deps --force || echo "Retrying TypeScript update..."
 
+          # Chartjs install
+          echo "installing chartjs..."
+          npm install chart.js --legacy-peer-deps
+
           # Debug the dependency tree
           echo "Final dependency tree:"
           npm ls || echo "Dependency tree has issues but continuing..."
