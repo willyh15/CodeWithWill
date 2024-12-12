@@ -35,7 +35,14 @@ export const GlobalStateProvider = ({ children }: { children: ReactNode }) => {
   });
 
   return (
-    <GlobalStateContext.Provider value={{ loading, setLoading, modal, setModal }}>
+    <GlobalStateContext.Provider
+      value={{
+        loading,
+        setLoading,
+        modal,
+        setModal,
+      }}
+    >
       {children}
     </GlobalStateContext.Provider>
   );
