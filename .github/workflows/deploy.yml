@@ -10,11 +10,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout the code
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Step 2: Cache Node.js modules
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: "npm"
+
       - name: Cache Node.js modules
         uses: actions/cache@v3
         with:
@@ -23,17 +27,13 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
-      # Step 3: Clean npm cache to avoid stale dependencies
       - name: Clean npm cache
         run: |
-          echo "Clearing npm and build caches..."
           npm cache clean --force
           rm -rf node_modules package-lock.json .next
 
-      # Step 4: Validate environment variables
       - name: Validate environment variables
         run: |
-          echo "Validating environment variables..."
           if [ -z "${NEXT_PUBLIC_SUPABASE_URL}" ] || [ -z "${NEXT_PUBLIC_SUPABASE_ANON_KEY}" ]; then
             echo "Required environment variables are missing!"
             exit 1
@@ -42,67 +42,23 @@ jobs:
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
 
-      # Step 5: Install dependencies with strict versions and retries
       - name: Install dependencies
         run: |
-          echo "Installing dependencies..."
-
-           echo "Installing dependencies..."
-           
           npm install react@18.2.0 react-dom@18.2.0 --legacy-peer-deps --force
-          npm install three@0.157.0 @react-three/fiber@^8.12.0 --legacy-peer-deps --force
-          npm install @react-three/drei@^9.120.4 --legacy-peer-deps --force || echo "Retrying @react-three/drei installation..."
-          npm install typescript@^5.7.2 --legacy-peer-deps --force || echo "Retrying TypeScript installation..."
-          npm install eslint-plugin-next eslint-config-next chart.js --legacy-peer-deps --force || echo "Retrying dependency installation..."
-          
-          # Chartjs install
-          echo "installing chartjs..."
-          npm install chart.js --legacy-peer-deps
-
-          # Debug the dependency tree
-          echo "Final dependency tree:"
-          npm ls || echo "Dependency tree has issues but continuing..."
+          npm install three@0.157.0 @react-three/fiber@8.12.0 --legacy-peer-deps --force
+          npm install @react-three/drei@9.120.4 --legacy-peer-deps --force
+          npm install typescript@5.7.2 eslint-plugin-next eslint-config-next chart.js --legacy-peer-deps --force
         env:
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
 
-      # Step 6: Configure ESLint for Next.js
-      - name: Configure ESLint for Next.js
-        run: |
-          echo "Configuring ESLint..."
-          npm install eslint-plugin-next --legacy-peer-deps --save-dev || echo "Retrying ESLint plugin installation..."
-          echo '{
-            "extends": ["next/core-web-vitals"]
-          }' > .eslintrc.json
-
-      # Step 7: Clear cached build files
-      - name: Clear cached build files
-        run: |
-          echo "Clearing cached build files..."
-          rm -rf .next
-
-      # Step 8: Build the application
-      - name: Build the application
+      - name: Build application
+        run: npm run build
         env:
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
-        run: |
-          echo "Building the application..."
-          npm run build || echo "Retrying build process..."
 
-      # Step 9: Collect Build Logs if Failed
-      - name: Collect Build Logs
-        if: failure()
-        run: |
-          echo "Collecting build logs..."
-          npx vercel logs codewithwill-6ceh6mc4l-codewithwill.vercel.app --token=${{ secrets.VERCEL_TOKEN }} || echo "Failed to fetch logs."
-
-      # Step 10: Deploy to Vercel
       - name: Deploy to Vercel
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
-          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
-        run: |
-          echo "Deploying to Vercel..."
-          npx vercel --prod --yes --token=$VERCEL_TOKEN || echo "Retrying Vercel deployment..."
+        run: npx vercel --prod --token=$VERCEL_TOKEN
