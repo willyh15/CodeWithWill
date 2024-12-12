@@ -11,6 +11,11 @@
     "lint": "eslint .",
     "postinstall": "npm install react-intersection-observer@9.4.0 --legacy-peer-deps || true"
   },
+  
+  "resolutions": {
+    "react-intersection-observer": "9.4.0"
+  },
+
   "dependencies": {
   "@tailwindcss/forms": "^0.5.9",
   "@tailwindcss/line-clamp": "^0.4.4",
