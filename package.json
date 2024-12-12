@@ -8,9 +8,9 @@
     "build": "next build",
     "start": "next start",
     "preload-images": "ts-node ./scripts/preloadImages.ts",
-    "lint": "eslint .",
-    "postinstall": "npm install react-intersection-observer@9.4.0 --legacy-peer-deps || true",
-    "postinstall": "npm install @react-three/drei@9.120.4 --legacy-peer-deps || true"
+    "lint": "eslint . --config eslint.config.cjs",
+    "lint:fix": "eslint . --fix --config eslint.config.cjs",
+    "postinstall": "npm install react-intersection-observer@9.4.0 --legacy-peer-deps || true && npm install @react-three/drei@9.120.4 --legacy-peer-deps || true"
   },
   "resolutions": {
     "react-intersection-observer": "9.4.0"
