@@ -15,7 +15,18 @@ module.exports = [
       "@typescript-eslint": require("@typescript-eslint/eslint-plugin"), // TypeScript linting
     },
     rules: {
-      // Add custom rules here
+      // Core ESLint Rules
+      "no-unused-vars": "warn",
+      "no-console": "off",
+
+      // React Rules
+      "react/react-in-jsx-scope": "off", // Not needed for Next.js
+      "react/prop-types": "off",
+
+      // TypeScript Rules
+      "@typescript-eslint/no-unused-vars": "warn",
+      "@typescript-eslint/explicit-module-boundary-types": "off",
+      "@typescript-eslint/no-explicit-any": "off",
     },
   },
 ];
