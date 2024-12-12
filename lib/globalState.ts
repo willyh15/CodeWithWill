@@ -22,8 +22,8 @@ interface GlobalState {
   setModal: Dispatch<SetStateAction<ModalState>>;
 }
 
-// Correctly type the GlobalStateContext as a React Context object
-const GlobalStateContext = createContext<GlobalState | undefined>(undefined);
+// Create context with a proper default value
+const GlobalStateContext = createContext<GlobalState | null>(null);
 
 // GlobalStateProvider component
 export const GlobalStateProvider = ({ children }: { children: ReactNode }) => {
