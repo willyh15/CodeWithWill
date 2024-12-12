@@ -1,4 +1,11 @@
-import React, { createContext, useContext, useState, Dispatch, SetStateAction, ReactNode } from "react";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  Dispatch,
+  SetStateAction,
+  ReactNode,
+} from "react";
 
 // Define the ModalState interface
 interface ModalState {
@@ -16,7 +23,7 @@ interface GlobalState {
 }
 
 // Create context with a proper default value
-const GlobalStateContext = createContext<GlobalState | null>(null);
+const GlobalStateContext = createContext<GlobalState | undefined>(undefined);
 
 // GlobalStateProvider component
 export const GlobalStateProvider = ({ children }: { children: ReactNode }) => {
