@@ -23,22 +23,28 @@ jobs:
 
       - name: Install dependencies
         run: |
-          echo "Installing dependencies..."
+          echo "Installing dependencies with compatibility fixes..."
           npm install --legacy-peer-deps || echo "Retrying npm install..."
 
-          # Downgrade React and React-DOM
-          echo "Downgrading React and React-DOM to v18..."
+          # Downgrade React and React-DOM to v18
+          echo "Ensuring React and React-DOM are at v18..."
           npm install react@18 react-dom@18 --legacy-peer-deps
 
-          # Ensure dependencies
+          # Install react-lazyload (correct version)
           if ! npm list react-lazyload >/dev/null 2>&1; then
-            echo "Installing react-lazyload..."
-            npm install react-lazyload@^3.2.0 --legacy-peer-deps
+            echo "Installing react-lazyload@3.2.0..."
+            npm install react-lazyload@3.2.0 --legacy-peer-deps
           fi
+
+          # Install @react-three/drei
           if ! npm list @react-three/drei >/dev/null 2>&1; then
             echo "Installing @react-three/drei..."
             npm install @react-three/drei --legacy-peer-deps
           fi
+
+          # Debug final dependency tree
+          echo "Final dependency tree:"
+          npm ls
         env:
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_KEY }}
