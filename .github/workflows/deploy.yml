@@ -21,11 +21,20 @@ jobs:
 
       - name: Install dependencies
         run: |
-          npm ci --legacy-peer-deps
-          npm run lint
-        env:
-          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
-          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          npm install --legacy-peer-deps
+          npm install --package-lock-only
+
+      - name: Commit updated lock file
+        if: always()
+        run: |
+          git config --global user.name "GitHub Actions Bot"
+          git config --global user.email "actions@github.com"
+          git add package-lock.json
+          git commit -m "Update package-lock.json" || echo "No changes to commit"
+          git push origin main
+
+      - name: Lint code
+        run: npm run lint
 
       - name: Build application
         run: npm run build
