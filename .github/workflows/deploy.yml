@@ -77,11 +77,11 @@ jobs:
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
           CI: true
 
-      # Step 9: Deploy to Vercel
+      # Step 9: Deploy to Vercel with confirmation bypassed
       - name: Deploy to Vercel
         run: |
           echo "Deploying the application to Vercel..."
-          npx vercel --prod --token=$VERCEL_TOKEN
+          npx vercel --prod --yes --token=$VERCEL_TOKEN
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
