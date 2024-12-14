@@ -51,11 +51,11 @@ jobs:
         env:
           CI: true
 
-      # Step 6: Debug GlobalStateContext initialization
-      - name: Add Context Debugging Logs
+      # Step 6: Resolve Peer Dependency Warnings
+      - name: Resolve Peer Dependency Warnings
         run: |
-          echo "Injecting debug logs into GlobalStateContext..."
-          sed -i '/const GlobalStateContext/i console.log("GlobalStateContext Debug:", { loading, modal });' lib/globalState.ts || echo "Failed to inject logs"
+          echo "Resolving peer dependency warnings..."
+          npm install three@^0.171.0 @react-three/drei@^9.120.4 --legacy-peer-deps
         env:
           CI: true
 
@@ -87,15 +87,7 @@ jobs:
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
 
-      # Step 10: Debug Peer Dependencies
-      - name: Resolve Peer Dependency Warnings
-        run: |
-          echo "Resolving peer dependency warnings..."
-          npm install three@^0.171.0 @react-three/drei@^9.120.4 --legacy-peer-deps
-        env:
-          CI: true
-
-      # Step 11: Output Logs for Further Analysis
+      # Step 10: Output Logs for Further Analysis
       - name: Output Debug Logs
         if: failure()
         run: |
