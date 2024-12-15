@@ -24,10 +24,10 @@ jobs:
       # Step 3: Install dependencies and resolve lockfile issues
       - name: Install Dependencies
         run: |
-          echo "Installing dependencies with legacy peer-deps..." | tee -a debug.log
-          npm install --legacy-peer-deps | tee -a debug.log
-          echo "Regenerating package-lock.json..." | tee -a debug.log
-          npm install --package-lock-only | tee -a debug.log
+          echo "Installing dependencies with legacy peer-deps..." | tee -a $GITHUB_WORKSPACE/debug.log
+          npm install --legacy-peer-deps | tee -a $GITHUB_WORKSPACE/debug.log
+          echo "Regenerating package-lock.json..." | tee -a $GITHUB_WORKSPACE/debug.log
+          npm install --package-lock-only | tee -a $GITHUB_WORKSPACE/debug.log
         env:
           CI: true
 
@@ -35,44 +35,44 @@ jobs:
       - name: Commit Updated Lockfile
         if: always()
         run: |
-          echo "Checking for updates to package-lock.json..." | tee -a debug.log
+          echo "Checking for updates to package-lock.json..." | tee -a $GITHUB_WORKSPACE/debug.log
           git config --global user.name "GitHub Actions Bot"
           git config --global user.email "actions@github.com"
-          git add package-lock.json | tee -a debug.log
-          git commit -m "Update package-lock.json [ci skip]" || echo "No changes to commit" | tee -a debug.log
-          git push origin main || echo "No changes pushed" | tee -a debug.log
+          git add package-lock.json | tee -a $GITHUB_WORKSPACE/debug.log
+          git commit -m "Update package-lock.json [ci skip]" || echo "No changes to commit" | tee -a $GITHUB_WORKSPACE/debug.log
+          git push origin main || echo "No changes pushed" | tee -a $GITHUB_WORKSPACE/debug.log
         env:
           CI: true
 
       # Step 5: Debug TypeScript compilation issues
       - name: Debug TypeScript Compilation
         run: |
-          echo "Running TypeScript compilation for debugging..." | tee -a debug.log
-          tsc --noEmit || echo "TypeScript compilation failed, continuing for debugging purposes..." | tee -a debug.log
+          echo "Running TypeScript compilation for debugging..." | tee -a $GITHUB_WORKSPACE/debug.log
+          tsc --noEmit || echo "TypeScript compilation failed, continuing for debugging purposes..." | tee -a $GITHUB_WORKSPACE/debug.log
         env:
           CI: true
 
       # Step 6: Resolve Peer Dependency Warnings
       - name: Resolve Peer Dependency Warnings
         run: |
-          echo "Resolving peer dependency warnings..." | tee -a debug.log
-          npm install three@^0.171.0 @react-three/drei@^9.120.4 --legacy-peer-deps | tee -a debug.log
+          echo "Resolving peer dependency warnings..." | tee -a $GITHUB_WORKSPACE/debug.log
+          npm install three@^0.171.0 @react-three/drei@^9.120.4 --legacy-peer-deps | tee -a $GITHUB_WORKSPACE/debug.log
         env:
           CI: true
 
       # Step 7: Lint the project to catch errors
       - name: Lint Code
         run: |
-          echo "Linting the code..." | tee -a debug.log
-          npm run lint || echo "Lint warnings detected, continuing..." | tee -a debug.log
+          echo "Linting the code..." | tee -a $GITHUB_WORKSPACE/debug.log
+          npm run lint || echo "Lint warnings detected, continuing..." | tee -a $GITHUB_WORKSPACE/debug.log
         env:
           CI: true
 
       # Step 8: Build the application
       - name: Build Application
         run: |
-          echo "Building the application..." | tee -a debug.log
-          npm run build || echo "Build failed, check the logs for detailed errors" | tee -a debug.log
+          echo "Building the application..." | tee -a $GITHUB_WORKSPACE/debug.log
+          npm run build || echo "Build failed, check the logs for detailed errors" | tee -a $GITHUB_WORKSPACE/debug.log
         env:
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
@@ -81,8 +81,8 @@ jobs:
       # Step 9: Deploy to Vercel with confirmation bypassed
       - name: Deploy to Vercel
         run: |
-          echo "Deploying the application to Vercel..." | tee -a debug.log
-          npx vercel --prod --yes --token=$VERCEL_TOKEN | tee -a debug.log
+          echo "Deploying the application to Vercel..." | tee -a $GITHUB_WORKSPACE/debug.log
+          npx vercel --prod --yes --token=$VERCEL_TOKEN | tee -a $GITHUB_WORKSPACE/debug.log
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
@@ -92,10 +92,10 @@ jobs:
       - name: Output Debug Logs
         if: failure()
         run: |
-          echo "Outputting debug logs for analysis..." | tee -a debug.log
-          cat /home/runner/.npm/_logs/*.log || echo "No npm logs found" | tee -a debug.log
-          ls -alh || echo "Directory listing failed" | tee -a debug.log
-          cat lib/globalState.ts || echo "GlobalStateContext file not found" | tee -a debug.log
+          echo "Outputting debug logs for analysis..." | tee -a $GITHUB_WORKSPACE/debug.log
+          cat /home/runner/.npm/_logs/*.log >> $GITHUB_WORKSPACE/debug.log || echo "No npm logs found" | tee -a $GITHUB_WORKSPACE/debug.log
+          ls -alh >> $GITHUB_WORKSPACE/debug.log || echo "Directory listing failed" | tee -a $GITHUB_WORKSPACE/debug.log
+          cat lib/globalState.ts >> $GITHUB_WORKSPACE/debug.log || echo "GlobalStateContext file not found" | tee -a $GITHUB_WORKSPACE/debug.log
         env:
           CI: true
 
@@ -105,4 +105,4 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: debug-logs
-          path: debug.log
+          path: $GITHUB_WORKSPACE/debug.log
