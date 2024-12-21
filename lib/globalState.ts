@@ -22,8 +22,8 @@ interface GlobalState {
   setModal: Dispatch<SetStateAction<ModalState>>;
 }
 
-// Declare the context
-const GlobalStateContext = createContext<GlobalState | undefined>(undefined);
+// Create context (ensure this is not used as a namespace)
+const GlobalStateContext = createContext<GlobalState | null>(null);
 
 // GlobalStateProvider component
 export const GlobalStateProvider = ({ children }: { children: ReactNode }) => {
@@ -34,9 +34,6 @@ export const GlobalStateProvider = ({ children }: { children: ReactNode }) => {
     content: "",
   });
 
-  // Debug the context values
-  console.log("GlobalStateContext Debug:", { loading, modal });
-
   return (
     <GlobalStateContext.Provider value={{ loading, setLoading, modal, setModal }}>
       {children}
@@ -45,7 +42,7 @@ export const GlobalStateProvider = ({ children }: { children: ReactNode }) => {
 };
 
 // Custom hook to use the global state
-export const useGlobalState = () => {
+export const useGlobalState = (): GlobalState => {
   const context = useContext(GlobalStateContext);
   if (!context) {
     throw new Error("useGlobalState must be used within a GlobalStateProvider");
