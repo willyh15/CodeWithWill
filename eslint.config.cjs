@@ -3,16 +3,17 @@ const globals = require("globals");
 module.exports = [
   {
     languageOptions: {
-      ecmaVersion: "latest", // Modern JavaScript
-      sourceType: "module", // ES modules
+      ecmaVersion: "latest",
+      sourceType: "module",
       globals: {
-        ...globals.browser, // Browser globals
-        ...globals.es2021, // ES2021 globals
+        ...globals.browser,
+        ...globals.es2021,
       },
     },
     plugins: {
-      react: require("eslint-plugin-react"), // React linting
-      "@typescript-eslint": require("@typescript-eslint/eslint-plugin"), // TypeScript linting
+      react: require("eslint-plugin-react"),
+      "@typescript-eslint": require("@typescript-eslint/eslint-plugin"),
+      "next": require("eslint-plugin-next"), // Add the Next.js plugin
     },
     rules: {
       // Core ESLint Rules
@@ -27,6 +28,9 @@ module.exports = [
       "@typescript-eslint/no-unused-vars": "warn",
       "@typescript-eslint/explicit-module-boundary-types": "off",
       "@typescript-eslint/no-explicit-any": "off",
+
+      // Next.js Rules
+      "next/no-html-link-for-pages": "off",
     },
   },
 ];
