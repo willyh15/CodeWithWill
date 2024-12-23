@@ -1,6 +1,5 @@
 import { create } from "zustand";
 
-// Define state types
 interface ModalState {
   isVisible: boolean;
   type: "success" | "error" | null;
@@ -14,7 +13,6 @@ interface GlobalState {
   setModal: (modal: ModalState) => void;
 }
 
-// Create the Zustand store
 export const useGlobalState = create<GlobalState>((set) => ({
   loading: false,
   modal: {
@@ -22,6 +20,6 @@ export const useGlobalState = create<GlobalState>((set) => ({
     type: null,
     content: "",
   },
-  setLoading: (loading: boolean) => set({ loading }),
-  setModal: (modal: ModalState) => set({ modal }),
+  setLoading: (loading) => set({ loading }),
+  setModal: (modal) => set({ modal }),
 }));
