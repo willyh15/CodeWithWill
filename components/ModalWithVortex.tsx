@@ -30,8 +30,7 @@ function SwirlingVortex() {
 }
 
 export const ModalWithVortex = () => {
-  const { state, dispatch } = useGlobalState(); // Access state and dispatch from the hook
-  const { modal } = state; // Extract modal from state
+  const { modal, setModal } = useGlobalState(); // Zustand hooks
 
   if (!modal.isVisible) return null;
 
@@ -62,9 +61,10 @@ export const ModalWithVortex = () => {
           </p>
           <button
             onClick={() =>
-              dispatch({
-                type: "SET_MODAL",
-                payload: { isVisible: false, type: null, content: "" },
+              setModal({
+                isVisible: false,
+                type: null,
+                content: "",
               })
             }
             className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
