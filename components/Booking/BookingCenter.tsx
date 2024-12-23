@@ -16,7 +16,8 @@ interface Booking {
 }
 
 export const BookingCenter = () => {
-  const { modal, setModal, loading, setLoading } = useGlobalState();
+  const { state, dispatch } = useGlobalState(); // Adjust destructuring
+  const { modal, loading } = state; // Extract modal and loading from state
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [formData, setFormData] = useState({
     name: "",
@@ -25,25 +26,28 @@ export const BookingCenter = () => {
   });
 
   const fetchBookings = async () => {
-    setLoading(true);
+    dispatch({ type: "SET_LOADING", payload: true }); // Use dispatch to update loading
     try {
       const { data, error } = await supabase.from("bookings").select("*");
       if (error) throw error;
       if (data) setBookings(data);
     } catch (error) {
-      setModal({
-        isVisible: true,
-        type: "error",
-        content: "Failed to fetch bookings. Please try again.",
+      dispatch({
+        type: "SET_MODAL",
+        payload: {
+          isVisible: true,
+          type: "error",
+          content: "Failed to fetch bookings. Please try again.",
+        },
       });
     } finally {
-      setLoading(false);
+      dispatch({ type: "SET_LOADING", payload: false });
     }
   };
 
   const handleBookingSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
+    dispatch({ type: "SET_LOADING", payload: true });
     try {
       const { error } = await supabase.from("bookings").insert([
         {
@@ -54,22 +58,28 @@ export const BookingCenter = () => {
       ]);
       if (error) throw error;
 
-      setModal({
-        isVisible: true,
-        type: "success",
-        content: "Your booking was successful!",
+      dispatch({
+        type: "SET_MODAL",
+        payload: {
+          isVisible: true,
+          type: "success",
+          content: "Your booking was successful!",
+        },
       });
 
       fetchBookings();
       setFormData({ name: "", email: "", date: "" });
     } catch (error) {
-      setModal({
-        isVisible: true,
-        type: "error",
-        content: "Failed to submit booking. Please try again.",
+      dispatch({
+        type: "SET_MODAL",
+        payload: {
+          isVisible: true,
+          type: "error",
+          content: "Failed to submit booking. Please try again.",
+        },
       });
     } finally {
-      setLoading(false);
+      dispatch({ type: "SET_LOADING", payload: false });
     }
   };
 
@@ -131,9 +141,14 @@ export const BookingCenter = () => {
       {/* Modals and Loading */}
       <Modal
         isVisible={modal.isVisible}
-        onClose={() => setModal({ isVisible: false, type: null, content: "" })}
+        onClose={() =>
+          dispatch({
+            type: "SET_MODAL",
+            payload: { isVisible: false, type: null, content: "" },
+          })
+        }
         title={modal.type === "success" ? "Success" : "Error"}
-        content={String(modal.content) || "No content available."}
+        content={modal.content || "No content available."}
       />
       <LoadingIndicator />
     </div>
