@@ -1,7 +1,6 @@
-import React from "react";
+import React, { useRef } from "react";
 import { useGlobalState } from "@/lib/globalState";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { useRef } from "react";
 
 function RotatingCube() {
   const cubeRef = useRef<THREE.Mesh>(null);
@@ -20,7 +19,8 @@ function RotatingCube() {
 }
 
 export const LoadingIndicator = () => {
-  const { loading } = useGlobalState();
+  const { state } = useGlobalState(); // Extract state from the hook
+  const { loading } = state; // Extract loading from state
 
   if (!loading) return null;
 
