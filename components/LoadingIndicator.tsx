@@ -19,8 +19,7 @@ function RotatingCube() {
 }
 
 export const LoadingIndicator = () => {
-  const { state } = useGlobalState(); // Extract state from the hook
-  const { loading } = state; // Extract loading from state
+  const { loading } = useGlobalState(); // Zustand hook
 
   if (!loading) return null;
 
