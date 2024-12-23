@@ -35,6 +35,8 @@ const globalStateReducer = (state: GlobalState, action: Action): GlobalState => 
     case "SET_MODAL":
       return { ...state, modal: action.payload };
     default:
+      // Add an exhaustive type check for TypeScript safety
+      const _exhaustiveCheck: never = action;
       throw new Error(`Unhandled action type: ${action.type}`);
   }
 };
