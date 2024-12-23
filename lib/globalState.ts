@@ -1,48 +1,63 @@
-import React, {
-  createContext,
-  useContext,
-  useState,
-  Dispatch,
-  SetStateAction,
-  ReactNode,
-} from "react";
+import React, { createContext, useReducer, useContext, ReactNode } from "react";
 
-// Modal state interface
-interface ModalState {
+// Define state types
+type ModalState = {
   isVisible: boolean;
   type: "success" | "error" | null;
   content: string;
-}
+};
 
-// Global state interface
-interface GlobalState {
+type GlobalState = {
   loading: boolean;
-  setLoading: Dispatch<SetStateAction<boolean>>;
   modal: ModalState;
-  setModal: Dispatch<SetStateAction<ModalState>>;
-}
+};
 
-// Create context
-const GlobalStateContext = createContext<GlobalState | null>(null);
+// Define actions
+type Action =
+  | { type: "SET_LOADING"; payload: boolean }
+  | { type: "SET_MODAL"; payload: ModalState };
 
-// GlobalStateProvider component
-export const GlobalStateProvider = ({ children }: { children: ReactNode }) => {
-  const [loading, setLoading] = useState(false);
-  const [modal, setModal] = useState<ModalState>({
+// Define the initial state
+const initialState: GlobalState = {
+  loading: false,
+  modal: {
     isVisible: false,
     type: null,
     content: "",
-  });
+  },
+};
+
+// Define the reducer
+const globalStateReducer = (state: GlobalState, action: Action): GlobalState => {
+  switch (action.type) {
+    case "SET_LOADING":
+      return { ...state, loading: action.payload };
+    case "SET_MODAL":
+      return { ...state, modal: action.payload };
+    default:
+      throw new Error(`Unhandled action type: ${action.type}`);
+  }
+};
+
+// Create context
+const GlobalStateContext = createContext<{
+  state: GlobalState;
+  dispatch: React.Dispatch<Action>;
+} | null>(null);
+
+// GlobalStateProvider component
+export const GlobalStateProvider = ({ children }: { children: ReactNode }) => {
+  const [state, dispatch] = useReducer(globalStateReducer, initialState);
 
   return (
-    <GlobalStateContext.Provider value={{ loading, setLoading, modal, setModal }}>
+    <GlobalStateContext.Provider value={{ state, dispatch }}>
       {children}
     </GlobalStateContext.Provider>
   );
 };
 
 // Custom hook to use the global state
-export const useGlobalState = (): GlobalState => {
+export const useGlobalState = () => {
   const context = useContext(GlobalStateContext);
   if (!context) {
     throw new Error("useGlobalState must be used within a GlobalStateProvider");
