@@ -22,7 +22,7 @@ interface GlobalState {
   setModal: Dispatch<SetStateAction<ModalState>>;
 }
 
-// Create context (ensure this is not used as a namespace)
+// Create context
 const GlobalStateContext = createContext<GlobalState | null>(null);
 
 // GlobalStateProvider component
