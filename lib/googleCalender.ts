@@ -1,4 +1,4 @@
-import { google } from "googleapis";
+import { google, calendar_v3 } from "googleapis";
 
 const credentials = {
   client_id: process.env.GOOGLE_CLIENT_ID || "",
@@ -16,19 +16,19 @@ const oAuth2Client = new google.auth.OAuth2(
   credentials.redirect_uris[0]
 );
 
-// Get Access Token
+// Set Access Token
 export const setCredentials = (token: string) => {
   oAuth2Client.setCredentials({ access_token: token });
 };
 
 // Insert Event into Google Calendar
-export const insertEvent = async (event: any) => {
+export const insertEvent = async (event: calendar_v3.Schema$Event) => {
   const calendar = google.calendar({ version: "v3", auth: oAuth2Client });
 
   try {
     const response = await calendar.events.insert({
       calendarId: "primary",
-      resource: event,
+      requestBody: event, // Updated property to "requestBody"
     });
     return response.data;
   } catch (error) {
