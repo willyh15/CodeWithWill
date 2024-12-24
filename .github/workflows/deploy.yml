@@ -21,12 +21,11 @@ jobs:
           node-version: 18
           cache: "npm"
 
-      # Step 3: Install dependencies and resolve lockfile issues
+      # Step 3: Install dependencies
       - name: Install Dependencies
         run: |
           npm install --legacy-peer-deps
-          npm install googleapis --legacy-peer-deps # Ensure googleapis is installed
-          npm install eslint-plugin-next --legacy-peer-deps # Ensure eslint-plugin-next is installed
+          npm install googleapis eslint-plugin-next@latest --legacy-peer-deps
           npm install --package-lock-only
 
       # Step 4: Commit lockfile if updated
@@ -43,30 +42,18 @@ jobs:
       - name: Debug TypeScript Compilation
         run: tsc --noEmit || echo "TypeScript compilation failed"
 
-      # Step 6: Resolve Peer Dependencies
-      - name: Resolve Peer Dependency Warnings
-        run: npm install three@^0.171.0 @react-three/drei@^9.120.4 --legacy-peer-deps
-
-      # Step 7: Lint code
+      # Step 6: Lint code
       - name: Lint Code
         run: npm run lint || echo "Lint warnings detected"
 
-      # Step 8: Build the application
+      # Step 7: Build the application
       - name: Build Application
         run: |
           npm run build || echo "Build failed"
 
-      # Step 9: Deploy to Vercel
+      # Step 8: Deploy to Vercel
       - name: Deploy to Vercel
         run: |
           npx vercel --prod --yes --token=$VERCEL_TOKEN
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-
-      # Step 10: Upload Debug Logs
-      - name: Upload Debug Logs
-        if: failure()
-        uses: actions/upload-artifact@v3
-        with:
-          name: debug-logs
-          path: $GITHUB_WORKSPACE/debug.log
