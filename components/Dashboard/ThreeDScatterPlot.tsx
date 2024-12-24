@@ -18,10 +18,8 @@ const ThreeDScatterPlot = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      // Provide second type argument to `from`
-      const { data, error } = await supabase
-        .from<Booking, Booking[]>("bookings")
-        .select("*");
+      // Fetch data from the Supabase table
+      const { data, error } = await supabase.from<Booking>("bookings").select("*");
       if (error || !data) {
         console.error("Failed to fetch data", error);
         return;
