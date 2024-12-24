@@ -25,7 +25,7 @@ jobs:
       - name: Install Dependencies
         run: |
           npm install --legacy-peer-deps
-          npm install googleapis eslint-plugin-next@latest --legacy-peer-deps
+          npm install googleapis eslint-plugin-next@latest @supabase/supabase-js --legacy-peer-deps
           npm install --package-lock-only
 
       # Step 4: Commit lockfile if updated
