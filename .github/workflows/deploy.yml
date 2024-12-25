@@ -24,8 +24,17 @@ jobs:
       # Step 3: Download Supabase CLI Binary
       - name: Install Supabase CLI
         run: |
-          curl -L https://github.com/supabase/cli/releases/download/v1.65.0/supabase_1.65.0_linux_amd64.tar.gz | tar -xz
-          sudo mv supabase /usr/local/bin
+          CLI_VERSION="1.65.0"
+          PLATFORM="linux" # Change to "darwin" for macOS, "windows" for Windows
+          ARCH="amd64"     # Change based on architecture (arm64, etc.)
+          CLI_URL="https://github.com/supabase/cli/releases/download/v${CLI_VERSION}/supabase_${CLI_VERSION}_${PLATFORM}_${ARCH}.tar.gz"
+          
+          echo "Downloading Supabase CLI from $CLI_URL"
+          curl -fsSL "$CLI_URL" | tar -xz || (echo "Download or extraction failed!" && exit 1)
+
+          sudo mv supabase /usr/local/bin || (echo "Moving Supabase binary failed!" && exit 1)
+          
+          echo "Supabase CLI installed successfully"
 
       # Step 4: Initialize Supabase Project
       - name: Initialize Supabase Project
