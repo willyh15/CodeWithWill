@@ -21,12 +21,13 @@ jobs:
           node-version: 18
           cache: npm
 
-      # Step 3: Download Supabase CLI Binary
-      - name: Install Supabase CLI
+       # Step 3: Install supabase CLI
+
+        - name: Install Supabase CLI
         run: |
-          CLI_VERSION="1.65.0"
+          CLI_VERSION="2.1.1"
           PLATFORM="linux" # Change to "darwin" for macOS, "windows" for Windows
-          ARCH="amd64"     # Change based on architecture (arm64, etc.)
+          ARCH="amd64"     # Adjust if necessary (e.g., arm64)
           CLI_URL="https://github.com/supabase/cli/releases/download/v${CLI_VERSION}/supabase_${CLI_VERSION}_${PLATFORM}_${ARCH}.tar.gz"
           
           echo "Downloading Supabase CLI from $CLI_URL"
