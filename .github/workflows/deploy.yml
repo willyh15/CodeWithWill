@@ -1,4 +1,4 @@
-name: Deploy to Vercel
+name: Deploy Application with Supabase Initialization
 
 on:
   push:
@@ -19,42 +19,66 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18
-          cache: "npm"
+          cache: npm
 
-      # Step 3: Install dependencies
+      # Step 3: Install Supabase CLI
+      - name: Install Supabase CLI
+        run: npm install -g supabase
+
+      # Step 4: Initialize Supabase if not already initialized
+      - name: Initialize Supabase Project
+        run: |
+          mkdir -p supabase/migrations
+          echo "project_id = '${{ secrets.SUPABASE_PROJECT_ID }}'" > supabase/config.toml
+          echo "[db]" >> supabase/config.toml
+          echo "password = '${{ secrets.SUPABASE_DB_PASSWORD }}'" >> supabase/config.toml
+
+      # Step 5: Create Initial Migration if Necessary
+      - name: Create Initial Migration
+        run: |
+          if [ ! -f "supabase/migrations/0001_create_bookings_table.sql" ]; then
+            echo "Creating initial migration for bookings table..."
+            echo "CREATE TABLE bookings (id UUID DEFAULT gen_random_uuid() PRIMARY KEY, name VARCHAR(255), email VARCHAR(255), date TIMESTAMP, notes TEXT, created_at TIMESTAMP DEFAULT now());" > supabase/migrations/0001_create_bookings_table.sql
+          fi
+
+      # Step 6: Apply Supabase Migrations
+      - name: Apply Supabase Migrations
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+        run: |
+          supabase db push --password ${{ secrets.SUPABASE_DB_PASSWORD }}
+
+      # Step 7: Install Application Dependencies
       - name: Install Dependencies
         run: |
-          rm -rf node_modules package-lock.json
           npm install --legacy-peer-deps
-          npm install eslint-plugin-next @supabase/supabase-js --legacy-peer-deps
+          npm install googleapis eslint-plugin-next@latest @supabase/supabase-js --legacy-peer-deps
           npm install --package-lock-only
 
-      # Step 4: Commit lockfile if updated
-      - name: Commit Updated Lockfile
-        if: always()
-        run: |
-          git config --global user.name "GitHub Actions Bot"
-          git config --global user.email "actions@github.com"
-          git add package-lock.json
-          git commit -m "Update package-lock.json [ci skip]" || echo "No changes to commit"
-          git push origin main || echo "No changes pushed"
-
-      # Step 5: TypeScript compilation
-      - name: Debug TypeScript Compilation
+      # Step 8: TypeScript Compilation
+      - name: TypeScript Compilation
         run: tsc --noEmit || echo "TypeScript compilation failed"
 
-      # Step 6: Lint code
+      # Step 9: Lint Code
       - name: Lint Code
         run: npm run lint || echo "Lint warnings detected"
 
-      # Step 7: Build the application
+      # Step 10: Build the Application
       - name: Build Application
         run: |
           npm run build || echo "Build failed"
 
-      # Step 8: Deploy to Vercel
+      # Step 11: Deploy to Vercel
       - name: Deploy to Vercel
         run: |
           npx vercel --prod --yes --token=$VERCEL_TOKEN
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+
+      # Step 12: Upload Debug Logs
+      - name: Upload Debug Logs
+        if: failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: debug-logs
+          path: $GITHUB_WORKSPACE/debug.log
