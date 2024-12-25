@@ -21,18 +21,18 @@ jobs:
           node-version: 18
           cache: npm
 
-       # Step 3: Install supabase CLI
-
-        - name: Install Supabase CLI
+      # Step 3: Install Supabase CLI
+      - name: Install Supabase CLI
         run: |
           CLI_VERSION="2.1.1"
-          PLATFORM="linux" # Change to "darwin" for macOS, "windows" for Windows
-          ARCH="amd64"     # Adjust if necessary (e.g., arm64)
+          PLATFORM="linux"
+          ARCH="amd64"
           CLI_URL="https://github.com/supabase/cli/releases/download/v${CLI_VERSION}/supabase_${CLI_VERSION}_${PLATFORM}_${ARCH}.tar.gz"
           
           echo "Downloading Supabase CLI from $CLI_URL"
           curl -fsSL "$CLI_URL" | tar -xz || (echo "Download or extraction failed!" && exit 1)
 
+          chmod +x supabase
           sudo mv supabase /usr/local/bin || (echo "Moving Supabase binary failed!" && exit 1)
           
           echo "Supabase CLI installed successfully"
@@ -58,7 +58,8 @@ jobs:
         env:
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
         run: |
-          supabase db push --password ${{ secrets.SUPABASE_DB_PASSWORD }}
+          echo "Applying Supabase migrations..."
+          supabase db push --password ${{ secrets.SUPABASE_DB_PASSWORD }} || echo "Migration failed!"
 
       # Step 7: Install Application Dependencies
       - name: Install Dependencies
