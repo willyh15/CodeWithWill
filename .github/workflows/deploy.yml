@@ -21,11 +21,13 @@ jobs:
           node-version: 18
           cache: npm
 
-      # Step 3: Install Supabase CLI
+      # Step 3: Download Supabase CLI Binary
       - name: Install Supabase CLI
-        run: npm install -g supabase
+        run: |
+          curl -L https://github.com/supabase/cli/releases/download/v1.65.0/supabase_1.65.0_linux_amd64.tar.gz | tar -xz
+          sudo mv supabase /usr/local/bin
 
-      # Step 4: Initialize Supabase if not already initialized
+      # Step 4: Initialize Supabase Project
       - name: Initialize Supabase Project
         run: |
           mkdir -p supabase/migrations
