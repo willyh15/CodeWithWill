@@ -28,7 +28,7 @@ jobs:
           CLI_VERSION=$(curl -s https://api.github.com/repos/supabase/cli/releases/latest | jq -r .tag_name)
           PLATFORM="linux"
           ARCH="amd64"
-          CLI_URL="https://github.com/supabase/cli/releases/download/${CLI_VERSION}/supabase_${CLI_VERSION}_${PLATFORM}_${ARCH}.tar.gz"
+          CLI_URL="https://github.com/supabase/cli/releases/download/${CLI_VERSION}/supabase_${PLATFORM}_${ARCH}.tar.gz"
           
           echo "Downloading Supabase CLI from $CLI_URL"
           curl -fsSL "$CLI_URL" | tar -xz || (echo "Download or extraction failed!" && exit 1)
