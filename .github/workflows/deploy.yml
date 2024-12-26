@@ -21,25 +21,19 @@ jobs:
           node-version: 18
           cache: npm
 
-      # Step 3: Install Supabase CLI
-      - name: Install Supabase CLI
+      # Step 3: Install jq (JSON parser) and Supabase CLI
+      - name: Install jq and Supabase CLI
         run: |
-          # Fetch latest Supabase CLI version dynamically
+          sudo apt-get update && sudo apt-get install -y jq
           CLI_VERSION=$(curl -s https://api.github.com/repos/supabase/cli/releases/latest | jq -r .tag_name)
           PLATFORM="linux"
           ARCH="amd64"
           CLI_URL="https://github.com/supabase/cli/releases/download/${CLI_VERSION}/supabase_${CLI_VERSION}_${PLATFORM}_${ARCH}.tar.gz"
-          
           echo "Downloading Supabase CLI from $CLI_URL"
           curl -fsSL "$CLI_URL" | tar -xz || (echo "Download or extraction failed!" && exit 1)
-
           chmod +x supabase
           sudo mv supabase /usr/local/bin || (echo "Moving Supabase binary failed!" && exit 1)
-          
           echo "Supabase CLI installed successfully"
-      env:
-        # Install jq if needed for JSON parsing
-        JQ_PATH: jq || sudo apt-get install -y jq
 
       # Step 4: Initialize Supabase Project
       - name: Initialize Supabase Project
