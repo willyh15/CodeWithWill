@@ -12,20 +12,17 @@ import {
 } from "chart.js";
 import { supabase } from "@/lib/supabaseClient";
 
-// Register required components for Chart.js
 ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement, Title, Tooltip, Legend);
 
-// Define the Booking type
 interface Booking {
   id: string;
   name: string;
   email: string;
-  date: string; // Date in ISO format
+  date: string;
   notes?: string;
   created_at: string;
 }
 
-// Define the type for chart data
 interface ChartData {
   labels: string[];
   datasets: {
@@ -40,11 +37,11 @@ interface ChartData {
 
 const LiveDataChart = () => {
   const [chartData, setChartData] = useState<ChartData>({
-    labels: [], // X-axis labels
+    labels: [],
     datasets: [
       {
         label: "Bookings Over Time",
-        data: [], // Y-axis data
+        data: [],
         borderColor: "rgba(75, 192, 192, 1)",
         backgroundColor: "rgba(75, 192, 192, 0.2)",
         borderWidth: 2,
@@ -55,21 +52,20 @@ const LiveDataChart = () => {
 
   useEffect(() => {
     const fetchBookings = async () => {
-      const { data, error } = await supabase.from("bookings").select("*"); // Removed type arguments
+      const { data, error } = await supabase.from<Booking[]>("bookings").select("*");
 
       if (!error && data) {
-        const dates = data.map((booking: Booking) => booking.date); // Explicitly cast the data
-        const dateCounts = dates.reduce((acc: { [x: string]: number }, date: string) => {
+        const dateCounts = data.reduce((acc: Record<string, number>, { date }) => {
           acc[date] = (acc[date] || 0) + 1;
           return acc;
         }, {});
 
         setChartData({
-          labels: Object.keys(dateCounts), // Unique dates as X-axis labels
+          labels: Object.keys(dateCounts),
           datasets: [
             {
               label: "Bookings",
-              data: Object.values(dateCounts), // Number of bookings per date
+              data: Object.values(dateCounts),
               borderColor: "rgba(75, 192, 192, 1)",
               backgroundColor: "rgba(75, 192, 192, 0.2)",
               borderWidth: 2,
