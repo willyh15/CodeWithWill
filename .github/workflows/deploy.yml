@@ -66,35 +66,40 @@ jobs:
       - name: Install Dependencies
         run: |
           npm install --legacy-peer-deps
-          npm install googleapis eslint-plugin-next@latest @supabase/supabase-js three@^0.171.0 --legacy-peer-deps
+          npm install eslint-plugin-next @supabase/supabase-js three@^0.171.0 --legacy-peer-deps
           npm install --package-lock-only
 
-      # Step 8: Update TypeScript Configuration
+      # Step 8: Add Missing ESLint Plugin
+      - name: Fix ESLint Missing Plugin Issue
+        run: npm install eslint-plugin-next --save-dev
+
+      # Step 9: Fix TypeScript Errors in Code
       - name: Fix TypeScript Errors
         run: |
           sed -i 's/supabase\\.from<Booking>/supabase.from<Booking[]>/g' ./components/Dashboard/ThreeDScatterPlot.tsx
+          sed -i 's/supabase\\.from<Booking>/supabase.from<Booking[]>/g' ./components/Dashboard/LiveDataChart.tsx
 
-      # Step 9: TypeScript Compilation
+      # Step 10: TypeScript Compilation
       - name: TypeScript Compilation
         run: tsc --noEmit || echo "TypeScript compilation failed"
 
-      # Step 10: Lint Code
+      # Step 11: Lint Code
       - name: Lint Code
         run: npm run lint || echo "Lint warnings detected"
 
-      # Step 11: Build the Application
+      # Step 12: Build the Application
       - name: Build Application
         run: |
           npm run build || echo "Build failed"
 
-      # Step 12: Deploy to Vercel
+      # Step 13: Deploy to Vercel
       - name: Deploy to Vercel
         run: |
           npx vercel --prod --yes --token=$VERCEL_TOKEN
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
 
-      # Step 13: Upload Debug Logs
+      # Step 14: Upload Debug Logs
       - name: Upload Debug Logs
         if: failure()
         uses: actions/upload-artifact@v3
