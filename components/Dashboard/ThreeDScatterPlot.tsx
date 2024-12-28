@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from "react";
 import { Canvas } from "@react-three/fiber";
-import * as THREE from "three"; // Import THREE
+import * as THREE from "three";
 import { supabase } from "@/lib/supabaseClient";
 
 // Define Booking interface
@@ -18,17 +18,15 @@ const ThreeDScatterPlot = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      // Fetch data from the Supabase table
-      const { data, error } = await supabase.from<Booking>("bookings").select("*");
+      const { data, error } = await supabase.from<Booking[]>("bookings").select("*");
       if (error || !data) {
         console.error("Failed to fetch data", error);
         return;
       }
 
-      // Map the bookings into positions for the scatter plot
       const positions = new Float32Array(
         data
-          .map((booking, i) => [
+          .map((_, i) => [
             i * 2, // X-axis spacing
             Math.random() * 10, // Random Y position
             Math.random() * 10, // Random Z position
