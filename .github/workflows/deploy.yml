@@ -34,10 +34,9 @@ jobs:
           npm install --package-lock-only
 
       # Step 5: Fix TypeScript Errors in Code
-      - name: Fix TypeScript and ESLint Issues
+      - name: Fix TypeScript Issues
         run: |
           sed -i 's/supabase\\.from<Booking>/supabase.from<Booking[]>/g' ./components/Dashboard/ThreeDScatterPlot.tsx
-          sed -i 's/supabase\\.from<Booking>/supabase.from<Booking[]>/g' ./components/Dashboard/LiveDataChart.tsx
 
       # Step 6: TypeScript Compilation
       - name: TypeScript Compilation
