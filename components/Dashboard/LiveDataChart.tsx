@@ -51,33 +51,36 @@ const LiveDataChart = () => {
   });
 
   useEffect(() => {
-    const fetchBookings = async () => {
-      const { data, error } = await supabase.from<Booking[]>("bookings").select("*");
+  const fetchBookings = async () => {
+    // Use two type arguments (data type, error type)
+    const { data, error } = await supabase
+      .from<Booking, unknown>("bookings") // Add `unknown` as the error type
+      .select("*");
 
-      if (!error && data) {
-        const dateCounts = data.reduce((acc: Record<string, number>, { date }: { date: string }) => {
-          acc[date] = (acc[date] || 0) + 1;
-          return acc;
-        }, {});
+    if (!error && data) {
+      const dateCounts = data.reduce((acc: Record<string, number>, { date }: { date: string }) => {
+        acc[date] = (acc[date] || 0) + 1;
+        return acc;
+      }, {});
 
-        setChartData({
-          labels: Object.keys(dateCounts),
-          datasets: [
-            {
-              label: "Bookings",
-              data: Object.values(dateCounts),
-              borderColor: "rgba(75, 192, 192, 1)",
-              backgroundColor: "rgba(75, 192, 192, 0.2)",
-              borderWidth: 2,
-              fill: true,
-            },
-          ],
-        });
-      }
-    };
+      setChartData({
+        labels: Object.keys(dateCounts),
+        datasets: [
+          {
+            label: "Bookings",
+            data: Object.values(dateCounts),
+            borderColor: "rgba(75, 192, 192, 1)",
+            backgroundColor: "rgba(75, 192, 192, 0.2)",
+            borderWidth: 2,
+            fill: true,
+          },
+        ],
+      });
+    }
+  };
 
-    fetchBookings();
-  }, []);
+  fetchBookings();
+}, []);
 
   return (
     <div className="chart-container">
