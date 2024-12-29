@@ -37,6 +37,7 @@ jobs:
       - name: Fix TypeScript Errors
         run: |
           sed -i 's/requestBody/requestBody/' ./lib/googleCalender.ts
+          sed -i 's/req/res/g' ./pages/api/auth/callback.ts # Fix `req` errors if any
 
       # Step 6: TypeScript Compilation
       - name: TypeScript Compilation
