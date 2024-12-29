@@ -12,8 +12,9 @@ module.exports = {
   plugins: {
     react: require("eslint-plugin-react"),
     "@typescript-eslint": require("@typescript-eslint/eslint-plugin"),
-    next: require("eslint-plugin-next"), // Ensure this is included
+    next: require("eslint-plugin-next"),
   },
+  extends: ["next/core-web-vitals"], // Added for Next.js-specific linting
   rules: {
     "no-unused-vars": "warn",
     "no-console": "off",
