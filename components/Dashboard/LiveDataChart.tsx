@@ -14,6 +14,7 @@ import { supabase } from "@/lib/supabaseClient";
 
 ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement, Title, Tooltip, Legend);
 
+// Define the Booking type
 interface Booking {
   id: string;
   name: string;
@@ -23,6 +24,7 @@ interface Booking {
   created_at: string;
 }
 
+// Define the structure for chart data
 interface ChartData {
   labels: string[];
   datasets: {
@@ -51,14 +53,19 @@ const LiveDataChart = () => {
   });
 
   useEffect(() => {
-  const fetchBookings = async () => {
-    // Use two type arguments (data type, error type)
-    const { data, error } = await supabase
-      .from<Booking, unknown>("bookings") // Add `unknown` as the error type
-      .select("*");
+    const fetchBookings = async () => {
+      // Ensure both type arguments are used correctly
+      const { data, error } = await supabase
+        .from<Booking>("bookings")
+        .select("*");
 
-    if (!error && data) {
-      const dateCounts = data.reduce((acc: Record<string, number>, { date }: { date: string }) => {
+      if (error || !data) {
+        console.error("Error fetching bookings:", error);
+        return;
+      }
+
+      const dateCounts = data.reduce((acc: Record<string, number>, booking: Booking) => {
+        const date = booking.date;
         acc[date] = (acc[date] || 0) + 1;
         return acc;
       }, {});
@@ -76,11 +83,10 @@ const LiveDataChart = () => {
           },
         ],
       });
-    }
-  };
+    };
 
-  fetchBookings();
-}, []);
+    fetchBookings();
+  }, []);
 
   return (
     <div className="chart-container">
