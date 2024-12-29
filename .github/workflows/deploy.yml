@@ -33,30 +33,25 @@ jobs:
           npm install eslint-plugin-next --save-dev
           npm install --package-lock-only
 
-      # Step 5: Fix TypeScript Errors in Code
-      - name: Fix TypeScript Issues
-        run: |
-          sed -i 's/supabase\\.from<Booking>/supabase.from<Booking[]>/g' ./components/Dashboard/ThreeDScatterPlot.tsx
-
-      # Step 6: TypeScript Compilation
+      # Step 5: TypeScript Compilation
       - name: TypeScript Compilation
         run: tsc --noEmit || echo "TypeScript compilation failed"
 
-      # Step 7: Lint Code
+      # Step 6: Lint Code
       - name: Lint Code
         run: npm run lint || echo "Lint warnings detected"
 
-      # Step 8: Build the Application
+      # Step 7: Build the Application
       - name: Build Application
         run: npm run build || echo "Build failed"
 
-      # Step 9: Deploy to Vercel
+      # Step 8: Deploy to Vercel
       - name: Deploy to Vercel
         run: npx vercel --prod --yes --token=$VERCEL_TOKEN
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
 
-      # Step 10: Upload Debug Logs
+      # Step 9: Upload Debug Logs
       - name: Upload Debug Logs
         if: failure()
         uses: actions/upload-artifact@v3
