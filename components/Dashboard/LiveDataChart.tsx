@@ -18,7 +18,7 @@ interface Booking {
   id: string;
   name: string;
   email: string;
-  date: string;
+  date: string; // ISO format date
   notes?: string;
   created_at: string;
 }
@@ -55,7 +55,7 @@ const LiveDataChart = () => {
       const { data, error } = await supabase.from<Booking[]>("bookings").select("*");
 
       if (!error && data) {
-        const dateCounts = data.reduce((acc: Record<string, number>, { date }) => {
+        const dateCounts = data.reduce((acc: Record<string, number>, { date }: { date: string }) => {
           acc[date] = (acc[date] || 0) + 1;
           return acc;
         }, {});
