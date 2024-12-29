@@ -21,48 +21,7 @@ jobs:
           node-version: 18
           cache: npm
 
-      # Step 3: Install Supabase CLI
-      - name: Install Supabase CLI
-        run: |
-          sudo apt-get update && sudo apt-get install -y jq
-          CLI_VERSION=$(curl -s https://api.github.com/repos/supabase/cli/releases/latest | jq -r .tag_name)
-          PLATFORM="linux"
-          ARCH="amd64"
-          CLI_URL="https://github.com/supabase/cli/releases/download/${CLI_VERSION}/supabase_${PLATFORM}_${ARCH}.tar.gz"
-          
-          echo "Downloading Supabase CLI from $CLI_URL"
-          curl -fsSL "$CLI_URL" | tar -xz || (echo "Download or extraction failed!" && exit 1)
-          
-          chmod +x supabase
-          sudo mv supabase /usr/local/bin || (echo "Moving Supabase binary failed!" && exit 1)
-          
-          echo "Supabase CLI installed successfully"
-
-      # Step 4: Initialize Supabase Project
-      - name: Initialize Supabase Project
-        run: |
-          mkdir -p supabase/migrations
-          echo "project_id = '${{ secrets.SUPABASE_PROJECT_ID }}'" > supabase/config.toml
-          echo "[db]" >> supabase/config.toml
-          echo "password = '${{ secrets.SUPABASE_DB_PASSWORD }}'" >> supabase/config.toml
-
-      # Step 5: Create Initial Migration if Necessary
-      - name: Create Initial Migration
-        run: |
-          if [ ! -f "supabase/migrations/0001_create_bookings_table.sql" ]; then
-            echo "Creating initial migration for bookings table..."
-            echo "CREATE TABLE bookings (id UUID DEFAULT gen_random_uuid() PRIMARY KEY, name VARCHAR(255), email VARCHAR(255), date TIMESTAMP, notes TEXT, created_at TIMESTAMP DEFAULT now());" > supabase/migrations/0001_create_bookings_table.sql
-          fi
-
-      # Step 6: Apply Supabase Migrations
-      - name: Apply Supabase Migrations
-        env:
-          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
-        run: |
-          echo "Applying Supabase migrations..."
-          supabase db push --password ${{ secrets.SUPABASE_DB_PASSWORD }} || echo "Migration failed!"
-
-      # Step 7: Install Application Dependencies
+      # Step 3: Install Application Dependencies
       - name: Install Dependencies
         run: |
           npm install --legacy-peer-deps
@@ -70,7 +29,7 @@ jobs:
           npm install eslint-plugin-next --save-dev
           npm install --package-lock-only
 
-      # Step 8: Fix TypeScript Errors in Code
+      # Step 4: Fix TypeScript and ESLint Issues in Code
       - name: Fix TypeScript and ESLint Issues
         run: |
           # Fix TypeScript Errors
@@ -79,27 +38,26 @@ jobs:
           # Fix implicit 'any' type for date
           sed -i 's/{ date }/{ date }: { date: string }/' ./components/Dashboard/LiveDataChart.tsx
 
-      # Step 9: TypeScript Compilation
+      # Step 5: TypeScript Compilation
       - name: TypeScript Compilation
         run: tsc --noEmit || echo "TypeScript compilation failed"
 
-      # Step 10: Lint Code
+      # Step 6: Lint Code
       - name: Lint Code
         run: npm run lint || echo "Lint warnings detected"
 
-      # Step 11: Build the Application
+      # Step 7: Build the Application
       - name: Build Application
-        run: |
-          npm run build || echo "Build failed"
+        run: npm run build || echo "Build failed"
 
-      # Step 12: Deploy to Vercel
+      # Step 8: Deploy to Vercel
       - name: Deploy to Vercel
         run: |
           npx vercel --prod --yes --token=$VERCEL_TOKEN
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
 
-      # Step 13: Upload Debug Logs
+      # Step 9: Upload Debug Logs
       - name: Upload Debug Logs
         if: failure()
         uses: actions/upload-artifact@v3
