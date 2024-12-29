@@ -13,18 +13,19 @@ jobs:
       # Step 1: Checkout the repository
       - name: Checkout code
         uses: actions/checkout@v3
-       
+
+      # Step 2: Clear npm cache
       - name: Clear npm cache
         run: npm cache clean --force
 
-      # Step 2: Set up Node.js environment
+      # Step 3: Set up Node.js environment
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 18
           cache: npm
 
-      # Step 3: Install Application Dependencies
+      # Step 4: Install Application Dependencies
       - name: Install Dependencies
         run: |
           npm install --legacy-peer-deps
@@ -32,35 +33,31 @@ jobs:
           npm install eslint-plugin-next --save-dev
           npm install --package-lock-only
 
-      # Step 4: Fix TypeScript and ESLint Issues in Code
+      # Step 5: Fix TypeScript Errors in Code
       - name: Fix TypeScript and ESLint Issues
         run: |
-          # Fix TypeScript Errors
           sed -i 's/supabase\\.from<Booking>/supabase.from<Booking[]>/g' ./components/Dashboard/ThreeDScatterPlot.tsx
           sed -i 's/supabase\\.from<Booking>/supabase.from<Booking[]>/g' ./components/Dashboard/LiveDataChart.tsx
-          # Fix implicit 'any' type for date
-          sed -i 's/{ date }/{ date }: { date: string }/' ./components/Dashboard/LiveDataChart.tsx
 
-      # Step 5: TypeScript Compilation
+      # Step 6: TypeScript Compilation
       - name: TypeScript Compilation
         run: tsc --noEmit || echo "TypeScript compilation failed"
 
-      # Step 6: Lint Code
+      # Step 7: Lint Code
       - name: Lint Code
         run: npm run lint || echo "Lint warnings detected"
 
-      # Step 7: Build the Application
+      # Step 8: Build the Application
       - name: Build Application
         run: npm run build || echo "Build failed"
 
-      # Step 8: Deploy to Vercel
+      # Step 9: Deploy to Vercel
       - name: Deploy to Vercel
-        run: |
-          npx vercel --prod --yes --token=$VERCEL_TOKEN
+        run: npx vercel --prod --yes --token=$VERCEL_TOKEN
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
 
-      # Step 9: Upload Debug Logs
+      # Step 10: Upload Debug Logs
       - name: Upload Debug Logs
         if: failure()
         uses: actions/upload-artifact@v3
