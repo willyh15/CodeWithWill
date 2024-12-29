@@ -37,7 +37,6 @@ jobs:
       - name: Fix TypeScript Errors
         run: |
           sed -i 's/requestBody/requestBody/' ./lib/googleCalender.ts
-          sed -i 's/supabase\\.from<Booking>/supabase.from<Booking[]>/g' ./components/**/*.ts
 
       # Step 6: TypeScript Compilation
       - name: TypeScript Compilation
