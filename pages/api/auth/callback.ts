@@ -3,9 +3,9 @@ import { supabase } from "@/lib/supabaseClient";
 import { logger } from "@/utils/logger";
 
 const credentials = {
-  client_id: process.env.GOOGLE_CLIENT_ID,
-  client_secret: process.env.GOOGLE_CLIENT_SECRET,
-  redirect_uris: [process.env.GOOGLE_REDIRECT_URI],
+  client_id: process.env.GOOGLE_CLIENT_ID || "",
+  client_secret: process.env.GOOGLE_CLIENT_SECRET || "",
+  redirect_uris: [process.env.GOOGLE_REDIRECT_URI || ""],
 };
 
 const oAuth2Client = new google.auth.OAuth2(
@@ -14,12 +14,15 @@ const oAuth2Client = new google.auth.OAuth2(
   credentials.redirect_uris[0]
 );
 
-export default async function handler(req, res) {
+// Explicitly define types for `req` and `res`
+import { NextApiRequest, NextApiResponse } from "next";
+
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { code } = req.query;
 
-  if (!code) {
-    logger.error("Authorization code missing");
-    return res.status(400).json({ error: "Authorization code is required" });
+  if (!code || typeof code !== "string") {
+    logger.error("Authorization code missing or invalid");
+    return res.status(400).json({ error: "Authorization code is required and must be a string" });
   }
 
   try {
@@ -35,12 +38,12 @@ export default async function handler(req, res) {
     // Store the token in Supabase
     const { error } = await supabase.from("google_tokens").upsert(
       { id: 1, token: tokens }, // Use a constant ID for single-user systems
-      { onConflict: "id" } // Prevent duplicates
+      { onConflict: ["id"] } // Prevent duplicates
     );
 
     if (error) {
       logger.error("Error storing token in Supabase", { error });
-      throw error;
+      return res.status(500).json({ error: "Failed to store token in database" });
     }
 
     logger.info("Token successfully stored in Supabase");
