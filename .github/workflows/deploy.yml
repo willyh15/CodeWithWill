@@ -14,18 +14,24 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Step 2: Clear npm cache
+      # Step 2: Move `lib` directory to `src/lib`
+      - name: Reorganize directories
+        run: |
+          mkdir -p src
+          mv lib src/lib
+
+      # Step 3: Clear npm cache
       - name: Clear npm cache
         run: npm cache clean --force
 
-      # Step 3: Set up Node.js environment
+      # Step 4: Set up Node.js environment
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 18
           cache: npm
 
-      # Step 4: Install Application Dependencies
+      # Step 5: Install Application Dependencies
       - name: Install Dependencies
         run: |
           npm install --legacy-peer-deps
@@ -33,31 +39,37 @@ jobs:
           npm install eslint-plugin-next --save-dev
           npm install --package-lock-only
 
-      # Step 5: Fix TypeScript Issues
+      # Step 6: Update Imports
+      - name: Update Import Paths
+        run: |
+          find ./pages ./utils ./components ./scripts ./styles ./public ./src -type f -name "*.ts*" \
+          -exec sed -i 's|@/lib|@/src/lib|g' {} +
+
+      # Step 7: Fix TypeScript Issues
       - name: Fix TypeScript Errors
         run: |
           sed -i 's/req, res/req: NextApiRequest, res: NextApiResponse/' ./pages/api/auth/callback.ts
-          sed -i 's/requestBody/requestBody/' ./lib/googleCalender.ts
+          sed -i 's/requestBody/requestBody/' ./src/lib/googleCalender.ts
 
-      # Step 6: TypeScript Compilation
+      # Step 8: TypeScript Compilation
       - name: TypeScript Compilation
         run: tsc --noEmit || echo "TypeScript compilation failed"
 
-      # Step 7: Lint Code
+      # Step 9: Lint Code
       - name: Lint Code
         run: npm run lint || echo "Lint warnings detected"
 
-      # Step 8: Build the Application
+      # Step 10: Build the Application
       - name: Build Application
         run: npm run build || echo "Build failed"
 
-      # Step 9: Deploy to Vercel
+      # Step 11: Deploy to Vercel
       - name: Deploy to Vercel
         run: npx vercel --prod --yes --token=$VERCEL_TOKEN
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
 
-      # Step 10: Upload Debug Logs
+      # Step 12: Upload Debug Logs
       - name: Upload Debug Logs
         if: failure()
         uses: actions/upload-artifact@v3
