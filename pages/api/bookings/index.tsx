@@ -1,16 +1,24 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
 
+interface Booking {
+  id: string;
+  name: string;
+  email: string;
+  date: string;
+  time: string;
+}
+
 const Bookings = () => {
-  const [bookings, setBookings] = useState([]);
-  const [error, setError] = useState(null);
+  const [bookings, setBookings] = useState<Booking[]>([]); // Explicitly set the type
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchBookings = async () => {
       try {
-        const { data, error } = await supabase.from("bookings").select("*");
+        const { data, error } = await supabase.from<Booking>("bookings").select("*"); // Use the Booking type
         if (error) throw error;
-        setBookings(data || []);
+        setBookings(data || []); // Ensure fallback to an empty array
       } catch (err) {
         setError("Failed to fetch bookings.");
       }
