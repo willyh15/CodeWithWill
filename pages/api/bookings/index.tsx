@@ -16,7 +16,7 @@ const Bookings = () => {
   useEffect(() => {
     const fetchBookings = async () => {
       try {
-        const { data, error } = await supabase.from<Booking>("bookings").select("*"); // Use the Booking type
+        const { data, error } = await supabase.from<Booking, unknown>("bookings").select("*"); // Provide both generic types
         if (error) throw error;
         setBookings(data || []); // Ensure fallback to an empty array
       } catch (err) {
