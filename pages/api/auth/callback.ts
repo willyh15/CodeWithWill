@@ -45,7 +45,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     // Store the token in Supabase
     const { error } = await supabase.from("google_tokens").upsert(
       { id: 1, token: tokens }, // Use a constant ID for single-user systems
-      { onConflict: ["id"] } // Prevent duplicates
+      { onConflict: "id" } // Ensure this is a string, not an array
     );
 
     if (error) {
