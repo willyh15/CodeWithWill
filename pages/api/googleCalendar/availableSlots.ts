@@ -1,7 +1,8 @@
 import { supabase } from "@/lib/supabaseClient";
 import { logger } from "@/utils/logger";
+import { NextApiRequest, NextApiResponse } from "next";
 
-export default async function handler(req, res) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "GET") {
     res.setHeader("Allow", ["GET"]);
     return res.status(405).end(`Method ${req.method} Not Allowed`);
@@ -9,7 +10,7 @@ export default async function handler(req, res) {
 
   const { date } = req.query;
 
-  if (!date || !/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+  if (!date || typeof date !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(date)) {
     return res.status(400).json({ error: "Invalid or missing date format (YYYY-MM-DD)." });
   }
 
