@@ -2,8 +2,9 @@ import { supabase } from "@/lib/supabaseClient";
 import { google } from "googleapis";
 import sgMail from "@sendgrid/mail";
 import { logger } from "@/utils/logger";
+import { NextApiRequest, NextApiResponse } from "next";
 
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+sgMail.setApiKey(process.env.SENDGRID_API_KEY || "");
 
 const oAuth2Client = new google.auth.OAuth2(
   process.env.GOOGLE_CLIENT_ID,
@@ -15,7 +16,7 @@ async function sendConfirmationEmail(name: string, email: string, date: string, 
   try {
     await sgMail.send({
       to: email,
-      from: "your-email@example.com",
+      from: "your-email@example.com", // Replace with your SendGrid verified sender email
       subject: "Booking Confirmation",
       text: `Hello ${name}, your booking on ${date} at ${time} has been confirmed.`,
     });
@@ -25,7 +26,7 @@ async function sendConfirmationEmail(name: string, email: string, date: string, 
   }
 }
 
-export default async function handler(req, res) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "POST") {
     res.setHeader("Allow", ["POST"]);
     return res.status(405).end(`Method ${req.method} Not Allowed.`);
