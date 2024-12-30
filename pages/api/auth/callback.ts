@@ -1,6 +1,7 @@
 import { google } from "googleapis";
 import { supabase } from "@/lib/supabaseClient";
 import { logger } from "@/utils/logger";
+import { NextApiRequest, NextApiResponse } from "next";
 
 const credentials = {
   client_id: process.env.GOOGLE_CLIENT_ID || "",
@@ -8,16 +9,22 @@ const credentials = {
   redirect_uris: [process.env.GOOGLE_REDIRECT_URI || ""],
 };
 
+if (!credentials.client_id || !credentials.client_secret || !credentials.redirect_uris[0]) {
+  throw new Error("Missing Google API credentials. Please check your environment variables.");
+}
+
 const oAuth2Client = new google.auth.OAuth2(
   credentials.client_id,
   credentials.client_secret,
   credentials.redirect_uris[0]
 );
 
-// Explicitly define types for `req` and `res`
-import { NextApiRequest, NextApiResponse } from "next";
-
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  if (req.method !== "GET") {
+    res.setHeader("Allow", ["GET"]);
+    return res.status(405).end(`Method ${req.method} Not Allowed`);
+  }
+
   const { code } = req.query;
 
   if (!code || typeof code !== "string") {
