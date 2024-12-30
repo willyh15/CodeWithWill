@@ -17,7 +17,9 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./*"],
-      "@/lib/*": ["./src/lib/*"] // Updated path alias for lib directory
+      "@/lib/*": ["./src/lib/*"], // Updated path alias for the lib directory
+      "@/utils/*": ["./utils/*"],
+      "@/components/*": ["./components/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
