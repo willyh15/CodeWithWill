@@ -29,7 +29,7 @@ jobs:
       - name: Install Dependencies
         run: |
           npm install --legacy-peer-deps
-          npm install eslint-plugin-next @supabase/supabase-js three@^0.171.0 googleapis --legacy-peer-deps
+          npm install eslint-plugin-next @supabase/supabase-js three@^0.171.0 googleapis @sendgrid/mail --legacy-peer-deps
           npm install eslint-plugin-next --save-dev
           npm install --package-lock-only
 
