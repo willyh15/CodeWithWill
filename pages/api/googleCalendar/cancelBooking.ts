@@ -1,6 +1,6 @@
-import { supabase } from "@/lib/supabaseClient";
-import { setCredentials, insertEvent } from "@/lib/googleCalendar";
-import { logger } from "@/utils/logger";
+import { supabase } from "../../../lib/supabaseClient";
+import { setCredentials } from "../../../lib/googleCalendar";
+import { logger } from "../../../utils/logger";
 import { google } from "googleapis";
 import { NextApiRequest, NextApiResponse } from "next";
 
@@ -28,7 +28,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(404).json({ error: "Booking not found." });
     }
 
-    // Fetch Google OAuth tokens from Supabase
+    // Fetch Google OAuth tokens
     const { data: tokens, error: tokenError } = await supabase
       .from("google_tokens")
       .select("token")
@@ -41,12 +41,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     // Set Google OAuth credentials
     setCredentials(tokens.token);
 
-    // Initialize Google Calendar API client
-    const calendar = google.calendar({ version: "v3", auth: tokens.token });
-
-    // Delete the Google Calendar event if it exists
+    // Delete Google Calendar event
     if (booking.googleEventId) {
       try {
+        const calendar = google.calendar({ version: "v3", auth: tokens.token });
         await calendar.events.delete({
           calendarId: "primary",
           eventId: booking.googleEventId,
@@ -54,11 +52,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         logger.info("Google Calendar event deleted successfully");
       } catch (err) {
         logger.error("Failed to delete Google Calendar event", { err });
-        // Allow cancellation to proceed even if Google Calendar deletion fails
+        // Allow cancellation to proceed even if event deletion fails
       }
     }
 
-    // Delete the booking from Supabase
+    // Delete booking from Supabase
     const { error: deleteError } = await supabase
       .from("bookings")
       .delete()
