@@ -16,7 +16,8 @@
     "incremental": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./*"],
+      "@/lib/*": ["./src/lib/*"] // Updated path alias for lib directory
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
