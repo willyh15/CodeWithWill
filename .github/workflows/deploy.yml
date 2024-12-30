@@ -33,11 +33,11 @@ jobs:
           npm install eslint-plugin-next --save-dev
           npm install --package-lock-only
 
-      # Step 5: Ensure TypeScript Compatibility
+      # Step 5: Fix TypeScript Issues
       - name: Fix TypeScript Errors
         run: |
+          sed -i 's/req, res/req: NextApiRequest, res: NextApiResponse/' ./pages/api/auth/callback.ts
           sed -i 's/requestBody/requestBody/' ./lib/googleCalender.ts
-          sed -i 's/req/res/g' ./pages/api/auth/callback.ts # Fix `req` errors if any
 
       # Step 6: TypeScript Compilation
       - name: TypeScript Compilation
