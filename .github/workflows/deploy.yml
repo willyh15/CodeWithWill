@@ -14,11 +14,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Step 2: Move `lib` directory to `src/lib`
-      - name: Reorganize directories
+      # Step 2: Reorganize directories
+      - name: Move lib directory to src/lib
         run: |
           mkdir -p src
-          mv lib src/lib
+          mv lib src/lib || echo "Directory already moved"
 
       # Step 3: Clear npm cache
       - name: Clear npm cache
@@ -31,7 +31,7 @@ jobs:
           node-version: 18
           cache: npm
 
-      # Step 5: Install Application Dependencies
+      # Step 5: Install Dependencies
       - name: Install Dependencies
         run: |
           npm install --legacy-peer-deps
@@ -39,7 +39,7 @@ jobs:
           npm install eslint-plugin-next --save-dev
           npm install --package-lock-only
 
-      # Step 6: Update Imports
+      # Step 6: Update Import Paths
       - name: Update Import Paths
         run: |
           find ./pages ./utils ./components ./scripts ./styles ./public ./src -type f -name "*.ts*" \
