@@ -1,10 +1,11 @@
 import { google } from "googleapis";
 import { logger } from "@/utils/logger";
+import { NextApiRequest, NextApiResponse } from "next";
 
 const credentials = {
-  client_id: process.env.GOOGLE_CLIENT_ID,
-  client_secret: process.env.GOOGLE_CLIENT_SECRET,
-  redirect_uris: [process.env.GOOGLE_REDIRECT_URI],
+  client_id: process.env.GOOGLE_CLIENT_ID || "",
+  client_secret: process.env.GOOGLE_CLIENT_SECRET || "",
+  redirect_uris: [process.env.GOOGLE_REDIRECT_URI || ""],
 };
 
 if (!credentials.client_id || !credentials.client_secret || !credentials.redirect_uris[0]) {
@@ -17,7 +18,7 @@ const oAuth2Client = new google.auth.OAuth2(
   credentials.redirect_uris[0]
 );
 
-export default async function handler(req, res) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "GET") {
     res.setHeader("Allow", ["GET"]);
     return res.status(405).end(`Method ${req.method} Not Allowed`);
