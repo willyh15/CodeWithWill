@@ -1,9 +1,10 @@
 import { supabase } from "@/lib/supabaseClient";
-import { oAuth2Client } from "@/lib/googleCalendarClient";
+import { setCredentials, insertEvent } from "@/lib/googleCalendar";
 import { logger } from "@/utils/logger";
 import { google } from "googleapis";
+import { NextApiRequest, NextApiResponse } from "next";
 
-export default async function handler(req, res) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "POST") {
     res.setHeader("Allow", ["POST"]);
     return res.status(405).end(`Method ${req.method} Not Allowed`);
@@ -16,6 +17,7 @@ export default async function handler(req, res) {
   }
 
   try {
+    // Fetch the booking
     const { data: booking, error: fetchError } = await supabase
       .from("bookings")
       .select("*")
@@ -26,26 +28,37 @@ export default async function handler(req, res) {
       return res.status(404).json({ error: "Booking not found." });
     }
 
-    const { data: tokens, error: tokenError } = await supabase.from("google_tokens").select("token").single();
+    // Fetch Google OAuth tokens from Supabase
+    const { data: tokens, error: tokenError } = await supabase
+      .from("google_tokens")
+      .select("token")
+      .single();
+
     if (tokenError || !tokens?.token) {
       throw new Error("Google tokens are missing or invalid.");
     }
 
-    oAuth2Client.setCredentials(tokens.token);
+    // Set Google OAuth credentials
+    setCredentials(tokens.token);
 
-    const calendar = google.calendar({ version: "v3", auth: oAuth2Client });
+    // Initialize Google Calendar API client
+    const calendar = google.calendar({ version: "v3", auth: tokens.token });
+
+    // Delete the Google Calendar event if it exists
     if (booking.googleEventId) {
       try {
         await calendar.events.delete({
           calendarId: "primary",
           eventId: booking.googleEventId,
         });
+        logger.info("Google Calendar event deleted successfully");
       } catch (err) {
         logger.error("Failed to delete Google Calendar event", { err });
-        // Allow cancellation to proceed even if Google Calendar fails.
+        // Allow cancellation to proceed even if Google Calendar deletion fails
       }
     }
 
+    // Delete the booking from Supabase
     const { error: deleteError } = await supabase
       .from("bookings")
       .delete()
