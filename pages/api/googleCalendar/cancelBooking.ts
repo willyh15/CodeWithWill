@@ -1,6 +1,6 @@
-import { supabase } from "../../../lib/supabaseClient";
-import { setCredentials } from "../../../lib/googleCalendar";
-import { logger } from "../../../utils/logger";
+import { supabase } from "@/src/lib/supabaseClient";
+import { setCredentials } from "@/src/lib/googleCalendar";
+import { logger } from "@/utils/logger";
 import { google } from "googleapis";
 import { NextApiRequest, NextApiResponse } from "next";
 
