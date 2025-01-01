@@ -17,7 +17,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   try {
-    // Fetch the booking
     const { data: booking, error: fetchError } = await supabase
       .from("bookings")
       .select("*")
@@ -28,7 +27,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(404).json({ error: "Booking not found." });
     }
 
-    // Fetch Google OAuth tokens
     const { data: tokens, error: tokenError } = await supabase
       .from("google_tokens")
       .select("token")
@@ -38,10 +36,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       throw new Error("Google tokens are missing or invalid.");
     }
 
-    // Set Google OAuth credentials
     setCredentials(tokens.token);
 
-    // Delete Google Calendar event
     if (booking.googleEventId) {
       try {
         const calendar = google.calendar({ version: "v3", auth: tokens.token });
@@ -52,11 +48,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         logger.info("Google Calendar event deleted successfully");
       } catch (err) {
         logger.error("Failed to delete Google Calendar event", { err });
-        // Allow cancellation to proceed even if event deletion fails
       }
     }
 
-    // Delete booking from Supabase
     const { error: deleteError } = await supabase
       .from("bookings")
       .delete()
