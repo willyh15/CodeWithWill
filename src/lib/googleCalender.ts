@@ -28,7 +28,7 @@ export const insertEvent = async (event: calendar_v3.Schema$Event) => {
   try {
     const response = await calendar.events.insert({
       calendarId: "primary",
-      requestBody: event, // Updated property to "requestBody"
+      requestBody: event,
     });
     return response.data;
   } catch (error) {
