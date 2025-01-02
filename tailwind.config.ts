@@ -2,14 +2,14 @@ import type { Config } from "tailwindcss"; // Import the type
 import forms from "@tailwindcss/forms";
 import typography from "@tailwindcss/typography";
 import aspectRatio from "@tailwindcss/aspect-ratio";
-import lineClamp from "@tailwindcss/line-clamp";
+// Removed @tailwindcss/line-clamp as it is included by default in Tailwind CSS v3.3+
 
 const config: Config = {
   content: [
-    "./pages/**/*.{js,ts,jsx,tsx}",
+    "./pages/**/*.{js,ts,jsx,tsx}", // Scan these folders for class usage
     "./components/**/*.{js,ts,jsx,tsx}",
   ],
-  darkMode: "class", // Enables dark mode via class
+  darkMode: "class", // Enables dark mode via class strategy
   theme: {
     extend: {
       colors: {
@@ -22,7 +22,7 @@ const config: Config = {
         'glass-border': "rgba(255, 255, 255, 0.2)", // Glassmorphism border
       },
       fontFamily: {
-        sans: ["Roboto Mono", "monospace"],
+        sans: ["Roboto Mono", "monospace"], // Custom font stack
       },
       boxShadow: {
         glow: "0 0 20px rgba(110, 68, 255, 0.7)", // Purple glow
@@ -36,11 +36,15 @@ const config: Config = {
         "section-pattern": "url('/backgrounds/section-bg.svg')", // Section background
       },
       screens: {
-        xs: "480px", // Small devices
+        xs: "480px", // Small devices breakpoint
       },
     },
   },
-  plugins: [forms, typography, aspectRatio, lineClamp],
+  plugins: [
+    forms, // Tailwind Forms plugin
+    typography, // Tailwind Typography plugin
+    aspectRatio, // Tailwind Aspect Ratio plugin
+  ],
 };
 
 export default config;
