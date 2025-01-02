@@ -56,7 +56,9 @@ jobs:
 
       # Step 8: Verify Installed Node Modules
       - name: Verify Installed Node Modules
-        run: ls node_modules || echo "node_modules directory not found"
+        run: |
+          ls node_modules || echo "node_modules directory not found"
+          npm list stripe || echo "Stripe is not installed correctly"
 
       # Step 9: Update Import Paths
       - name: Update Import Paths
