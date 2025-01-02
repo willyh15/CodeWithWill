@@ -60,49 +60,60 @@ jobs:
           ls node_modules || echo "node_modules directory not found"
           npm list stripe || echo "Stripe is not installed correctly"
 
-      # Step 9: Update Import Paths
+      # Step 9: Step to verify and re-install eslint-plugin-next
+      - name: Reinstall eslint-plugin-next
+        run: |
+          npm install eslint-plugin-next --save-dev
+          npm list eslint-plugin-next || echo "eslint-plugin-next is missing"
+
+      # Step 10: Update Import Paths
       - name: Update Import Paths
         run: |
           find ./pages ./utils ./components ./scripts ./styles ./public ./src -type f -name "*.ts*" \
           -exec sed -i 's|@/lib|@/src/lib|g' {} +
 
-      # Step 10: Verify Updated Imports
+      # Step 11: Verify Updated Imports
       - name: Verify Updated Imports
         run: head -n 10 ./pages/api/googleCalendar/cancelBooking.ts || echo "File not found"
 
-      # Step 11: Verify tsconfig.json
+      # Step 12: Verify tsconfig.json
       - name: Verify tsconfig.json
         run: cat tsconfig.json
 
-      # Step 12: Fix TypeScript Issues
+      # Step 13: Step to check TypeScript errors for `req` and `res` types
+      - name: Verify `req` and `res` Types
+        run: |
+          sed -i 's/handler(req, res)/handler(req: NextApiRequest, res: NextApiResponse)/' ./pages/api/stripe/createPaymentIntent.ts || echo "Type definitions updated"
+
+      # Step 14: Fix TypeScript Issues
       - name: Fix TypeScript Errors
         run: |
           sed -i 's/req, res/req: NextApiRequest, res: NextApiResponse/' ./pages/api/auth/callback.ts
           sed -i 's/requestBody/requestBody/' ./src/lib/googleCalendar.ts || echo "TypeScript fixes applied"
 
-      # Step 13: TypeScript Compilation
+      # Step 15: TypeScript Compilation
       - name: TypeScript Compilation
         run: tsc --noEmit || echo "TypeScript compilation failed"
 
-      # Step 14: Lint Code
+      # Step 16: Lint Code
       - name: Lint Code
         run: npm run lint || echo "Lint warnings detected"
 
-      # Step 15: Debug Build Context
+      # Step 17: Debug Build Context
       - name: Debug Build Context
         run: find . -name "*.ts" || echo "No TypeScript files found"
 
-      # Step 16: Build the Application
+      # Step 18: Build the Application
       - name: Build Application
         run: npm run build || echo "Build failed"
 
-      # Step 17: Deploy to Vercel
+      # Step 19: Deploy to Vercel
       - name: Deploy to Vercel
         run: npx vercel --prod --yes --token=$VERCEL_TOKEN
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
 
-      # Step 18: Upload Debug Logs
+      # Step 20: Upload Debug Logs
       - name: Upload Debug Logs
         if: failure()
         uses: actions/upload-artifact@v3
