@@ -1,16 +1,17 @@
 import Stripe from "stripe";
 import { supabase } from "@/src/lib/supabaseClient";
 import { logger } from "@/utils/logger";
+import { NextApiRequest, NextApiResponse } from "next";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: "2024-12-18.acacia", // Update this to match the supported version
+  apiVersion: "2024-12-18.acacia", // Ensure this matches the supported version
 });
 
 if (!process.env.STRIPE_SECRET_KEY) {
   throw new Error("Missing Stripe secret key. Please check your environment variables.");
 }
 
-export default async function handler(req, res) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "POST") {
     res.setHeader("Allow", ["POST"]);
     return res.status(405).end(`Method ${req.method} Not Allowed`);
