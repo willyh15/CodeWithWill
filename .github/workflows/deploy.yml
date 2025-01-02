@@ -19,6 +19,7 @@ jobs:
         run: |
           mkdir -p src
           mv lib src/lib || echo "lib directory already moved"
+          mv src/lib/googleCalender.ts src/lib/googleCalendar.ts || echo "File already renamed"
 
       # Step 3: Verify Directory Structure
       - name: Verify Directory Structure
@@ -32,7 +33,7 @@ jobs:
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
           git add .
-          git commit -m "Move lib to src/lib" || echo "No changes to commit"
+          git commit -m "Move lib to src/lib and rename files" || echo "No changes to commit"
 
       # Step 5: Clear npm cache
       - name: Clear npm cache
@@ -49,8 +50,8 @@ jobs:
       - name: Install Dependencies
         run: |
           npm install --legacy-peer-deps
-          npm install eslint-plugin-next @supabase/supabase-js three@^0.171.0 googleapis @sendgrid/mail --legacy-peer-deps
-          npm install eslint-plugin-next --save-dev
+          npm install eslint-plugin-next @supabase/supabase-js three@^0.171.0 googleapis @sendgrid/mail pino stripe --legacy-peer-deps
+          npm install eslint-plugin-next @types/stripe --save-dev
           npm install --package-lock-only
 
       # Step 8: Verify Installed Node Modules
