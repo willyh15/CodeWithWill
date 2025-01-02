@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import StarfieldCanvas from "@/components/Starfield/Starfield";
 
-export function Projects() {
+export default function Projects() {
   const projects = [
     {
       title: "E-Commerce Platform",
