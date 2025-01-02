@@ -3,7 +3,7 @@ import { supabase } from "@/src/lib/supabaseClient";
 import { logger } from "@/utils/logger";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: "2022-11-15", // Ensure this version matches the supported version in the `Stripe` package
+  apiVersion: "2024-12-18.acacia", // Update this to match the supported version
 });
 
 if (!process.env.STRIPE_SECRET_KEY) {
