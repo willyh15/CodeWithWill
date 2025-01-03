@@ -10,53 +10,51 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout the repository
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Step 2: Set up Node.js environment
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 18
           cache: npm
 
-      # Step 3: Install Dependencies
       - name: Install Dependencies
         run: |
           npm install --legacy-peer-deps
-          npm install eslint-plugin-next @supabase/supabase-js --legacy-peer-deps
+          npm install eslint-plugin-next googleapis three@^0.159.0 --legacy-peer-deps
+          npm install @types/googleapis --save-dev
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_KEY }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
 
-      # Step 4: Pass Environment Variables to Build
+      - name: Debug Supabase Client Usage
+        run: |
+          echo "Checking Supabase client initialization..."
+          grep -r "createClient" ./src || echo "No Supabase client initialization found."
+          grep -r "supabase" ./src || echo "Supabase usage not found."
+
+      - name: Reinstall ESLint Plugin
+        run: |
+          npm install eslint-plugin-next --save-dev
+          npm list eslint-plugin-next || echo "eslint-plugin-next is missing"
+
+      - name: Lint Code
+        run: npm run lint || echo "Lint warnings detected"
+
       - name: Build the Application
         run: npm run build || echo "Build failed"
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_KEY }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_KEY }}
 
-      # Step 5: Debug Supabase Client Usage
-      - name: Debug Supabase Client Usage
-        run: |
-          echo "Searching for Supabase client initialization..."
-          grep -r "createClient" ./src || echo "No Supabase client initialization found."
-          grep -r "supabase" ./src || echo "Supabase usage not found."
-
-      # Step 6: Lint Code
-      - name: Lint Code
-        run: npm run lint || echo "Lint warnings detected"
-
-      # Step 7: Deploy to Vercel
       - name: Deploy to Vercel
         run: npx vercel --prod --yes --token=$VERCEL_TOKEN
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
 
-      # Step 8: Upload Debug Logs
       - name: Upload Debug Logs
         if: failure()
         uses: actions/upload-artifact@v3
