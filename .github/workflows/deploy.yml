@@ -14,106 +14,49 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Step 2: Reorganize directories
-      - name: Move lib directory to src/lib
-        run: |
-          mkdir -p src
-          mv lib src/lib || echo "lib directory already moved"
-          mv src/lib/googleCalender.ts src/lib/googleCalendar.ts || echo "File already renamed"
-
-      # Step 3: Verify Directory Structure
-      - name: Verify Directory Structure
-        run: |
-          ls -R src || echo "src directory not found"
-          ls -R src/lib || echo "src/lib directory not found"
-
-      # Step 4: Ensure directory changes are committed
-      - name: Commit src/lib changes
-        run: |
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "actions@github.com"
-          git add .
-          git commit -m "Move lib to src/lib and rename files" || echo "No changes to commit"
-
-      # Step 5: Clear npm cache
-      - name: Clear npm cache
-        run: npm cache clean --force
-
-      # Step 6: Set up Node.js environment
+      # Step 2: Set up Node.js environment
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 18
           cache: npm
 
-      # Step 7: Install Dependencies
+      # Step 3: Install Dependencies
       - name: Install Dependencies
         run: |
           npm install --legacy-peer-deps
-          npm install eslint-plugin-next @supabase/supabase-js three@^0.171.0 googleapis @sendgrid/mail pino stripe --legacy-peer-deps
-          npm install eslint-plugin-next @types/stripe --save-dev
-          npm install --package-lock-only
+          npm install eslint-plugin-next @supabase/supabase-js --legacy-peer-deps
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_KEY }}
 
-      # Step 8: Verify Installed Node Modules
-      - name: Verify Installed Node Modules
+      # Step 4: Pass Environment Variables to Build
+      - name: Build the Application
+        run: npm run build || echo "Build failed"
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_KEY }}
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_KEY }}
+
+      # Step 5: Debug Supabase Client Usage
+      - name: Debug Supabase Client Usage
         run: |
-          ls node_modules || echo "node_modules directory not found"
-          npm list stripe || echo "Stripe is not installed correctly"
+          echo "Searching for Supabase client initialization..."
+          grep -r "createClient" ./src || echo "No Supabase client initialization found."
+          grep -r "supabase" ./src || echo "Supabase usage not found."
 
-      # Step 9: Step to verify and re-install eslint-plugin-next
-      - name: Reinstall eslint-plugin-next
-        run: |
-          npm install eslint-plugin-next --save-dev
-          npm list eslint-plugin-next || echo "eslint-plugin-next is missing"
-
-      # Step 10: Update Import Paths
-      - name: Update Import Paths
-        run: |
-          find ./pages ./utils ./components ./scripts ./styles ./public ./src -type f -name "*.ts*" \
-          -exec sed -i 's|@/lib|@/src/lib|g' {} +
-
-      # Step 11: Verify Updated Imports
-      - name: Verify Updated Imports
-        run: head -n 10 ./pages/api/googleCalendar/cancelBooking.ts || echo "File not found"
-
-      # Step 12: Verify tsconfig.json
-      - name: Verify tsconfig.json
-        run: cat tsconfig.json
-
-      # Step 13: Step to check TypeScript errors for `req` and `res` types
-      - name: Verify `req` and `res` Types
-        run: |
-          sed -i 's/handler(req, res)/handler(req: NextApiRequest, res: NextApiResponse)/' ./pages/api/stripe/createPaymentIntent.ts || echo "Type definitions updated"
-
-      # Step 14: Fix TypeScript Issues
-      - name: Fix TypeScript Errors
-        run: |
-          sed -i 's/req, res/req: NextApiRequest, res: NextApiResponse/' ./pages/api/auth/callback.ts
-          sed -i 's/requestBody/requestBody/' ./src/lib/googleCalendar.ts || echo "TypeScript fixes applied"
-
-      # Step 15: TypeScript Compilation
-      - name: TypeScript Compilation
-        run: tsc --noEmit || echo "TypeScript compilation failed"
-
-      # Step 16: Lint Code
+      # Step 6: Lint Code
       - name: Lint Code
         run: npm run lint || echo "Lint warnings detected"
 
-      # Step 17: Debug Build Context
-      - name: Debug Build Context
-        run: find . -name "*.ts" || echo "No TypeScript files found"
-
-      # Step 18: Build the Application
-      - name: Build Application
-        run: npm run build || echo "Build failed"
-
-      # Step 19: Deploy to Vercel
+      # Step 7: Deploy to Vercel
       - name: Deploy to Vercel
         run: npx vercel --prod --yes --token=$VERCEL_TOKEN
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
 
-      # Step 20: Upload Debug Logs
+      # Step 8: Upload Debug Logs
       - name: Upload Debug Logs
         if: failure()
         uses: actions/upload-artifact@v3
