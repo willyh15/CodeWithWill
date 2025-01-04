@@ -51,7 +51,7 @@ jobs:
         run: |
           npm install --legacy-peer-deps
           npm install eslint-plugin-next @supabase/supabase-js three@^0.171.0 googleapis @sendgrid/mail pino stripe --legacy-peer-deps
-          npm install eslint-plugin-next @types/stripe @types/googleapis --save-dev
+          npm install eslint-plugin-next @types/stripe --save-dev
           npm install --package-lock-only
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
@@ -76,51 +76,44 @@ jobs:
           grep -r "createClient" ./src || echo "No Supabase client initialization found."
           grep -r "supabase" ./src || echo "Supabase usage not found."
 
-      # Step 11: Debug R3F Hook Usage
-      - name: Debug R3F Hook Usage
-        run: |
-          echo "Searching for R3F hooks..."
-          grep -r "useFrame" ./src || echo "No R3F hooks found."
-          grep -r "Canvas" ./src || echo "No Canvas usage found."
-
-      # Step 12: Update Import Paths
+      # Step 11: Update Import Paths
       - name: Update Import Paths
         run: |
           find ./pages ./utils ./components ./scripts ./styles ./public ./src -type f -name "*.ts*" \
           -exec sed -i 's|@/lib|@/src/lib|g' {} +
 
-      # Step 13: Verify Updated Imports
+      # Step 12: Verify Updated Imports
       - name: Verify Updated Imports
         run: head -n 10 ./pages/api/googleCalendar/cancelBooking.ts || echo "File not found"
 
-      # Step 14: Verify tsconfig.json
+      # Step 13: Verify tsconfig.json
       - name: Verify tsconfig.json
         run: cat tsconfig.json
 
-      # Step 15: Step to check TypeScript errors for `req` and `res` types
+      # Step 14: Step to check TypeScript errors for `req` and `res` types
       - name: Verify `req` and `res` Types
         run: |
           sed -i 's/handler(req, res)/handler(req: NextApiRequest, res: NextApiResponse)/' ./pages/api/stripe/createPaymentIntent.ts || echo "Type definitions updated"
 
-      # Step 16: Fix TypeScript Issues
+      # Step 15: Fix TypeScript Issues
       - name: Fix TypeScript Errors
         run: |
           sed -i 's/req, res/req: NextApiRequest, res: NextApiResponse/' ./pages/api/auth/callback.ts
           sed -i 's/requestBody/requestBody/' ./src/lib/googleCalendar.ts || echo "TypeScript fixes applied"
 
-      # Step 17: TypeScript Compilation
+      # Step 16: TypeScript Compilation
       - name: TypeScript Compilation
         run: tsc --noEmit || echo "TypeScript compilation failed"
 
-      # Step 18: Lint Code
+      # Step 17: Lint Code
       - name: Lint Code
         run: npm run lint || echo "Lint warnings detected"
 
-      # Step 19: Debug Build Context
+      # Step 18: Debug Build Context
       - name: Debug Build Context
         run: find . -name "*.ts" || echo "No TypeScript files found"
 
-      # Step 20: Build the Application
+      # Step 19: Build the Application
       - name: Build Application
         run: npm run build || echo "Build failed"
         env:
@@ -129,13 +122,13 @@ jobs:
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_KEY }}
 
-      # Step 21: Deploy to Vercel
+      # Step 20: Deploy to Vercel
       - name: Deploy to Vercel
         run: npx vercel --prod --yes --token=$VERCEL_TOKEN
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
 
-      # Step 22: Upload Debug Logs
+      # Step 21: Upload Debug Logs
       - name: Upload Debug Logs
         if: failure()
         uses: actions/upload-artifact@v3
