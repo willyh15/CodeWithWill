@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { FaUser, FaEnvelope, FaPaperPlane } from "react-icons/fa";
-import StarfieldCanvas from "@/components/Starfield/Starfield";
+import dynamic from "next/dynamic";
+
+const StarfieldCanvas = dynamic(() => import("@/components/Starfield/Starfield"), { ssr: false });
 
 export default function ContactForm() {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
