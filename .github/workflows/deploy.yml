@@ -51,7 +51,7 @@ jobs:
         run: |
           npm install --legacy-peer-deps
           npm install eslint-plugin-next @supabase/supabase-js three@^0.171.0 googleapis @sendgrid/mail pino stripe --legacy-peer-deps
-          npm install eslint-plugin-next @types/stripe @types/googleapis --save-dev
+          npm install eslint-plugin-next @types/stripe --save-dev
           npm install --package-lock-only
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
