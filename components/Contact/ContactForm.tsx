@@ -1,6 +1,6 @@
+import dynamic from "next/dynamic";
 import React, { useState } from "react";
 import { FaUser, FaEnvelope, FaPaperPlane } from "react-icons/fa";
-import dynamic from "next/dynamic";
 
 const StarfieldCanvas = dynamic(() => import("@/components/Starfield/Starfield"), { ssr: false });
 
@@ -22,9 +22,8 @@ export default function ContactForm() {
 
   return (
     <section className="relative py-16 bg-gray-900 overflow-hidden">
-      {/* Starfield Background */}
       <div className="absolute inset-0 -z-10">
-        <StarfieldCanvas color="#FFD700" particleCount={300} speed={0.0004} />
+        <StarfieldCanvas color="#FFD700" />
       </div>
 
       <form
