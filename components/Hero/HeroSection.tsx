@@ -1,9 +1,15 @@
-import StarfieldCanvas from "@/components/Starfield/Starfield";
+import dynamic from "next/dynamic";
 
-// components/Hero/HeroSection.tsx
+const StarfieldCanvas = dynamic(() => import("@/components/Starfield/Starfield"), { ssr: false });
+
 export default function HeroSection() {
   return (
-    <section className="h-screen flex flex-col justify-center items-center text-center">
+    <section className="h-screen flex flex-col justify-center items-center text-center relative overflow-hidden">
+      {/* Starfield Background */}
+      <div className="absolute inset-0 -z-10">
+        <StarfieldCanvas color="#FFD700" />
+      </div>
+
       <h1 className="text-6xl font-bold text-white drop-shadow-lg">
         Build Amazing Digital Experiences
       </h1>
