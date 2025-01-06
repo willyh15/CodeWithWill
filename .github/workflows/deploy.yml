@@ -10,20 +10,24 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Checkout the repository
       - name: Checkout code
         uses: actions/checkout@v3
 
+      # Reorganize directories
       - name: Move lib directory to src/lib
         run: |
           mkdir -p src
           mv lib src/lib || echo "lib directory already moved"
           mv src/lib/googleCalender.ts src/lib/googleCalendar.ts || echo "File already renamed"
 
+      # Verify directory structure
       - name: Verify Directory Structure
         run: |
           ls -R src || echo "src directory not found"
           ls -R src/lib || echo "src/lib directory not found"
 
+      # Commit directory changes
       - name: Commit src/lib changes
         run: |
           git config --global user.name "GitHub Actions"
@@ -31,42 +35,45 @@ jobs:
           git add .
           git commit -m "Move lib to src/lib and rename files" || echo "No changes to commit"
 
+      # Clear npm cache
       - name: Clear npm cache
         run: npm cache clean --force
 
+      # Setup Node.js environment
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 18
           cache: npm
 
+      # Install Dependencies
       - name: Install Dependencies
         run: |
           npm install --legacy-peer-deps
-          npm install eslint-plugin-next @supabase/supabase-js three@^0.172.0 googleapis @sendgrid/mail pino stripe --legacy-peer-deps
+          npm install eslint-plugin-next @supabase/supabase-js three@^0.172.0 googleapis@^144.0.0 @sendgrid/mail pino stripe --legacy-peer-deps
           npm install eslint-plugin-next @types/stripe --save-dev
           npm install --package-lock-only
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
 
+      # Verify installed dependencies
       - name: Verify Installed Node Modules
         run: |
           ls node_modules || echo "node_modules directory not found"
           npm list stripe || echo "Stripe is not installed correctly"
 
-      - name: Verify Updated Imports
+      # Fix TypeScript imports
+      - name: Fix TypeScript Imports and Paths
         run: |
           find ./pages ./utils ./components ./scripts ./styles ./public ./src -type f -name "*.ts*" -exec sed -i 's|@/lib|@/src/lib|g' {} +
           grep -r "supabase" ./src || echo "Supabase usage not found."
 
-      - name: Fix TypeScript Issues
-        run: |
-          sed -i 's/req, res/req: NextApiRequest, res: NextApiResponse/' ./pages/api/auth/callback.ts || echo "Type definitions updated"
-
+      # Lint the code
       - name: Lint Code
         run: npm run lint || echo "Lint warnings detected"
 
+      # Build the application
       - name: Build Application
         run: npm run build || echo "Build failed"
         env:
@@ -75,6 +82,7 @@ jobs:
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_KEY }}
 
+      # Deploy to Vercel
       - name: Deploy to Vercel
         run: npx vercel --prod --yes --token=$VERCEL_TOKEN
         env:
