@@ -17,9 +17,9 @@ module.exports = {
   extends: ["next/core-web-vitals"], // Added for Next.js-specific linting
   rules: {
     "no-unused-vars": "warn",
-    "no-console": "off",
+    "no-console": "warn",
     "react/react-in-jsx-scope": "off",
     "@typescript-eslint/no-unused-vars": "warn",
-    "next/no-html-link-for-pages": "off",
+    "next/no-html-link-for-pages": "warn",
   },
 };
