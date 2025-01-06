@@ -17,8 +17,8 @@ export default function HeroSection() {
         Join me in creating innovative solutions with cutting-edge technology.
       </p>
       <a
-        href="#booking"
-        className="mt-8 px-8 py-4 bg-gradient-to-r from-neon-light to-yellow-500 text-gray-900 font-bold rounded-lg shadow-md hover:scale-105 hover:shadow-lg transition-transform duration-300"
+        href="#booking" // Smooth scroll to the booking section
+        className="mt-8 px-8 py-4 bg-gradient-to-r from-yellow-500 to-orange-500 text-gray-900 font-bold text-lg rounded-full shadow-lg hover:scale-105 hover:shadow-xl transition-transform duration-300"
       >
         Get Started
       </a>
