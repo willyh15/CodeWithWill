@@ -7,46 +7,27 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "preload-images": "ts-node ./scripts/preloadImages.ts",
     "lint": "eslint . --config eslint.config.cjs",
     "lint:fix": "eslint . --fix --config eslint.config.cjs",
     "postinstall": "npm install react-intersection-observer@9.4.0 --legacy-peer-deps || true && npm install @react-three/drei@9.120.4 --legacy-peer-deps || true"
   },
-  "resolutions": {
-    "react-intersection-observer": "9.4.0"
-  },
   "dependencies": {
-    "@tailwindcss/forms": "^0.5.9",
-    "@tailwindcss/line-clamp": "^0.4.4",
-    "@tailwindcss/typography": "^0.5.15",
-    "axios": "^1.7.7",
-    "chart.js": "^4.3.0",
-    "dotenv": "^16.4.5",
-    "framer-motion": "^11.11.17",
-    "next": "^15.0.3",
-    "node-fetch": "^3.3.2",
-    "react": "^18.3.1",
-    "react-circular-progressbar": "^2.1.0",
-    "react-dom": "^18.3.1",
-    "react-icons": "^5.3.0",
-    "tailwindcss": "^3.4.15",
-    "react-chartjs-2": "^5.2",
-    "@react-three/drei": "^9.120.4",
+    "@supabase/supabase-js": "^2.0.0",
     "@react-three/fiber": "^8.12.0",
-    "three": "^0.157.0",
-    "react-intersection-observer": "9.4.0"
+    "@react-three/drei": "^9.120.4",
+    "three": "^0.172.0",
+    "googleapis": "^119.0.0",
+    "@sendgrid/mail": "^7.7.0",
+    "pino": "^8.14.0",
+    "stripe": "^12.12.0"
   },
   "devDependencies": {
-    "@tailwindcss/aspect-ratio": "^0.4.2",
     "@types/node": "^22.9.3",
     "@types/react": "^18.3.12",
-    "autoprefixer": "^10.4.20",
     "eslint": "^9.15.0",
     "eslint-config-next": "^15.0.3",
-    "postcss": "^8.4.49",
-    "postcss-loader": "^8.1.1",
-    "ts-node": "^10.9.1",
-    "typescript": "^5.7.2",
-    "@types/three": "^0.157.0"
+    "@typescript-eslint/eslint-plugin": "^6.7.3",
+    "@typescript-eslint/parser": "^6.7.3",
+    "typescript": "^5.7.2"
   }
 }
