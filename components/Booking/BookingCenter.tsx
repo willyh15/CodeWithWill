@@ -85,37 +85,52 @@ export const BookingCenter = () => {
 
       {/* Booking Form */}
       <div className="mb-12">
-        <form onSubmit={handleBookingSubmit} className="space-y-4">
-          <input
-            type="text"
-            name="name"
-            placeholder="Your Name"
-            value={formData.name}
-            onChange={handleInputChange}
-            className="w-full p-3 rounded-lg"
-            required
-          />
-          <input
-            type="email"
-            name="email"
-            placeholder="Your Email"
-            value={formData.email}
-            onChange={handleInputChange}
-            className="w-full p-3 rounded-lg"
-            required
-          />
-          <input
-            type="date"
-            name="date"
-            placeholder="Select Date"
-            value={formData.date}
-            onChange={handleInputChange}
-            className="w-full p-3 rounded-lg"
-            required
-          />
+        <form onSubmit={handleBookingSubmit} className="space-y-6">
+          <div className="relative">
+            <input
+              type="text"
+              name="name"
+              placeholder=" "
+              value={formData.name}
+              onChange={handleInputChange}
+              className="peer w-full p-4 rounded-lg bg-gradient-to-r from-gray-800 to-gray-900 text-white focus:ring-2 focus:ring-blue-500 outline-none"
+              required
+            />
+            <label className="absolute top-0 left-0 p-4 text-gray-500 text-sm transition-all peer-placeholder-shown:top-4 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:top-0 peer-focus:text-blue-500 peer-focus:text-sm">
+              Your Name
+            </label>
+          </div>
+          <div className="relative">
+            <input
+              type="email"
+              name="email"
+              placeholder=" "
+              value={formData.email}
+              onChange={handleInputChange}
+              className="peer w-full p-4 rounded-lg bg-gradient-to-r from-gray-800 to-gray-900 text-white focus:ring-2 focus:ring-blue-500 outline-none"
+              required
+            />
+            <label className="absolute top-0 left-0 p-4 text-gray-500 text-sm transition-all peer-placeholder-shown:top-4 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:top-0 peer-focus:text-blue-500 peer-focus:text-sm">
+              Your Email
+            </label>
+          </div>
+          <div className="relative">
+            <input
+              type="date"
+              name="date"
+              placeholder=" "
+              value={formData.date}
+              onChange={handleInputChange}
+              className="peer w-full p-4 rounded-lg bg-gradient-to-r from-gray-800 to-gray-900 text-white focus:ring-2 focus:ring-blue-500 outline-none"
+              required
+            />
+            <label className="absolute top-0 left-0 p-4 text-gray-500 text-sm transition-all peer-placeholder-shown:top-4 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:top-0 peer-focus:text-blue-500 peer-focus:text-sm">
+              Select Date
+            </label>
+          </div>
           <button
             type="submit"
-            className="w-full bg-blue-500 text-white py-3 rounded-lg"
+            className="w-full bg-blue-500 hover:bg-blue-700 transition-all text-white py-4 rounded-lg shadow-lg shadow-blue-500/50"
             disabled={loading}
           >
             {loading ? "Booking..." : "Confirm Booking"}
