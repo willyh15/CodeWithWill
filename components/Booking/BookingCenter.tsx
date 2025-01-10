@@ -4,7 +4,8 @@ import CalendarView from "@/components/Calender/CalenderView";
 import { Modal } from "@/components/UI/Modal";
 import { LoadingIndicator } from "@/components/LoadingIndicator";
 import { useGlobalState } from "@/lib/globalState";
-import DatePicker from "react-datepicker";
+import { Calendar, DayValue } from "react-modern-calendar-datepicker";
+import "react-modern-calendar-datepicker/lib/DatePicker.css";
 
 // Define the Booking type to align with Supabase's table schema
 interface Booking {
@@ -22,7 +23,7 @@ export const BookingCenter = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    date: new Date(), // Default to current date
+    date: null as DayValue, // Use `DayValue` for the calendar
   });
 
   const fetchBookings = async () => {
@@ -50,7 +51,9 @@ export const BookingCenter = () => {
         {
           name: formData.name,
           email: formData.email,
-          date: formData.date.toISOString(),
+          date: formData.date
+            ? `${formData.date.year}-${formData.date.month}-${formData.date.day}`
+            : "",
         },
       ]);
       if (error) throw error;
@@ -62,7 +65,7 @@ export const BookingCenter = () => {
       });
 
       fetchBookings();
-      setFormData({ name: "", email: "", date: new Date() });
+      setFormData({ name: "", email: "", date: null });
     } catch (error) {
       setModal({
         isVisible: true,
@@ -110,15 +113,12 @@ export const BookingCenter = () => {
             />
           </div>
           <div className="relative">
-            <DatePicker
-              selected={formData.date || new Date()} // Ensure valid date for `selected`
-              onChange={(date) =>
-                setFormData({ ...formData, date: date || new Date() })
-              } // Handle `null` case in `onChange`
-              className="peer w-full p-4 rounded-lg bg-gradient-to-r from-gray-800 to-gray-900 text-white focus:ring-2 focus:ring-blue-500 outline-none"
-              calendarClassName="custom-calendar" // For custom styling
-              placeholderText="Select Date"
-              required
+            <Calendar
+              value={formData.date}
+              onChange={(date) => setFormData({ ...formData, date })}
+              shouldHighlightWeekends
+              colorPrimary="#1E40AF" // Custom primary color
+              calendarClassName="futuristic-calendar" // Add a custom class
             />
           </div>
           <button
