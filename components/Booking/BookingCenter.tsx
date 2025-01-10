@@ -4,6 +4,9 @@ import CalendarView from "@/components/Calender/CalenderView";
 import { Modal } from "@/components/UI/Modal";
 import { LoadingIndicator } from "@/components/LoadingIndicator";
 import { useGlobalState } from "@/lib/globalState";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import "@/styles/datepicker.css"; // Custom styles for the datepicker
 
 // Define the Booking type to align with Supabase's table schema
 interface Booking {
@@ -21,7 +24,7 @@ export const BookingCenter = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    date: "",
+    date: new Date(),
   });
 
   const fetchBookings = async () => {
@@ -49,7 +52,7 @@ export const BookingCenter = () => {
         {
           name: formData.name,
           email: formData.email,
-          date: formData.date,
+          date: formData.date.toISOString(),
         },
       ]);
       if (error) throw error;
@@ -61,7 +64,7 @@ export const BookingCenter = () => {
       });
 
       fetchBookings();
-      setFormData({ name: "", email: "", date: "" });
+      setFormData({ name: "", email: "", date: new Date() });
     } catch (error) {
       setModal({
         isVisible: true,
@@ -90,43 +93,33 @@ export const BookingCenter = () => {
             <input
               type="text"
               name="name"
-              placeholder=" "
+              placeholder="Your Name"
               value={formData.name}
               onChange={handleInputChange}
               className="peer w-full p-4 rounded-lg bg-gradient-to-r from-gray-800 to-gray-900 text-white focus:ring-2 focus:ring-blue-500 outline-none"
               required
             />
-            <label className="absolute top-0 left-0 p-4 text-gray-500 text-sm transition-all peer-placeholder-shown:top-4 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:top-0 peer-focus:text-blue-500 peer-focus:text-sm">
-              Your Name
-            </label>
           </div>
           <div className="relative">
             <input
               type="email"
               name="email"
-              placeholder=" "
+              placeholder="Your Email"
               value={formData.email}
               onChange={handleInputChange}
               className="peer w-full p-4 rounded-lg bg-gradient-to-r from-gray-800 to-gray-900 text-white focus:ring-2 focus:ring-blue-500 outline-none"
               required
             />
-            <label className="absolute top-0 left-0 p-4 text-gray-500 text-sm transition-all peer-placeholder-shown:top-4 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:top-0 peer-focus:text-blue-500 peer-focus:text-sm">
-              Your Email
-            </label>
           </div>
           <div className="relative">
-            <input
-              type="date"
-              name="date"
-              placeholder=" "
-              value={formData.date}
-              onChange={handleInputChange}
+            <DatePicker
+              selected={formData.date}
+              onChange={(date) => setFormData({ ...formData, date })}
               className="peer w-full p-4 rounded-lg bg-gradient-to-r from-gray-800 to-gray-900 text-white focus:ring-2 focus:ring-blue-500 outline-none"
+              calendarClassName="custom-calendar" // For custom styling
+              placeholderText="Select Date"
               required
             />
-            <label className="absolute top-0 left-0 p-4 text-gray-500 text-sm transition-all peer-placeholder-shown:top-4 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:top-0 peer-focus:text-blue-500 peer-focus:text-sm">
-              Select Date
-            </label>
           </div>
           <button
             type="submit"
