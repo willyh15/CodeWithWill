@@ -60,9 +60,6 @@ jobs:
       - name: Install react-modern-calendar-datepicker
         run: npm install react-modern-calendar-datepicker --legacy-peer-deps
 
-      - name: Install react-modern-calendar-datepicker types
-        run: npm install --save-dev @types/react-modern-calendar-datepicker
-
       # Verify installed dependencies
       - name: Verify Installed Node Modules
         run: |
