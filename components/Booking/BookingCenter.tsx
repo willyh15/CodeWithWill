@@ -105,13 +105,15 @@ export const BookingCenter = () => {
           className="peer w-full p-4 rounded-lg bg-gradient-to-r from-gray-800 to-gray-900 text-white focus:ring-2 focus:ring-blue-500 outline-none"
           required
         />
-        <Calendar
+        <div className="relative flex justify-center items-center">
+         <Calendar
           value={formData.date}
           onChange={(date) => setFormData({ ...formData, date })}
           shouldHighlightWeekends
           colorPrimary="#1E40AF"
           calendarClassName="futuristic-calendar"
         />
+     </div>
         <button
           type="submit"
           className="w-full bg-blue-500 hover:bg-blue-700 text-white py-4 rounded-lg shadow-lg shadow-blue-500/50"
