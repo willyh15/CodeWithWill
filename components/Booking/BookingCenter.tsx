@@ -24,7 +24,7 @@ export const BookingCenter = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    date: new Date(),
+    date: new Date(), // Default to current date
   });
 
   const fetchBookings = async () => {
@@ -113,8 +113,10 @@ export const BookingCenter = () => {
           </div>
           <div className="relative">
             <DatePicker
-              selected={formData.date}
-              onChange={(date) => setFormData({ ...formData, date })}
+              selected={formData.date || new Date()} // Ensure valid date for `selected`
+              onChange={(date) =>
+                setFormData({ ...formData, date: date || new Date() })
+              } // Handle `null` case in `onChange`
               className="peer w-full p-4 rounded-lg bg-gradient-to-r from-gray-800 to-gray-900 text-white focus:ring-2 focus:ring-blue-500 outline-none"
               calendarClassName="custom-calendar" // For custom styling
               placeholderText="Select Date"
