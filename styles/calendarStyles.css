@@ -1,8 +1,11 @@
 .futuristic-calendar {
-  background: linear-gradient(135deg, #222, #333);
+  background: linear-gradient(135deg, #111, #222);
   color: #fff;
   border-radius: 12px;
   box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.8);
+  margin: 0 auto; /* Center the calendar */
+  padding: 20px;
+  display: inline-block; /* Adjust for centering */
 }
 
 .futuristic-calendar .Calendar__day {
