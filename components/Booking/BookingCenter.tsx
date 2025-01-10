@@ -6,7 +6,7 @@ import { LoadingIndicator } from "@/components/LoadingIndicator";
 import { useGlobalState } from "@/lib/globalState";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import "@/styles/datepicker.css"; // Custom styles for the datepicker
+import "src/styles/datepicker.css"; // Custom styles for the datepicker
 
 // Define the Booking type to align with Supabase's table schema
 interface Booking {
