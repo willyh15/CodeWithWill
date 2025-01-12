@@ -75,7 +75,7 @@ jobs:
       # Add missing TypeScript declarations
       - name: Add Missing TypeScript Declarations
         run: |
-          echo 'declare module "react-circular-progressbar";' >> react-circular-progressbar.d.ts
+          echo 'declare module "react-flatpickr";' >> react-flatpickr.d.ts
 
       # Lint the code
       - name: Lint Code
