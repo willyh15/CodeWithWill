@@ -17,7 +17,7 @@ interface Booking {
 }
 
 export const BookingCenter = () => {
-  const { loading, modal, setLoading, setModal } = useGlobalState();
+  const { loading, modal, setLoading, setModal } = useGlobalState(); // Zustand hooks
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [formData, setFormData] = useState({
     name: "",
@@ -81,7 +81,7 @@ export const BookingCenter = () => {
   };
 
   return (
-    <div id="booking" className="booking-center"> {/* Added id="booking" */}
+    <div id="booking" className="booking-center">
       <h1 className="text-4xl font-extrabold text-center mb-6 text-white">
         Booking Center
       </h1>
@@ -122,6 +122,28 @@ export const BookingCenter = () => {
           {loading ? "Booking..." : "Confirm Booking"}
         </button>
       </form>
+
+      {/* Display bookings (Optional) */}
+      <div className="my-6">
+        <CalendarView bookings={bookings} />
+      </div>
+
+      {/* Modals */}
+      <Modal
+        isVisible={modal.isVisible}
+        onClose={() =>
+          setModal({
+            isVisible: false,
+            type: null,
+            content: "",
+          })
+        }
+        title={modal.type === "success" ? "Success" : "Error"}
+        content={modal.content || "No content available."}
+      />
+
+      {/* Loading Indicator */}
+      {loading && <LoadingIndicator />}
     </div>
   );
 };
