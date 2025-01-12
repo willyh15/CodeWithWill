@@ -93,7 +93,6 @@ export const BookingCenter = () => {
             onChange={(date) => setFormData({ ...formData, date })}
             shouldHighlightWeekends
             colorPrimary="#1E40AF"
-            calendarClassName="futuristic-calendar"
           />
         </div>
         <button
