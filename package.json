@@ -30,7 +30,7 @@
     "@tailwindcss/typography": "^0.5.15",
     "@tailwindcss/aspect-ratio": "^0.4.2",
     "react-circular-progressbar": "^2.1.0",
-    "react-datepicker": "^4.13.0"
+    "flatpickr": "^4.6.13",
   },
   "devDependencies": {
     "@types/node": "^22.9.3",
@@ -40,6 +40,6 @@
     "@typescript-eslint/eslint-plugin": "^6.21.0",
     "@typescript-eslint/parser": "^6.21.0",
     "typescript": "^5.7.2",
-    "@types/react-datepicker": "^4.8.0"
+    "@types/flatpickr": "^4.6.13",
   }
 }
