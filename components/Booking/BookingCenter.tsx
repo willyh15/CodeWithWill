@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import Flatpickr from "react-flatpickr";
-import "flatpickr/dist/flatpickr.min.css"; // Default Flatpickr styles
-import "@/styles/flatpickr-dark.css"; // Custom dark mode styles
 import { Modal } from "@/components/UI/Modal";
 import { LoadingIndicator } from "@/components/LoadingIndicator";
 import { useGlobalState } from "@/lib/globalState";
