@@ -38,3 +38,26 @@
   background: #222 !important; /* Header background */
   color: #eaeaea !important; /* Header text color */
 }
+
+/* Dropdown Styling */
+.booking-calendar :global(.react-modern-calendar-datepicker__select) {
+  background: #1b1b2f; /* Dark background for dropdown */
+  color: #eaeaea; /* Light text color */
+  border: 1px solid #4a3aff; /* Border matching theme */
+  border-radius: 5px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.booking-calendar :global(.react-modern-calendar-datepicker__select-option) {
+  background: #1b1b2f; /* Dark background for options */
+  color: #eaeaea; /* Light text */
+}
+
+.booking-calendar :global(.react-modern-calendar-datepicker__select-option:hover) {
+  background: #4a3aff; /* Highlight on hover */
+  color: #fff; /* White text */
+}
+
+.booking-calendar :global(.react-modern-calendar-datepicker__select-arrow) {
+  color: #eaeaea; /* Color of the arrow */
+}
