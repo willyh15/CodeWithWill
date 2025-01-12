@@ -47,19 +47,16 @@ jobs:
           cache: npm
 
       # Install Dependencies
-
       - name: Install Dependencies
         run: |
           npm install --legacy-peer-deps
           npm install eslint-plugin-next @supabase/supabase-js three@^0.172.0 googleapis@^144.0.0 @sendgrid/mail pino stripe react-circular-progressbar autoprefixer tailwindcss @tailwindcss/forms @tailwindcss/typography @tailwindcss/aspect-ratio --legacy-peer-deps
-          npm install flatpickr react-flatpickr --legacy-peer-deps
+          npm install flatpickr react-flatpickr @types/flatpickr --legacy-peer-deps
           npm install eslint-plugin-next @typescript-eslint/eslint-plugin@^6.21.0 eslint@^8.57.1 postcss@^8.4.24 --save-dev --legacy-peer-deps
           npm install --package-lock-only --legacy-peer-deps
         env:
-        SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-        SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
-      - name: Install react-modern-calendar-datepicker
-        run: npm install react-modern-calendar-datepicker --legacy-peer-deps
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
 
       # Verify installed dependencies
       - name: Verify Installed Node Modules
