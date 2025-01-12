@@ -17,7 +17,6 @@ html {
   color: var(--tw-color-neon);
 }
 
-/* Typography */
 h1 {
   @apply text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold;
 }
@@ -30,16 +29,52 @@ p {
   @apply absolute top-1/2 left-1/2 w-[700px] h-[700px] bg-[radial-gradient(circle,rgba(110,68,255,0.3),transparent)] transform -translate-x-1/2 -translate-y-1/2 blur-[100px] z-0 opacity-70;
 }
 
-p {
-  @apply text-base sm:text-lg md:text-xl;
-}
-
-/* Hero Section */
 .hero-section {
   @apply relative flex flex-col justify-center items-center min-h-screen;
 }
 
+/* Custom Calendar Styling */
+.futuristic-calendar {
+  background: #1b1b2f; /* Match the dark background */
+  color: #eaeaea; /* Light text color */
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
 
+.futuristic-calendar .Calendar__day {
+  color: #a6a6a6; /* Light gray for days */
+  transition: all 0.3s ease;
+}
+
+.futuristic-calendar .Calendar__day:hover {
+  background: #1e40af; /* Primary hover color */
+  color: #fff;
+  border-radius: 50%;
+}
+
+.futuristic-calendar .Calendar__day--selected {
+  background: #4a3aff; /* Secondary selected color */
+  color: #fff;
+  border-radius: 50%;
+  box-shadow: 0 0 5px #4a3aff;
+}
+
+.futuristic-calendar .Calendar__day--today {
+  background: #ff83ff; /* Highlight today's date */
+  color: #fff;
+  border-radius: 50%;
+}
+
+.futuristic-calendar .Calendar__week-day {
+  color: #eaeaea; /* Weekday labels color */
+}
+
+.futuristic-calendar .Calendar__header {
+  background: #222; /* Header background */
+  color: #eaeaea; /* Header text color */
+}
+
+/* Adjust calendar size for responsive design */
 @media (min-width: 768px) {
   .hero-glow {
     @apply w-[900px] h-[900px];
