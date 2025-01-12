@@ -81,7 +81,7 @@ export const BookingCenter = () => {
   };
 
   return (
-    <div className="booking-center">
+    <div id="booking" className="booking-center"> {/* Added id="booking" */}
       <h1 className="text-4xl font-extrabold text-center mb-6 text-white">
         Booking Center
       </h1>
