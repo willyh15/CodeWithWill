@@ -1,5 +1,4 @@
-import "../styles/global.css";
-import "../styles/calendarStyles.css"; // Import calendar styling
+import "../styles/global.css"; // Import global styles
 import type { AppProps } from "next/app";
 import GlobalLayout from "@/components/Layout/GlobalLayout";
 import ErrorBoundary from "@/components/ErrorBoundary";
