@@ -1,0 +1,45 @@
+.flatpickr-calendar {
+  background: #1b1b2f !important; /* Dark background */
+  color: #eaeaea !important; /* Light text color */
+  border: 1px solid #333; /* Border for the calendar */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+.flatpickr-day {
+  color: #a6a6a6 !important; /* Light gray for days */
+  transition: all 0.3s ease;
+}
+
+.flatpickr-day:hover {
+  background: #1e40af !important; /* Hover background */
+  color: #fff !important;
+  border-radius: 50%; /* Round day highlight */
+}
+
+.flatpickr-day.selected {
+  background: #4a3aff !important; /* Selected background */
+  color: #fff !important;
+  border-radius: 50%;
+  box-shadow: 0 0 5px #4a3aff;
+}
+
+.flatpickr-day.today {
+  background: #ff83ff !important; /* Highlight today's date */
+  color: #fff !important;
+  border-radius: 50%;
+}
+
+.flatpickr-months {
+  background: #222 !important; /* Month header background */
+  color: #eaeaea !important; /* Month header text */
+}
+
+.flatpickr-weekdays {
+  background: #222 !important; /* Weekday header background */
+  color: #eaeaea !important; /* Weekday header text */
+}
+
+.flatpickr-next-month,
+.flatpickr-prev-month {
+  color: #eaeaea !important; /* Navigation arrows */
+}
