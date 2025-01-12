@@ -5,7 +5,7 @@ import { Modal } from "@/components/UI/Modal";
 import { LoadingIndicator } from "@/components/LoadingIndicator";
 import { useGlobalState } from "@/lib/globalState";
 import { Calendar, DayValue } from "react-modern-calendar-datepicker";
-import "react-modern-calendar-datepicker/lib/DatePicker.css";
+import "@/styles/datepicker.css"; // Use custom styles
 
 interface Booking {
   id: string;
@@ -122,28 +122,6 @@ export const BookingCenter = () => {
           {loading ? "Booking..." : "Confirm Booking"}
         </button>
       </form>
-
-      {/* Display bookings */}
-      <div className="my-6">
-        <CalendarView bookings={bookings} />
-      </div>
-
-      {/* Modals */}
-      <Modal
-        isVisible={modal.isVisible}
-        onClose={() =>
-          setModal({
-            isVisible: false,
-            type: null,
-            content: "",
-          })
-        }
-        title={modal.type === "success" ? "Success" : "Error"}
-        content={modal.content || "No content available."}
-      />
-
-      {/* Loading Indicator */}
-      {loading && <LoadingIndicator />}
     </div>
   );
 };
