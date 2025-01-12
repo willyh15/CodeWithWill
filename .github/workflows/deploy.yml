@@ -35,6 +35,19 @@ jobs:
           git add .
           git commit -m "Move lib to src/lib and rename files" || echo "No changes to commit"
 
+      # Create or update _app.js for global CSS
+      - name: Ensure Global CSS in _app.js
+        run: |
+          mkdir -p pages
+          echo "import '@/styles/global.css';" > pages/_app.js
+          echo "import 'flatpickr/dist/flatpickr.min.css';" >> pages/_app.js
+          echo "import '@/styles/flatpickr-dark.css';" >> pages/_app.js
+          echo "import { AppProps } from 'next/app';" >> pages/_app.js
+          echo "function MyApp({ Component, pageProps }: AppProps) {" >> pages/_app.js
+          echo "  return <Component {...pageProps} />;" >> pages/_app.js
+          echo "}" >> pages/_app.js
+          echo "export default MyApp;" >> pages/_app.js
+
       # Clear npm cache
       - name: Clear npm cache
         run: npm cache clean --force
