@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
+import Flatpickr from "react-flatpickr";
+import "flatpickr/dist/flatpickr.min.css"; // Default Flatpickr styles
+import "@/styles/flatpickr-dark.css"; // Custom dark mode styles
 import { Modal } from "@/components/UI/Modal";
 import { LoadingIndicator } from "@/components/LoadingIndicator";
 import { useGlobalState } from "@/lib/globalState";
-import { Calendar, DayValue } from "react-modern-calendar-datepicker";
-import styles from "./BookingCenter.module.css";
 
 interface Booking {
   id: string;
@@ -20,7 +21,7 @@ export const BookingCenter = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    date: null as DayValue,
+    date: "",
   });
 
   const handleBookingSubmit = async (e: React.FormEvent) => {
@@ -31,9 +32,7 @@ export const BookingCenter = () => {
         {
           name: formData.name,
           email: formData.email,
-          date: formData.date
-            ? `${formData.date.year}-${formData.date.month}-${formData.date.day}`
-            : "",
+          date: formData.date,
         },
       ]);
       if (error) throw error;
@@ -44,7 +43,7 @@ export const BookingCenter = () => {
         content: "Your booking was successful!",
       });
 
-      setFormData({ name: "", email: "", date: null });
+      setFormData({ name: "", email: "", date: "" });
     } catch (error) {
       setModal({
         isVisible: true,
@@ -61,7 +60,7 @@ export const BookingCenter = () => {
   };
 
   return (
-    <div id="booking" className={styles.bookingCenter}>
+    <div id="booking" className="booking-center">
       <h1 className="text-4xl font-extrabold text-center mb-6 text-white">
         Booking Center
       </h1>
@@ -85,14 +84,18 @@ export const BookingCenter = () => {
           className="peer w-full p-4 rounded-lg bg-gradient-to-r from-gray-800 to-gray-900 text-white focus:ring-2 focus:ring-blue-500 outline-none"
           required
         />
-        <div
-          className={`${styles.bookingCalendar} relative flex justify-center items-center`}
-        >
-          <Calendar
+        <div className="relative flex justify-center items-center">
+          <Flatpickr
             value={formData.date}
-            onChange={(date) => setFormData({ ...formData, date })}
-            shouldHighlightWeekends
-            colorPrimary="#1E40AF"
+            onChange={(selectedDates) =>
+              setFormData({ ...formData, date: selectedDates[0].toISOString() })
+            }
+            options={{
+              enableTime: false,
+              dateFormat: "Y-m-d",
+              disableMobile: true, // Ensures consistent desktop-like calendar
+            }}
+            className="peer w-full p-4 rounded-lg bg-gradient-to-r from-gray-800 to-gray-900 text-white focus:ring-2 focus:ring-blue-500 outline-none"
           />
         </div>
         <button
