@@ -85,7 +85,9 @@ export const BookingCenter = () => {
           className="peer w-full p-4 rounded-lg bg-gradient-to-r from-gray-800 to-gray-900 text-white focus:ring-2 focus:ring-blue-500 outline-none"
           required
         />
-        <div className={`${styles.bookingCalendar} relative flex justify-center items-center`}>
+        <div
+          className={`${styles.bookingCalendar} relative flex justify-center items-center`}
+        >
           <Calendar
             value={formData.date}
             onChange={(date) => setFormData({ ...formData, date })}
