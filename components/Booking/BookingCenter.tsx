@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
-import CalendarView from "@/components/Calender/CalenderView";
 import { Modal } from "@/components/UI/Modal";
 import { LoadingIndicator } from "@/components/LoadingIndicator";
 import { useGlobalState } from "@/lib/globalState";
 import { Calendar, DayValue } from "react-modern-calendar-datepicker";
-import "@/styles/datepicker.css"; // Use custom styles
+import styles from "./BookingCenter.module.css"; // Use component-specific styles
 
 interface Booking {
   id: string;
@@ -18,29 +17,11 @@ interface Booking {
 
 export const BookingCenter = () => {
   const { loading, modal, setLoading, setModal } = useGlobalState();
-  const [bookings, setBookings] = useState<Booking[]>([]);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     date: null as DayValue,
   });
-
-  const fetchBookings = async () => {
-    setLoading(true);
-    try {
-      const { data, error } = await supabase.from("bookings").select("*");
-      if (error) throw error;
-      setBookings(data);
-    } catch (error) {
-      setModal({
-        isVisible: true,
-        type: "error",
-        content: "Failed to fetch bookings. Please try again.",
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleBookingSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -63,7 +44,6 @@ export const BookingCenter = () => {
         content: "Your booking was successful!",
       });
 
-      fetchBookings();
       setFormData({ name: "", email: "", date: null });
     } catch (error) {
       setModal({
@@ -81,7 +61,7 @@ export const BookingCenter = () => {
   };
 
   return (
-    <div id="booking" className="booking-center">
+    <div id="booking" className={styles.bookingCenter}>
       <h1 className="text-4xl font-extrabold text-center mb-6 text-white">
         Booking Center
       </h1>
@@ -122,6 +102,23 @@ export const BookingCenter = () => {
           {loading ? "Booking..." : "Confirm Booking"}
         </button>
       </form>
+
+      {/* Modals */}
+      <Modal
+        isVisible={modal.isVisible}
+        onClose={() =>
+          setModal({
+            isVisible: false,
+            type: null,
+            content: "",
+          })
+        }
+        title={modal.type === "success" ? "Success" : "Error"}
+        content={modal.content || ""}
+      />
+
+      {/* Loading Indicator */}
+      {loading && <LoadingIndicator />}
     </div>
   );
 };
