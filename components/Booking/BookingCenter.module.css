@@ -1,0 +1,20 @@
+:global(.react-modern-calendar-datepicker) {
+  background: #1b1b2f !important; /* Dark background */
+  color: #eaeaea !important; /* Light text color */
+}
+
+:global(.react-modern-calendar-datepicker .Calendar__day) {
+  color: #a6a6a6; /* Light gray for days */
+  transition: all 0.3s ease;
+}
+
+:global(.react-modern-calendar-datepicker .Calendar__day:hover) {
+  background: #1e40af; /* Primary hover color */
+  color: #fff !important;
+  border-radius: 50%;
+}
+
+:global(.react-modern-calendar-datepicker .Calendar__header) {
+  background: #222 !important; /* Header background */
+  color: #eaeaea !important; /* Header text color */
+}
