@@ -98,7 +98,7 @@ export const BookingCenter = () => {
               dateFormat: "Y-m-d",
               disableMobile: true, // Ensures consistent desktop-like calendar
             }}
-            className="peer w-full p-4 rounded-lg bg-gradient-to-r from-gray-800 to-gray-900 text-white focus:ring-2 focus:ring-blue-500 outline-none"
+            className="w-full p-4 rounded-lg bg-gradient-to-r from-gray-800 to-gray-900 text-white focus:ring-2 focus:ring-blue-500 outline-none"
           />
         </div>
         <button
