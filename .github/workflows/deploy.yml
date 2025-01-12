@@ -14,7 +14,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Reorganize directories
+      # Ensure correct directory structure
       - name: Move lib directory to src/lib
         run: |
           mkdir -p src
@@ -27,7 +27,7 @@ jobs:
           ls -R src || echo "src directory not found"
           ls -R src/lib || echo "src/lib directory not found"
 
-      # Commit directory changes
+      # Commit changes to structure
       - name: Commit src/lib changes
         run: |
           git config --global user.name "GitHub Actions"
@@ -35,8 +35,8 @@ jobs:
           git add .
           git commit -m "Move lib to src/lib and rename files" || echo "No changes to commit"
 
-      # Create or update _app.tsx for global CSS
-      - name: Ensure Global CSS in _app.tsx
+      # Update _app.tsx to import global CSS
+      - name: Ensure Global CSS Imports in _app.tsx
         run: |
           mkdir -p pages
           echo "import 'styles/global.css';" > pages/_app.tsx
@@ -52,7 +52,7 @@ jobs:
       - name: Clear npm cache
         run: npm cache clean --force
 
-      # Setup Node.js environment
+      # Setup Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
@@ -71,13 +71,13 @@ jobs:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
 
-      # Verify installed dependencies
+      # Verify Node Modules
       - name: Verify Installed Node Modules
         run: |
           ls node_modules || echo "node_modules directory not found"
-          npm list stripe || echo "Stripe is not installed correctly"
-          npm list autoprefixer || echo "Autoprefixer is not installed correctly"
-          npm list react-circular-progressbar || echo "react-circular-progressbar is not installed correctly"
+          npm list stripe || echo "Stripe not installed correctly"
+          npm list autoprefixer || echo "Autoprefixer not installed correctly"
+          npm list react-circular-progressbar || echo "react-circular-progressbar not installed correctly"
 
       # Fix TypeScript imports
       - name: Fix TypeScript Imports and Paths
