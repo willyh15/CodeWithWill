@@ -87,9 +87,14 @@ export const BookingCenter = () => {
         <div className="relative flex justify-center items-center">
           <Flatpickr
             value={formData.date}
-            onChange={(selectedDates) =>
-              setFormData({ ...formData, date: selectedDates[0].toISOString() })
-            }
+            onChange={(selectedDates: Date[]) => {
+              if (selectedDates.length > 0) {
+                setFormData({
+                  ...formData,
+                  date: selectedDates[0].toISOString(),
+                });
+              }
+            }}
             options={{
               enableTime: false,
               dateFormat: "Y-m-d",
