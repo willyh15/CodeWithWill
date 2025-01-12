@@ -35,46 +35,52 @@ p {
 
 /* Custom Calendar Styling */
 .futuristic-calendar {
-  background: #1b1b2f; /* Match the dark background */
-  color: #eaeaea; /* Light text color */
+  background: #1b1b2f; /* Dark background */
+  color: #eaeaea; /* Light text */
   border-radius: 10px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  padding: 10px;
 }
 
 .futuristic-calendar .Calendar__day {
-  color: #a6a6a6; /* Light gray for days */
+  color: #a6a6a6; /* Default day color */
   transition: all 0.3s ease;
 }
 
 .futuristic-calendar .Calendar__day:hover {
-  background: #1e40af; /* Primary hover color */
+  background: #1e40af; /* Hover background */
   color: #fff;
   border-radius: 50%;
 }
 
 .futuristic-calendar .Calendar__day--selected {
-  background: #4a3aff; /* Secondary selected color */
+  background: #4a3aff; /* Selected day background */
   color: #fff;
   border-radius: 50%;
   box-shadow: 0 0 5px #4a3aff;
 }
 
 .futuristic-calendar .Calendar__day--today {
-  background: #ff83ff; /* Highlight today's date */
+  background: #ff83ff; /* Highlight today */
   color: #fff;
   border-radius: 50%;
 }
 
 .futuristic-calendar .Calendar__week-day {
-  color: #eaeaea; /* Weekday labels color */
+  color: #eaeaea; /* Weekday labels */
 }
 
 .futuristic-calendar .Calendar__header {
-  background: #222; /* Header background */
-  color: #eaeaea; /* Header text color */
+  background: #1b1b2f; /* Match dark background */
+  color: #eaeaea; /* Header text */
+  border-bottom: 1px solid #444;
 }
 
-/* Adjust calendar size for responsive design */
+.futuristic-calendar .Calendar__arrow {
+  color: #eaeaea; /* Arrow color */
+}
+
+/* Responsive Hero Glow */
 @media (min-width: 768px) {
   .hero-glow {
     @apply w-[900px] h-[900px];
