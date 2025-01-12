@@ -40,7 +40,6 @@
     "eslint-config-next": "^15.1.2",
     "@typescript-eslint/eslint-plugin": "^6.21.0",
     "@typescript-eslint/parser": "^6.21.0",
-    "typescript": "^5.7.2",
-    "@types/flatpickr": "^4.6.13"
+    "typescript": "^5.7.2"
   }
 }
