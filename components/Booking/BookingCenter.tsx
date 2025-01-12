@@ -17,7 +17,7 @@ interface Booking {
 }
 
 export const BookingCenter = () => {
-  const { loading, modal, setLoading, setModal } = useGlobalState(); // Zustand hooks
+  const { loading, modal, setLoading, setModal } = useGlobalState();
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [formData, setFormData] = useState({
     name: "",
@@ -123,7 +123,7 @@ export const BookingCenter = () => {
         </button>
       </form>
 
-      {/* Display bookings (Optional) */}
+      {/* Display bookings */}
       <div className="my-6">
         <CalendarView bookings={bookings} />
       </div>
