@@ -1,20 +1,40 @@
-:global(.react-modern-calendar-datepicker) {
+/* Apply local styles to the calendar container */
+.booking-calendar :global(.react-modern-calendar-datepicker) {
   background: #1b1b2f !important; /* Dark background */
   color: #eaeaea !important; /* Light text color */
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
 }
 
-:global(.react-modern-calendar-datepicker .Calendar__day) {
-  color: #a6a6a6; /* Light gray for days */
+.booking-calendar :global(.Calendar__day) {
+  color: #a6a6a6 !important; /* Light gray for days */
   transition: all 0.3s ease;
 }
 
-:global(.react-modern-calendar-datepicker .Calendar__day:hover) {
-  background: #1e40af; /* Primary hover color */
+.booking-calendar :global(.Calendar__day:hover) {
+  background: #1e40af !important; /* Primary hover color */
   color: #fff !important;
   border-radius: 50%;
 }
 
-:global(.react-modern-calendar-datepicker .Calendar__header) {
+.booking-calendar :global(.Calendar__day--selected) {
+  background: #4a3aff !important; /* Secondary selected color */
+  color: #fff !important;
+  border-radius: 50%;
+  box-shadow: 0 0 5px #4a3aff;
+}
+
+.booking-calendar :global(.Calendar__day--today) {
+  background: #ff83ff !important; /* Highlight today's date */
+  color: #fff !important;
+  border-radius: 50%;
+}
+
+.booking-calendar :global(.Calendar__week-day) {
+  color: #eaeaea !important; /* Weekday labels color */
+}
+
+.booking-calendar :global(.Calendar__header) {
   background: #222 !important; /* Header background */
   color: #eaeaea !important; /* Header text color */
 }
